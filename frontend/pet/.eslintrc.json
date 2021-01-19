@@ -1,0 +1,11 @@
+{
+    "plugins": ["prettier"],
+    "extends": ["eslint:recommended", "plugin:prettier/recommended", "naver"],
+    "parser": "babel-eslint",
+    "rules": {
+        "prettier/prettier": 0,
+        "indent": ["error", 2],
+        "no-unused-vars" : 0
+        
+    }
+}
