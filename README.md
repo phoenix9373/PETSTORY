@@ -20,6 +20,8 @@
         * [2. Branch 작업하기](#2-branch-----)
         * [3. Branch 머지하기](#3-branch-----)
         * [Option (작업 중 최신화)](#option-----------)
+    + [Frontend React]()
+      * [convention rules]()
 
 
 
@@ -241,3 +243,122 @@
 ##### Option (작업 중 최신화)
 
 ![option](README.assets/option.png)
+
+---
+
+
+
+# 3. Frontend 
+
+	## 	1. Convention Rules
+
+> Following naver convention rules
+
+
+
+1. 네임스페이스, 오브젝트, 함수 그리고 인스턴스에는 camelCase를 사용한다
+
+```
+const thisIsMyObject = {};
+function thisIsMyFunction() {}
+```
+
+2. 클래스나 constructor에는 PascalCase 를 사용한다. eslint: [new-cap](http://eslint.org/docs/rules/new-cap.html)
+
+```
+// good
+class User {
+  constructor(options) {
+    this.name = options.name;
+  }
+}
+
+const good = new User({
+  name: "yup",
+});
+```
+
+3. 약어 및 이니셜은 항상 모두 대문자이거나 모두 소문자이어야 한다.
+
+```
+// good
+import SMSContainer from "./containers/SMSContainer";
+
+// good
+const HTTPRequests = [
+  // ...
+];
+
+// best
+import TextMessageContainer from "./containers/TextMessageContainer";
+
+// best
+const Requests = [
+  // ...
+];
+```
+
+3. 클래스명과 변수명은 `명사 사용`을 준수한다.
+
+4. 메서드명은 `동사 사용`을 준수한다.
+
+5. 상수명은 대문자를 사용하고, 단어와 단어사이는 _로 연결한다.
+
+6. 무명함수를 전달하는 듯한)함수식을 이용하는 경우 arrow함수 표기를 이용해 주십시오.
+
+>  왜? arrow함수는 그 context의 `this` 에서 실행하는 버전의 함수를 작성합니다. 이것은 통상 기대대로의 동작을 하고, 보다 간결한 구문이기 때문입니다.
+
+7. 함수의 본체가 하나의 식으로 구성된 경우에는 중괄호({})를 생략하고 암시적 return을 이용하는것이 가능합니다. 그 외에는 return 문을 이용해 주십시오.
+
+```
+// good
+[1, 2, 3].map(number => `A string containing the ${number}.`);
+
+// bad
+[1, 2, 3].map(number => {
+  const nextNumber = number + 1;
+  `A string containing the ${nextNumber}.`;
+});
+
+// good
+[1, 2, 3].map(number => {
+  const nextNumber = number + 1;
+  return `A string containing the ${nextNumber}.`;
+});
+```
+
+8. 함수의 인수가 하나인 경우 소괄호()를 생략하는게 가능합니다.
+
+```
+// good
+[1, 2, 3].map(x => x * x);
+
+// good
+[1, 2, 3].reduce((y, x) => x + y);
+```
+
+9. 우선 `const` 를 그룹화하고 다음에 `let` 을 그룹화 해주십시오.
+
+> 왜? 이전에 할당한 변수에 대해 나중에 새 변수를 추가하는 경우에 유용하기 때문입니다.
+
+```
+// bad
+let i, len, dragonball,
+    items = getItems(),
+    goSportsTeam = true;
+
+// bad
+let i;
+const items = getItems();
+let dragonball;
+const goSportsTeam = true;
+let len;
+
+// good
+const goSportsTeam = true;
+const items = getItems();
+let dragonball;
+let i;
+let length;
+```
+
