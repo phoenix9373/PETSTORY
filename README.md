@@ -1,6 +1,31 @@
-[toc]
 
-#  🐶 팀명 (B204)
+
+# 목차
+
+- [🐶 팀명 (Pet Story)](#-------pet-story-)
+- [1. 프로젝트 개요](#1--------)
+  * [1. 주제](#1---)
+  * [2. 기술 스택](#2------)
+  * [3. 계획 (Gantt chart)](#3-----gantt-chart-)
+- [2. 개발 규칙](#2------)
+  * [Git](#git)
+    + [Commit Message 규약](#commit-message---)
+      - [Git Message Template](#git-message-template)
+      - [Commit Message Naming](#commit-message-naming)
+    + [Git Flow 규약](#git-flow---)
+      - [Branch Naming](#branch-naming)
+      - [Merge 규칙](#merge---)
+      - [HOW TO](#how-to)
+        * [1. Branch Fork하기](#1-branch-fork--)
+        * [2. Branch 작업하기](#2-branch-----)
+        * [3. Branch 머지하기](#3-branch-----)
+        * [Option (작업 중 최신화)](#option-----------)
+    + [Frontend React]()
+      * [convention rules]()
+
+
+
+#  🐶 팀명 (Pet Story)
 
 - 팀원
   - 팀장 : 황영준
@@ -12,28 +37,38 @@
 
 ## 1. 주제
 
-- 사람이 아니라, 반려동물이 사용자라는 컨셉의 커뮤니티
+- WHY
 
-- 반려동물의 일상을 공유하는 SNS
+  > 반려동물 가정이 증가하고 있다. 
+  >
+  > 그에 따라 반려동물 관련 정보 수요가 증가하는 데 비해, 
+  >
+  >  지역 내 반려동물을 위한 커뮤니티의 수가 적거나 진입 장벽이 높아서 참여가 힘들다.
+  >
+  > 같은 지역 내에서, 쉽고 편하게 참가할 수 있는 **반려 동물 커뮤니티가 필요**하다.
 
-- 반려동물 동반 가족이 증가하고 있지만, 반려동물만을 위한 커뮤니티는 부족하다.
+- HOW
 
-  반려동물의 일상을 공유하는 SNS를 통해 재미와 소통의 장을 제공한다. 
+  > SNS를 통해 같은 관심사를 가진 사람들이 모여서 정보를 교환한다.
+  >
+  > 동물의 입장에서 SNS 게시글을 작성함으로써, 재미를 제공하여 기존 유저의 유지와 새로운 유저의 유입을 활성화한다.
+
+- WHAT
+
+  > 반려동물을 키우는 사람들의 커뮤니티
 
 <br>
 
-## 2. 기술 스택
-
- ![리액트 로그](data:image/png;base64,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) ![스프링 로고](data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAABkCAMAAAAL3/3yAAAAb1BMVEX///93vB+73o/5/PR9vymGwzig0GP9/vzw+ObV67qCwTH2+/F6viR/wCz7/fjj8dDr9d7J5KWLxkDa7cL0+u2QyEjo89jP57CYzFWt13mp1XLC4ZqPyEel02u83pHF4p+dz17e78m02oTR6LOx2H4s8u3XAAANLElEQVR4nO1c57qjOAxNaKaY3iHU5P2fcYHgbki4k01m9+b8mW8ujrGPJVmSZU6nL7744osvvvjiiy/+CgDw6RH8B+AlmRXW7VjelLbLh8D5kiaHF1wV42Jr8LwCunpRdkPyJYwDCLpG184ioF2MsfPp4f1NUONKhxKmVrhFF3zF6w4nN9xtpu7yFbUcXb+TPC82ZOonIGpN6lfB9WMD/iCy8pFUYelKryr+Wd3/Pjvm5ZcnqZqhlcH6OzO1/Y8O/AMwb8+K1YrUutuqGp7rTw4ceG+3mX5/jKoJdjerYhZpZ0N92P+/N3ClqcLkra+Mj6gggjYmJ+8Gx9TO3jpYGlY0DQQ25uOWr3ul/gOupkFWiaUV5ngO3zhWBsG6yOP7VPGHXE1sGRfXOsVa5b1trCzC1X+O3qaIP+ZqpksBp+QSvVMNaCjrMN5mCIbo51ydjWlJQQmtN42VR7cO412rFRR/wFWxeFs5HN8zVgHZqhTle2yW0/wBV+ld+gO9+JATDzp7WbP3aCFod1IMD+VquHfiGR9z4kFcpYUSPG74CsT2z7nq8Xq28GPOw8lL3pXDTY477giwIkZ1ch5+QZ6m/rES2i1lppLo8t6I4xMIfuo1wCKmRclr3P995gGMP+RKbzlBqh8YLZBksWVZcZCwvr7qW7FJtRryMAxzycGIRzd0MssaHMmDqbsBC/z6Tt/cCi88Mw7btu2sgLQIruHGMUP2M9fdLn1+MrG25+mYeZna2gTXTpvaJzmKoLI1N73ef6pa5cWFM9xLeWVXwyynhpdwnhQI2mLqzDZ8/AD14Bu2Zvd3GVfj2/2ddtSEMpfVDJtoOb6Cmm7k99eB/AKhZkgdEeUhLzKqqlhcKnPH03LClLaM0O478z45x7j3OPv/gE1pa0VIdahWyx/dfPpNjUxHn+AHSw+nIF3+Mzt/YKDPEmDa8aNLOnZQhTVPyrJxz8IM08NMwcvoy6Ra7e0tXydrhE0Erkl8a6XHUE9qzfswmkHM4LDOvFBN0pt2nSR6fdDP0lqvD5ST13E6wydx/J4flDvnm1YHHebiNPKDW+GkHbkp1zZwg/EGV9JoCvYzt+36Pz1RR8lJSYQjThQC6gMdb7SEH33iwqvW/xhJK2Z9DYotcJVsbLBKEvTnVpiG92SgM2mxbUf9/oF0vZFb3nTk5gwUMgN6MErXTUfnRji5YNDtaqqHiQrVQLzUsgx5iU0lyKWeOCyxDVfENd8175NhLIylziHMrSFI1H2v04I3WYPtaGq2cXiqMrlaHsQsWWe6NzfeIEuXcqFh3Yo3Jg5L9EORrHBTC7Woqa0scdTnK2gyu5cl4rEjB9NKaW89KQugyYIu+tfWbYa3NGDJolGpG2RtoFjNdkCbamjraWSvTODaDoEsUPG9oRdX1qZrInSCdpkkkiYr0YLY9WzsgBpcy7U4oBU40Ip6CMwgbgtqFe/yKpA1eRdKctojyy3KaXUKSiG1uwkEN+aVvpmYftiwiiuQlcj3wkjJDoR5Jtqxpu1Q4p2Acp1bjfsEQZ1OntSyOzEcpDkmviP2144lZM20JgyLPFnQiOcGwIkpK3cnnkodRNg98WJmHxLI8mWa7ZZHqDqdroghr9Ik26G6mnfWrzDz1UumOIAN3cQnQ1/S+yxZhNYtsuCIWzhk70iTE7VnTnpJh2hJScmzQJbMcUivx04eEgXr3niWOCdIenW5E0ZxYLBKnGGx1322IUvrBlklZT8d/Odlyci2lrKq4JQ7ZEmMptzP30FOHJJW5jsgsig1lA8h5d9sYbmvubFWiaQHlqyIWRvkuC7bJ/bMVq+fgknEmSfLE+w7naB6DolBXthJ9lushmdbiDfoqZ7FMBzgdTZUhqzClPXAksWeCOBBzC4/cS7FYNbCVp6fiiN41s3hlFRXkJ+E55vYgOw8Wp+LLi3moBBfPSDRmg9uCFl2LO2BIYu3nihQmJfERHuHPQivdLADzZMlbIbF4dOk7EKFBVcoyztQhlFLx5jjC3MghhdEHtyBJquU98CQxZ+LoUHMZKEo8ywL/LstP8vk3FhdZPoBvFKnLI0lJSth5NdNbxbNF5qqK4srsceaU2S5g7wRQ1bKySmK12eyrogP2eGdv+XBc2RtmOA9hBpdYSAnizLUSL4UkrZAU5UekWKhrGl95eRBShZfXEeTFVJSJiBB5TE8WRk7C4nVeAA/ogVriywgBrUkd4imyovCAqwwCkUWLw/yQJoLvGiykP3SZGfo2GjxZLE+qSyDsw+zZ0tXcjlZJy8X0yH6etiBpioNK2mdULaGeZisXc3HPfBkBQxZhwVrcuEujDcTbh6hZ6UQK6xeChq5NMsqI0uY4pvIYm2WZDvahadA2DF/qWV+1trYHy98DqZyqKlKz9HQFOex4XwWf4Z0mCzkk0JZiTX2EATXgdYOidOxC6/WzgYrDuNeZSkwr7eU4WuherdgCGVHaXn4c7LobUNAsJX8YzZ1qYXdxsxVxI578oz3zR5IYqWg9DE1d0zRiXLhZ1P8OrJitGSNJAq+bvlZTPbnWMXOzJXGbb1OIcs6cHCGEcvzHHvgTU5y+G+ibXwWu9eRhYUnEmN7kuETLAqVAztmshxFY+P6GYH+VPEdyCpI3onJkpgBrC+z1L+OLBzlQVEPiYMgkIXD74OOgzknfnrejYy1J6sdcD3YJM0kiql454GkAG7glWSRd1540VJJakEgKybeotRD20A2O24XobKhPRvS80RTCJ+RyDBkaR3bzMMpu2VsLySLTJtTDtCRHUggKyC+w/NkedfZlOiCeZoGKlPl2NAvI7eCaOgjk3mxQ6bQhPj9BZ1qfwFZJLUAR7odCKndRyBLJSd6T5OVKHOPutg802V9+Is5v3SMgqL51QxZZ5uqNTFHzNXdtLyQLCoRAiuyjqZCh2Wiy0iG+mTdHoiXQ287F/eubhnuxhtgUeM6FYDqyLWYJWtqlZseOAHPDKnjnYJx9V9BlkMd+15q3wEAqEFXMEl2kayY6OhTu6E5LoKqS7iaBiDxW0i2E+pNHQemGVg3JOypyZE1l0AYo3IzImrcrsVw8gqymMpQaBdVWfX83V2RLCr9J/PQ+NbhvXkkU1nLlQonQ4Zm6/QJKn1uCLcKW+crCS8nC9RbN1DtzUNWei4Pa+6dfJXTQhYYqY3Mx0M2S4qCPjfUhRKadXbocOKlZJ1UeWXFWR/RMCSxEHHC9i08mKzI/X3s6R7GVduIAQahsgeNizk71U1pqQbmCmehXkPWSVqzM9linH+W+J1UGc3OTSXVV1Ddl61IHc/JgZRmPCYktVS4ItYUTVOVFAFRJb5oFoIG0Bed8OkIb1RQnpMEZCpfvzXhYuGqUWlVP86CbKYdHL/u8aKnlpRSoMDt65kgaFNeurRmHQwtFz53l13rqRJfdFNOqNTJIurBepQlmE8kclS6APgN+zq3yUg4KrVKVDBtiPk3z7TGAtu8sz1uGLarjTYtOV1mXl6IEzNtjPgyOk3WZBbJskDbyJkB5YskFIIRWEut7g+8RbtgKUzFX/YmdmtSLfL9imlMlkod7sj3O3KsCFumgZcMdRNR5E8LvaGp86WyB/d+QTJ0Y2MUhVEpOVUazJA1K3xd9mla9GXncx2CoTSMWrJa04MeP1Dzpm9CSdo1U4z+NiCx9JKldy/Ip0H1RjOG2TwmvB1tuJ0qsVpajSahmnHdXJhzBq3Pt+prh4tw8ikF8FTHUbdP/dZWapLI6+aAurFYzANvoxVQSadDlfaI3mlQ6nohndRzSnf2CT4xdO4tmEvHr4oRcXsFrxP0IJY7ytKivycgkvUGLNcrYVpnDK0O9aGGrTvETBljOlaUjUIcpuOwqWRJO5uM9KeXsj5BFqrxmOxUN5iON0U7XpJ1PRGQaDMxt3/TyRWP3On33mNF7fAxGsInyKLiFuhGRVOWpZHSIsIdxDBYzZpbFJxfOIVNyg5TJzVeawtvP75N/gmy1Af34CCfA2YQzlO+WI7q02WGutH5O7dT1UlwUb3+z2f6EZu1XXe8TLzaTfjOPuXdT0KuH4wqeoPnmqvTJtCSOF0oQzuAj5Cltjsl7fM9i104JToSXtx9eKnqEMOaMPh3WFbeKbdJw6ndUkyaHgBa5OOFFn8CkCkXuXStN3h2kVSrU3lfade+381asNyrWqFpwjskSdMDWEVZctDy72IKKhreP1qihmcWLWmXzd85fAf4z7iaIoh5ibXbB67ur5+AdLUF9vz5Rz5q2EIyG3N1Mym2BWki8BCC7qbEn/pGkpcEw2xmrNg3j1xK9+Kufu4TdhSkicCj+C9eRPfCo9elNxKBvwPifcVd2PXv+9IfhWTPAeHFqo//i/rzQgC/efK7f1H3Vs/o74RqPfym6+zgv+vbL387VKvZ/zoNTPkP4P5meL6SbokX1JutK+W/FXNFYy98txvaaRVmP07H/J+hBnF9M4pIn2JCXU+LSsn979fgdwA8JzEDPzPNt32i6osvvvjiiy+++OKLX4F/AFVfw28HhZZuAAAAAElFTkSuQmCC) ![디비 로고](data:image/png;base64,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)
+## 2. 기술 스택  
 
 - FE: REACT
 - BE : Spring, MySQL
 
 <br>
 
-## 3. 계획
+## 3. 계획 (Gantt chart)
 
-![image-20210118163907245](C:\Users\multicampus\Desktop\projects\SSAFY\s04p12b204\README.assets\image-20210118163907245.png)
+![ganttchart](README.assets/ganttchart-1611240655391.png)
 
 <br>
 
@@ -43,7 +78,72 @@
 
 ## Git
 
-### - 브랜치 네이밍
+### Commit Message 규약
+
+- #### Git Message Template
+
+  ```bash
+  S04P12B204- [feat] : /FE
+  # 이슈 번호 [속성] : 내용 /FE 또는 /BE
+  ##### 제목은 최대 50 글자까지만 입력 ############## -> |
+  -> S04P12B204-90 [feat] : 로그인 기능 /FE
+  
+  ######## 본문은 한 줄에 최대 72 글자까지만 입력 ########################### -> |
+  -> 로그인 시 썸네일 선택해서 해당 프로필로 로그인
+  
+  #   속성 분류
+  #   feat       : 새로운 기능 추가
+  #   fix        : 버그 수정
+  #   refactor   : 코드 리팩토링
+  #   style      : 코드 포맷팅, 세미콜론 누락, 코드 변경이 없는 경우
+  #   docs       : 문서 수정
+  #   test       : 테스트 코드, 리팩토링 테스트 코드 추가
+  #   chore      : 빌드 업무 수정, 패키지 매니저 수정
+  # ------------------
+  #     제목 첫 글자를 대문자로
+  #     제목은 명령문으로
+  #     제목 끝에 마침표(.) 금지
+  #     제목과 본문을 한 줄 띄워 분리하기
+  #     본문은 "어떻게" 보다 "무엇을", "왜"를 설명한다.
+  #     본문에 여러줄의 메시지를 작성할 땐 "-"로 구분
+  # ------------------
+  ```
+
+  - 저장 시 ^M 오류 해결
+
+    1. 적용할 파일을 vim 으로 열기
+
+    2. 명령 모드에서 아래의 명령어 입력
+
+       ```
+       :set ff=unix
+       ```
+
+       CRLF 값을 LF로 바꿔주며, 이후에 작성한 결과도 LF 값으로 작성이 된다.
+
+  - 템플릿 활용한 깃 메세지 예시
+
+    ![gitMessageExample](README.assets/gitMessageExample-1611240679790.png)
+
+<br>
+
+- #### Commit Message Naming
+
+  >  이슈 번호 [속성] : 내용 /FE 또는 /BE
+
+  예시)
+
+  > S04P12B204-90 [feat] : 로그인 기능 /FE
+
+### Git Flow 규약
+
+참고 : 
+
+[우아한]: https://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html	"우아한 형제들 기술 블로그"
+
+참고 : https://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html
+
+#### Branch Naming
 
 - `Backend` : **master → develop → feature(JIRA에픽 name) → JIRA이슈번호_BE**
 
@@ -67,22 +167,198 @@
 
     <br>
 
-### - commit 메세지 네이밍
+#### Merge 규칙
 
--  **[이슈 번호] 속성 - 내용**
-
-- 예시
-
-  `[90] feat - 로그인 기능 추가`
+- 작업을 시작하기 전에 **JIRA 이슈를 생성**한다.
+  - 이슈는 되도록 하나의 커밋으로 한다.
+- 커밋 그래프는 최대한 단순하게 한다.
+- 서로 공유하는 브랜치의 커밋 그래프는 함부로 변경하지 않는다.
+- **merge 를 하기 전** 적어도 1명의 팀원에게 **코드 리뷰** 후 merge를 시킴
+- 자신의 Pull Request는 스스로 merge를 한다.
 
 <br>
 
-### - merge
+#### HOW TO 
 
-- 작업을 시작하기 전에 JIRA 이슈를 생성한다.
-- 이슈는 되도록 하나의 커밋으로 한다.
-- 커밋 그래프는 최대한 단순하게 한다.
-- 서로 공유하는 브랜치의 커밋 그래프는 함부로 변경하지 않는다.
-- merge 를 하기 전 적어도 1명의 팀원에게 코드 리뷰 후 merge를 시킴
-- 자신의 Pull Request는 스스로 merge를 한다.
+##### 1. Branch Fork하기
+
+1. 프로젝트(upstream)에서 fork를 떠서 나의 레포(origin)를 생성한다
+
+2. 나의 레포(origin)에서 나의 컴퓨터(local)에 git clone 을 받는다
+
+3. 로컬에서 upstream을 추가해준다.
+
+   > $ git remote add upstream https://lab.ssafy.com/s04-webmobile2-sub2/s04p12b204.git
+
+   > $ git remote [-](https://lab.ssafy.com/s04-webmobile2-sub2/s04p12b204.git)v 로 확인
+
+   ![branchFork](README.assets/branchFork-1611240692374.png)
+
+4. 로컬에서 upstream/feature 아래에 지라이슈번호 브랜치를 생성하고 이동한다.
+
+   (track은 upstream/feature를 추적한다.)
+
+   > $ git checkout -b 지라이슈번호--track upstream/feature
+
+<br>
+
+##### 2. Branch 작업하기
+
+1. 해당 브랜치에서 해당 내용을 작업하고 add 한다
+
+   > $ git add .
+
+2. commit 한다(양식에 맞춰서)
+
+   > $ git commit -m “이슈번호 feat : 로그인 기능 추가/BE”
+
+3. 필요하면 rebase로 커밋을 줄인다 아래는 2개 합친 것
+
+   > $ git rebase -i HEAD~2
+
+4. fetch로 최신화 시켜준다
+
+   > $ git fetch --all 로 local을 최신화 시켜준다
+
+5. upstream레포의 해당 브랜치의 최신 작업 내용을 땡겨서 rebase한다.
+
+   > $ git pull --rebase upstream feature
+
+6. origin레포로 push 한다.
+
+   > $ git push origin 작업브랜치
+
+<br>
+
+##### 3. Branch 머지하기
+
+1. Fork뜬 나의 origin 브랜치를 upstream 브랜치에 merge하는 Pull Request를 생성합니다.
+
+2. 같은 feature를 개발하는 동료에게 리뷰 승인을 받은 후 자신의 Pull Request를 merge합니다. 
+
+   만약 혼자 feature를 개발한다면 1~2명의 동료에게 리뷰 승인을 받은 후, Pull Request를 merge합니다.
+
+<br>
+
+##### Option (작업 중 최신화)
+
+![option](README.assets/option.png)
+
+---
+
+
+
+# 3. Frontend 
+
+	## 	1. Convention Rules
+
+> Following naver convention rules
+
+
+
+1. 네임스페이스, 오브젝트, 함수 그리고 인스턴스에는 camelCase를 사용한다
+
+```
+const thisIsMyObject = {};
+function thisIsMyFunction() {}
+```
+
+2. 클래스나 constructor에는 PascalCase 를 사용한다. eslint: [new-cap](http://eslint.org/docs/rules/new-cap.html)
+
+```
+// good
+class User {
+  constructor(options) {
+    this.name = options.name;
+  }
+}
+
+const good = new User({
+  name: "yup",
+});
+```
+
+3. 약어 및 이니셜은 항상 모두 대문자이거나 모두 소문자이어야 한다.
+
+```
+// good
+import SMSContainer from "./containers/SMSContainer";
+
+// good
+const HTTPRequests = [
+  // ...
+];
+
+// best
+import TextMessageContainer from "./containers/TextMessageContainer";
+
+// best
+const Requests = [
+  // ...
+];
+```
+
+3. 클래스명과 변수명은 `명사 사용`을 준수한다.
+
+4. 메서드명은 `동사 사용`을 준수한다.
+
+5. 상수명은 대문자를 사용하고, 단어와 단어사이는 _로 연결한다.
+
+6. 무명함수를 전달하는 듯한)함수식을 이용하는 경우 arrow함수 표기를 이용해 주십시오.
+
+>  왜? arrow함수는 그 context의 `this` 에서 실행하는 버전의 함수를 작성합니다. 이것은 통상 기대대로의 동작을 하고, 보다 간결한 구문이기 때문입니다.
+
+7. 함수의 본체가 하나의 식으로 구성된 경우에는 중괄호({})를 생략하고 암시적 return을 이용하는것이 가능합니다. 그 외에는 return 문을 이용해 주십시오.
+
+```
+// good
+[1, 2, 3].map(number => `A string containing the ${number}.`);
+
+// bad
+[1, 2, 3].map(number => {
+  const nextNumber = number + 1;
+  `A string containing the ${nextNumber}.`;
+});
+
+// good
+[1, 2, 3].map(number => {
+  const nextNumber = number + 1;
+  return `A string containing the ${nextNumber}.`;
+});
+```
+
+8. 함수의 인수가 하나인 경우 소괄호()를 생략하는게 가능합니다.
+
+```
+// good
+[1, 2, 3].map(x => x * x);
+
+// good
+[1, 2, 3].reduce((y, x) => x + y);
+```
+
+9. 우선 `const` 를 그룹화하고 다음에 `let` 을 그룹화 해주십시오.
+
+> 왜? 이전에 할당한 변수에 대해 나중에 새 변수를 추가하는 경우에 유용하기 때문입니다.
+
+```
+// bad
+let i, len, dragonball,
+    items = getItems(),
+    goSportsTeam = true;
+
+// bad
+let i;
+const items = getItems();
+let dragonball;
+const goSportsTeam = true;
+let len;
+
+// good
+const goSportsTeam = true;
+const items = getItems();
+let dragonball;
+let i;
+let length;
+```
 
