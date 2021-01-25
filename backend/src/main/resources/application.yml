@@ -1,0 +1,35 @@
+## Server
+---
+server:
+  port: 8080
+
+## Database
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://localhost:3306/jpashop?serverTimezone=UTC&characterEncoding=UTF-8
+#    url: jdbc:mysql://ubuntu@i4b204.p.ssafy.io:22/petstory?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://ubuntu@i4b204.p.ssafy.io:3306/petstory?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: ssafy204
+
+  jpa:
+    #    generate-ddl: true
+    database: mysql
+      #      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    #    hiberanate:
+    #      ddl-auto: create
+    properties:
+      hibernate:
+        #          show_sql: true
+        format_sql: true
+
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
