@@ -33,6 +33,7 @@ function App() {
           /> */}
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" component={Account} />
+
           <Route component={PageNotFound} />
         </Switch>
       </div>
