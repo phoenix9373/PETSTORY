@@ -31,7 +31,7 @@ function RegisterPage(props) {
     if (Password === ConfirmPasword) {
       const body = {
         email: Email,
-        name: Name,
+        member_name: Name,
         password: Password,
       };
 
