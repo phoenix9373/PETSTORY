@@ -30,7 +30,8 @@ public class Postlist {
      * -> 위치는 핵심적으로 Controll 하는 쪽이 들고 있는 게 좋음
      */
     public void setMember(Member member) {
+
         this.member = member;
-        member.getPostlists()   .add(this);
+        member.getPostlists().add(this);
     }
 }

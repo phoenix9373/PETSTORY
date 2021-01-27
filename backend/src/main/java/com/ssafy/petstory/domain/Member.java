@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +18,14 @@ public class Member {
     @Column(name = "member_id")
     private Long id; // pk
 
-    @NotEmpty
+//    @NotEmpty
     private String email;
 
     @Column(name = "member_name")
     private String name;
-    private String password;
 
+    private String password;
+    @Column(name = "is_Banned")
     private boolean isBanned;
 
     // Member와 Profile은 일대다 관계

@@ -1,13 +1,13 @@
-package com.ssafy.petstagram;
+package com.ssafy.petstory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PetstagramApplication {
+public class PetstoryApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PetstagramApplication.class, args);
+		SpringApplication.run(PetstoryApplication.class, args);
 	}
 
 }
