@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import KaKaoLogin from 'react-kakao-login';
+import KaKaoLogins from 'react-kakao-login';
 import axios from 'axios';
 
 const API_URL_LOGIN = 'http://localhost:9000';
 
-class KaLogin extends PureComponent {
+class KakaoLogin extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -39,7 +39,7 @@ class KaLogin extends PureComponent {
   render() {
     return (
       <>
-        <KaKaoLogin
+        <KaKaoLogins
           // styled component 통해 style을 입혀 줄 예정
           jsKey={'bd060977289177fd1c71aad8efeb5318'}
           // 카카오에서 할당받은 jsKey를 입력
@@ -54,4 +54,4 @@ class KaLogin extends PureComponent {
   }
 }
 
-export default KaLogin;
+export default KakaoLogin;

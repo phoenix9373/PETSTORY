@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.navBar ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  list-style: none;
+  width: 100%;
+  background-color: #333;
+  border: 5px solid #333333;
+}
+.navBar ul a {
+  text-decoration: none;
+  color: #999;
+  display: block;
+  padding: 15px;
+  margin: 0 5px;
+}
+.navBar ul .active,
+.navBar ul a:hover {
+  background: #fff;
+  color: #222;
+}
