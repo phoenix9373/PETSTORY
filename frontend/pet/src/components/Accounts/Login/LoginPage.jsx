@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../_actions/userAction';
-// import KaLogin from './SocialLogin/kaLogin';
+import { loginUser } from '../../../_actions/userAction';
+// import KaKaoLogins from '../SocialLogin/KakaoLogin';
+// import GoogleLogins from '../SocialLogin/GoogleLogins';
 
 function LoginPage(props) {
   const [Email, setEmail] = useState('');
@@ -40,34 +41,36 @@ function LoginPage(props) {
   };
 
   return (
-    <>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '100%',
-          height: '50vh',
-        }}
-      >
-        <form
-          onSubmit={onSubmitHandler}
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <label>Email</label>
-          <input type="email" value={Email} onChange={onEmailHandler} />
-          <label>Password</label>
-          <input
-            type="password"
-            value={Password}
-            onChange={onPasswordHanlder}
-          />
-          <br />
-          <button type="submit">Login</button>
-        </form>
-      </div>
-      <div>{/* <KaLogin /> */}</div>
-    </>
+    <div className="form-container sign-in-container">
+      <form onSubmit={onSubmitHandler}>
+        <h1>Sign in</h1>
+        <div className="social-container">
+          <a href="#" className="social">
+            <i className="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" className="social">
+            <i className="fab fa-google-plus-g"></i>
+          </a>
+        </div>
+        <span>or use your account</span>
+        {/* <GoogleLogins />
+        <KaKaoLogins /> */}
+        <input
+          type="email"
+          value={Email}
+          placeholder="Email"
+          onChange={onEmailHandler}
+        />
+        <input
+          type="password"
+          value={Password}
+          placeholder="Password"
+          onChange={onPasswordHanlder}
+        />
+        <a href="#">Forgot your password?</a>
+        <button type="submit">로그인</button>
+      </form>
+    </div>
   );
 }
 
