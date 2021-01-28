@@ -1,0 +1,21 @@
+.contaniner-background {
+    margin-top:100px;
+    background-color: gray;
+}
+
+.input-center {
+    float:right;
+    margin-top: 100px;
+    /* justify-content: flex; */
+    /* align-items: center; */
+
+    /* margin-top:30px */    
+}
+.button-positon {
+    display:flex;
+    justify-content:center;
+}
+
+.button-mg {
+    margin: 30px;
+}
