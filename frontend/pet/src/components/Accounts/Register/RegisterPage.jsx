@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../../_actions/userAction';
+import { registerUser } from '../../../_actions/userAction';
+import './RegisterPage.css';
 
 function RegisterPage(props) {
   const [Email, setEmail] = useState('');
@@ -38,7 +39,7 @@ function RegisterPage(props) {
       dispatch(registerUser(body)).then((res) => {
         // eslint-disable-next-line
         alert('가입이 정상적으로 완료되었습니다');
-        props.history.push('/login');
+        props.history.push('/');
       });
     } else {
       // eslint-disable-next-line
@@ -47,36 +48,43 @@ function RegisterPage(props) {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        height: '100vh',
-      }}
-    >
-      <form
-        onSubmit={onSubmitHandler}
-        style={{ display: 'flex', flexDirection: 'column' }}
-      >
-        <label>Email</label>
-        <input type="email" value={Email} onChange={onEmailHandler} />
-
-        <label>Name</label>
-        <input type="test" value={Name} onChange={onNameHandler} />
-
-        <label>Password</label>
-        <input type="password" value={Password} onChange={onPasswordHanlder} />
-
-        <label>ConfirmPasword</label>
+    <div className="form-container sign-up-container">
+      <form onSubmit={onSubmitHandler}>
+        <h1>Create Account</h1>
+        <div className="social-container">
+          <a href="#" className="social">
+            <i className="fab fa-facebook-f"></i>
+          </a>
+          <a href="#" className="social">
+            <i className="fab fa-google-plus-g"></i>
+          </a>
+        </div>
+        <span>or use your email for registration</span>
+        <input
+          type="email"
+          placeholder="Email"
+          value={Email}
+          onChange={onEmailHandler}
+        />
+        <input
+          type="text"
+          placeholder="Name"
+          value={Name}
+          onChange={onNameHandler}
+        />
         <input
           type="password"
+          placeholder="Password"
+          value={Password}
+          onChange={onPasswordHanlder}
+        />
+        <input
+          type="password"
+          placeholder="Password Comfirmation"
           value={ConfirmPasword}
           onChange={onConfirmPasswordHandler}
         />
-        <br />
-        <button type="submit">회원 가입</button>
+        <button type="submit">회원가입</button>
       </form>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import LogoutButton from '../../components/Accounts/Logout/Logout';
 import './NavBar.css';
 
 class NavBar extends Component {
@@ -13,10 +14,11 @@ class NavBar extends Component {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/register/">회원가입</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login/">로그인</NavLink>
+            {this.props.authenticated ? (
+              <LogoutButton logout={this.props.logout} />
+            ) : (
+              <NavLink to="/login/">로그인</NavLink>
+            )}
           </li>
         </ul>
       </nav>
