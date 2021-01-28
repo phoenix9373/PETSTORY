@@ -1,39 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './app.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LandingPage from './views/LandingPage/LandingPage';
+import LoginPage from './views/LoginPage/LoginPage';
+import RegisterPage from './views/RegisterPage/RegisterPage';
 import NavBar from './views/NavBar/NavBar';
-import Account from './views/Accouts/Account';
-import PageNotFound from './views/PageNotFound/PageNotFound';
-import { signIn } from './hoc/auth';
-// import AuthRoute from './hoc/AuthRoute';
+import Register from './views/Board/register';
+// import Auth from './hoc/auth';
 
 function App() {
-  const [user, setUser] = useState(null);
-  const authenticated = user != null;
-
-  const login = ({ email, password }) => setUser(signIn({ email, password }));
-  const logout = () => setUser(null);
-
   return (
     <Router>
       <div>
-        <NavBar authenticated={authenticated} logout={logout} />
+        <NavBar />
         <Switch>
-          <Route
-            path="/login"
-            render={(props) => (
-              <Account authenticated={authenticated} login={login} {...props} />
-            )}
-          />
-          {/* <AuthRoute
-            authenticated={authenticated}
-            path="/profile"
-            render={(props) => <Profile user={user} {...props} />}
-          /> */}
           <Route exact path="/" component={LandingPage} />
-          <Route exact path="/login" component={Account} />
-          <Route component={PageNotFound} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/board/register" component={Register} />
+          {/* <Route exact path="/" component={Auth(landingPage, null)} />
+          <Route exact path="/login" component={Auth(loginPage, false)} />
+          <Route exact path="/register" component={Auth(registerPage, false)} /> */}
         </Switch>
       </div>
     </Router>
