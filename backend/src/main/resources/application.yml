@@ -8,13 +8,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     #    url: jdbc:mysql://localhost:3306/jpashop?serverTimezone=UTC&characterEncoding=UTF-8
-#    url: jdbc:mysql://ubuntu@i4b204.p.ssafy.io:22/petstory?serverTimezone=UTC&characterEncoding=UTF-8
     url: jdbc:mysql://ubuntu@i4b204.p.ssafy.io:3306/petstory?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: ssafy204
 
   jpa:
-#    generate-ddl: true
+    generate-ddl: true
     database: mysql
       #      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -24,12 +23,34 @@ spring:
       hibernate:
         #          show_sql: true
         format_sql: true
+        default_batch_fetch_size: 100
 
     thymeleaf:
       prefix: classpath:/templates/
       suffix: .html
 
+#  servlet:
+#    multipart:
+#      enabled: true
+#      file-size-threshold: 2KB
+#      max-file-size: 200MB
+#      max-request-size: 215MB
+
+
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+
+# AWS S3
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAYL2LDM2UK3HZVJ6Y
+      secretKey: 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
+    s3:
+      bucket: petstory-image
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
