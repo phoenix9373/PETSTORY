@@ -21,6 +21,9 @@ class NavBar extends Component {
           <li>
             <NavLink to="/board/register">새글작성</NavLink>
           </li>
+          <li>
+            <NavLink to="/board/register">프로필</NavLink>
+          </li>
         </ul>
       </nav>
     );
