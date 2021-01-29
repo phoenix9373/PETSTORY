@@ -6,11 +6,9 @@ import './FeedColumn.css';
 function FeedColumn(props) {
   return (
     <div className="feed-column">
-      <FeedItem />
-      <FeedProfile />
-      <FeedItem />
-      <FeedItem />
-      <FeedItem />
+      {props.item.map((item) => (
+        <FeedItem imageSrc={item.url} />
+      ))}
     </div>
   );
 }

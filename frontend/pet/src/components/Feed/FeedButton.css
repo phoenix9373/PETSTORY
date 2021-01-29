@@ -13,11 +13,9 @@ button:hover {
   position: absolute;
   top: 20px;
   left: 50%;
-  z-index: 1;
-
   transform: translateX(-50%);
-
-  width: 100%;
+  z-index: 1;
+  width: fit-content;
 }
 
 .feed-btn {
@@ -25,6 +23,7 @@ button:hover {
   text-decoration: none;
 
   padding: 8px 18px;
+  height: 100%;
   display: inline-block;
 
   background-color: white;
