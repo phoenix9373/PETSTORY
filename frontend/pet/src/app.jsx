@@ -1,68 +1,33 @@
-import React, {Component} from "react";
-import Habits from "./components/habits";
-import "./app.css";
-import Nav from "./components/nav"
-;
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-class App extends Component {
-  state = {
-    habits: [{id: 1, name: "READING", count: 0}, {id: 2, name: "RUNNING", count: 0}, {id: 3, name: "BREATHING", count: 0}],
-  };
-  handleIncrement= habit => {
-    console.log(`handleDecrement ${habit.name}`);
-    const habits = [...this.state.habits];
-    const index = habits.indexOf(habit);
+// Page Load
+import LandingPage from './views/LandingPage/LandingPage';
+import LoginPage from './views/LoginPage/LoginPage';
+import RegisterPage from './views/RegisterPage/RegisterPage';
+import MainPage from './views/MainPage/MainPage';
 
-    habits[index].count++;
-    this.setState({habits});
-  };
-  handleDecrement= habit => {
-    console.log(`handleDelete ${habit.name}`);
-    const habits = [...this.state.habits];
-    const index = habits.indexOf(habit);
-    const count = habits[index].count - 1;
+// Component Load
+import NavBar from './views/NavBar/NavBar';
+import Register from './views/Board/register';
 
-    habits[index].count = count < 0 ? 0 : count;
-    this.setState({habits});
-  };
-  handlDelete= habit => {
-    console.log(`handleIncrement ${habit.name}`);
-    const habits = this.state.habits.filter(item =>
-      item.id !== habit.id);
+// import Auth from './hoc/auth';
 
-    this.setState({habits});
-  };
-  handleAdd = name => {
-    const habits = [...this.state.habits, {id: Date.now(), name, count: 0}];
-
-    this.setState({habits});
-  }
-  handleonReset =() => {
-    const habits = [
-      ...this.state.habits.map(habit => {
-        habit.count = 0;
-        return habit;
-      }),
-    ];
-
-    this.setState({habits});
-  }
-  render() {
-    return (
-      <>
-        <Nav totalCount={this.state.habits.filter(item => item.count > 0).length}/>
-        <div>
-          <Habits
-            onAdd={this.handleAdd}
-            onReset={this.handleonReset}
-            habits={this.state.habits}
-            onIncrement={this.handleIncrement}
-            onDecrement={this.handleDecrement}
-            onDelete={this.handlDelete} />
-        </div>
-      </>
-    );
-  }
+function App() {
+  return (
+    <Router>
+      <div>
+        <NavBar />
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route exact path="/register" component={RegisterPage} />
+          <Route exact path="/board/register" component={Register} />
+          <Route exact path="/main" component={MainPage} />
+        </Switch>
+      </div>
+    </Router>
+  );
 }
 
 export default App;
