@@ -1,47 +1,48 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { boardFindAll } from '../../_actions/boardAction';
+
+// components
 import FeedColumn from './FeedColumn';
-import './FeedFrame.css';
+
+// utils
 import splitArray from '../../assets/js/SplitArray';
+
+// css
+import './FeedFrame.css';
+
+// 임시
+import makeDummyData from './makeDummyData';
 
 function FeedFrame(props) {
   // State
-  const [feedItems, setFeedItems] = useState([]);
+  const [allItems, setAllItems] = useState(splitArray(makeDummyData(20)));
+  const dispatch = useDispatch();
 
-  // 정적 데이터
-  const API_KEY = '6ee87211-02b7-4b74-9ec1-4146ed17236b';
-  const LIMIT = 25;
-  const SIZE = 'med';
+  // 비동기 요청
+  const axiosBoard = () => {
+    dispatch(boardFindAll()).then((res) => {
+      console.log('------------------------');
+      console.log(res);
+      console.log(res.data);
+      console.log('------------------------');
+      setAllItems(splitArray(res.data));
+    });
+  };
 
-  // Effect
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      redirect: 'follow',
-    };
-
-    fetch(
-      `https://api.thecatapi.com/v1/images/search?limit=${LIMIT}&size=${SIZE}&api_key=${API_KEY}`,
-      requestOptions,
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const dataList = data.map((item) => {
-          const obj = { id: item.id, url: item.url };
-          return obj;
-        });
-
-        setFeedItems(dataList);
-      })
-      .catch((error) => console.log('fetch error', error));
-  }, []);
-
-  const feedColumnArray = splitArray(feedItems, 4);
+  // 임시 함수
+  function callBackBoardAPI() {
+    axiosBoard();
+  }
 
   return (
     <div className="feed-frame">
-      {feedColumnArray.map((item) => (
-        <FeedColumn item={item.items} key={item.list_id} />
+      {allItems.map((items) => (
+        <FeedColumn items={items.array} key={items.id} />
       ))}
+      <button type="button" onClick={callBackBoardAPI}>
+        임시 추가
+      </button>
     </div>
   );
 }

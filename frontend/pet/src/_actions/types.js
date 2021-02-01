@@ -6,3 +6,4 @@ export const PROFILE_USER = 'PROFILE_USER';
 export const MYSTORY_USER = 'MYSTORY_USER';
 export const FOLLOWERLIST = 'FOLLOWERLIST';
 export const FOLLOWEELIST = 'FOLLOWEELIST';
+export const BOARD_FIND_ALL = 'BOARDFINDALL';

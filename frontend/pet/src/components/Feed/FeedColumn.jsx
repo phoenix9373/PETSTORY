@@ -6,8 +6,8 @@ import './FeedColumn.css';
 function FeedColumn(props) {
   return (
     <div className="feed-column">
-      {props.item.map((item) => (
-        <FeedItem imageSrc={item.url} />
+      {props.items.map((item) => (
+        <FeedItem imageSrc={item.file.imgFullPath} key={item.boardId} />
       ))}
     </div>
   );
