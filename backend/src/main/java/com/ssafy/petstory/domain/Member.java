@@ -18,7 +18,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id; // pk
 
-//    @NotEmpty
+    //    @NotEmpty
     private String email;
 
     @Column(name = "member_name")
