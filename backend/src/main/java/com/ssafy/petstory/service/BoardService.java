@@ -2,6 +2,7 @@ package com.ssafy.petstory.service;
 
 import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.File;
+import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.FileDto;
 import com.ssafy.petstory.repository.BoardRepository;
 import com.ssafy.petstory.repository.FileRepository;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 @Service
@@ -24,12 +26,12 @@ public class BoardService {
     private FileService fileService;
 
     /**
-     * 게시물 생성
+     * 게시물 생성 V2 다중 이미지
      */
     @Transactional // 트랜잭션, 영속성 컨텍스트 -> 영속성 컨텍스트가 자동 변경
     // 값 세팅이 끝난 후 Transactional에 의해 commit이 되고 jpa는 flush(영속성 context중 변경 내역을 찾음)를 날림 -> 변경 내역이 있을 경우 변경 감지(dirty checking)
 //    public Long create(Long profileId, String title, String context, ItemParam... itemParams) {
-    public Long create(String title, String context, MultipartFile inputFile, FileDto fileDto) throws IOException {
+    public Long createV2(String title, String context, List<MultipartFile> inputFiles, FileDto fileDto) throws IOException {
 
         // Entity 조회
 //        Profile profile = profileRepository.findOne(profileId);
@@ -42,7 +44,50 @@ public class BoardService {
         // 이미지 정보 생성
         // 일단 단일 이미지 -> 여러개로 확장 필요(받아올 때 List로 받아서 반복문으로 넣어놓은 후
 
-        String imgPath = awsS3Service.upload(inputFile);
+//        String imgPath = awsS3Service.upload(inputFiles);
+        List<String> imgPathes = awsS3Service.upload(inputFiles);
+//        File file = new File();
+        for (String imgPath : imgPathes) {
+            fileDto.setFilePath(imgPath);
+            File file = File.createFile(fileDto);
+            file.setBoard(board);
+            file.setFilePath(fileDto.getFilePath());
+            file.setImgFullPath("https://" + awsS3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + file.getFilePath());
+            board.setFile(file);
+            fileRepository.save(file);
+        }
+
+        // 해쉬태그 생성 -> 생성시 해쉬태그 중복체크
+//        BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag();
+
+        // 좋아요 누른 유저 검증 및 상태유지
+
+        // 게시물 저장
+        boardRepository.save(board);
+
+        return board.getId();
+    }
+
+    /**
+     * 게시물 생성 V1 (단일 이미지)
+     */
+    @Transactional // 트랜잭션, 영속성 컨텍스트 -> 영속성 컨텍스트가 자동 변경
+    // 값 세팅이 끝난 후 Transactional에 의해 commit이 되고 jpa는 flush(영속성 context중 변경 내역을 찾음)를 날림 -> 변경 내역이 있을 경우 변경 감지(dirty checking)
+//    public Long create(Long profileId, String title, String context, ItemParam... itemParams) {
+    public Long createV1(String title, String context, MultipartFile inputFile, FileDto fileDto) throws IOException {
+
+        // Entity 조회
+//        Profile profile = profileRepository.findOne(profileId);
+
+        // 게시물 생성
+//        Board board = Board.createBoard(profile, title, context, boardHashtag);
+        Board board = Board.createBoard(title, context);
+
+
+        // 이미지 정보 생성
+        // 일단 단일 이미지 -> 여러개로 확장 필요(받아올 때 List로 받아서 반복문으로 넣어놓은 후
+
+        String imgPath = awsS3Service.uploadV1(inputFile);
         fileDto.setFilePath(imgPath);
         File file = new File();
         file.setBoard(board);
@@ -64,11 +109,15 @@ public class BoardService {
         return board.getId();
     }
 
-    /**
-     * 게시물 전체 조회
-     */
-    public List<Board> findAll() {
+    public List<BoardQueryDto> findAll() {
         return boardRepository.findAll();
+    }
+
+    /**
+     * 게시물 전체 조회 V3
+     */
+    public List<Board> findAllV3() {
+        return boardRepository.findAllV3();
     }
 
     /**
