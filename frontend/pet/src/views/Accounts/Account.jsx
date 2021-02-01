@@ -28,14 +28,22 @@ function Account({ authenticated, login, location }) {
             <div className="overlay-panel overlay-left">
               <h1>Welcome Back!</h1>
               <p>이미 계정을 만드셨다면 아래의 버튼을 눌러주세요</p>
-              <button className="ghost" id="signIn" onClick={toggleClass}>
+              <button
+                className="account__button ghost"
+                id="signIn"
+                onClick={toggleClass}
+              >
                 로그인
               </button>
             </div>
             <div className="overlay-panel overlay-right">
               <h1>Hello, Friend!</h1>
               <p>Petstory에 참여하고 싶다면 아래의 버튼을 눌러주세요</p>
-              <button className="ghost" id="signUp" onClick={toggleClass}>
+              <button
+                className="account__button ghost"
+                id="signUp"
+                onClick={toggleClass}
+              >
                 회원가입
               </button>
             </div>

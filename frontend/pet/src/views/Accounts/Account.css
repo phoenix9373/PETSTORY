@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
-* {
-  box-sizing: border-box;
-}
-
 .acoountbody {
   background: #f6f5f7;
   display: flex;
@@ -11,8 +7,8 @@
   align-items: center;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
-  height: 100vh;
-  margin: -20px 0 50px;
+  height: 80vh;
+  margin: 0px;
 }
 
 h1 {
@@ -43,7 +39,7 @@ a {
   margin: 15px 0;
 }
 
-button {
+button.account__button {
   border-radius: 20px;
   border: 1px solid #ff4b2b;
   background-color: #ff4b2b;
@@ -56,15 +52,15 @@ button {
   transition: transform 80ms ease-in;
 }
 
-button:active {
+button.account__button:active {
   transform: scale(0.95);
 }
 
-button:focus {
+button.account__button:focus {
   outline: none;
 }
 
-button.ghost {
+button.account__button.ghost {
   background-color: transparent;
   border-color: #ffffff;
 }
@@ -180,6 +176,7 @@ input {
 }
 
 .overlay-panel {
+  box-sizing: border-box;
   position: absolute;
   display: flex;
   align-items: center;
