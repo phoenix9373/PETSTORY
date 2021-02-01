@@ -18,6 +18,7 @@
     "eslint-disable-next-line": 0,
     "padding-line-between-statements": 0,
     "no-shadow": 0,
-    "array-element-newline": 0
+    "array-element-newline": 0,
+    "no-new": 0
   }
 }

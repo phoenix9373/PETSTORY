@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-
+    <link rel="icon" href="%PUBLIC_URL%/images/peticon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
@@ -13,13 +13,14 @@
     {% comment %} fontawesome  {% endcomment %}
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <script>
-      // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
       Kakao.init('bd060977289177fd1c71aad8efeb5318');
-
-      // SDK 초기화 여부를 판단합니다.
       console.log(Kakao.isInitialized());
     </script>
-    <title>React App</title>
+    <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=bd060977289177fd1c71aad8efeb5318&libraries=services,clusterer,drawing"
+    ></script>
+    <title>Petstory</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

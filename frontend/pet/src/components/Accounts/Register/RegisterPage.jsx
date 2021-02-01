@@ -49,42 +49,44 @@ function RegisterPage(props) {
 
   return (
     <div className="form-container sign-up-container">
-      <form onSubmit={onSubmitHandler}>
+      <form className="acccount__form" onSubmit={onSubmitHandler}>
         <h1>Create Account</h1>
         <div className="social-container">
-          <a href="#" className="social">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="#" className="social">
-            <i className="fab fa-google-plus-g"></i>
-          </a>
+          <a href="#" className="social"></a>
+          <a href="#" className="social"></a>
         </div>
         <span>or use your email for registration</span>
         <input
+          className="account__input"
           type="email"
           placeholder="Email"
           value={Email}
           onChange={onEmailHandler}
         />
         <input
+          className="account__input"
           type="text"
           placeholder="Name"
           value={Name}
           onChange={onNameHandler}
         />
         <input
+          className="account__input"
           type="password"
           placeholder="Password"
           value={Password}
           onChange={onPasswordHanlder}
         />
         <input
+          className="account__input"
           type="password"
           placeholder="Password Comfirmation"
           value={ConfirmPasword}
           onChange={onConfirmPasswordHandler}
         />
-        <button type="submit">회원가입</button>
+        <button class="account__button" type="submit">
+          회원가입
+        </button>
       </form>
     </div>
   );
