@@ -24,10 +24,6 @@ function LandingPage(props) {
   return (
     <div
       style={{
-<<<<<<< HEAD
-        background: '#f6f5f7',
-=======
->>>>>>> 8455288 (S04P12B204-119 [feat]: FE - 새글생생성 NAV에 추가)
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
