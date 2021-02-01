@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+.MapSearch__form {
+  display: flex;
+  flex-direction: row;
+  font-family: 'Montserrat', sans-serif;
+  margin: 10px;
+  padding: 0px;
+
+  .MapSearch__btn {
+    padding: 0px;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    border: none;
+    margin-left: 20px;
+    border-radius: 5px;
+    &:hover {
+      color: red;
+    }
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+}
+
+.nonactive {
+  text-align: center;
+  font-weight: bold;
+}
+
+.active {
+  display: none;
+}
