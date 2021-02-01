@@ -42,33 +42,33 @@ function LoginPage(props) {
 
   return (
     <div className="form-container sign-in-container">
-      <form onSubmit={onSubmitHandler}>
+      <form className="acccount__form" onSubmit={onSubmitHandler}>
         <h1>Sign in</h1>
         <div className="social-container">
-          <a href="#" className="social">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a href="#" className="social">
-            <i className="fab fa-google-plus-g"></i>
-          </a>
+          <a href="#" className="social"></a>
+          <a href="#" className="social"></a>
         </div>
         <span>or use your account</span>
         {/* <GoogleLogins />
         <KaKaoLogins /> */}
         <input
+          className="account__input"
           type="email"
           value={Email}
           placeholder="Email"
           onChange={onEmailHandler}
         />
         <input
+          className="account__input"
           type="password"
           value={Password}
           placeholder="Password"
           onChange={onPasswordHanlder}
         />
         <a href="#">Forgot your password?</a>
-        <button type="submit">로그인</button>
+        <button className="account__button" type="submit">
+          로그인
+        </button>
       </form>
     </div>
   );

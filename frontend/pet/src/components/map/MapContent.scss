@@ -1,0 +1,9 @@
+.marker__wrap {
+  display: inline-block;
+  .marker__info {
+    background-color: gray;
+    .marker__title {
+      font-size: 24px;
+    }
+  }
+}
