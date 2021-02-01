@@ -1,9 +1,7 @@
 package com.ssafy.petstory.domain;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.ssafy.petstory.controller.ProfileForm;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,18 +12,30 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // protected 생성자 생성
+//항상 null이 아니길 기대하지만 null이 들어가면 엔티티 안전성이 떨어짐
 public class Profile {
+
+//    @Builder  //엔티티 접근 안정성을 위해 @Builder로 접근
+//    public Profile(Long profile_id, String nickname, String rank, int follwer_num, int follwee_num, ProfileState profile_state,int member_id, int relation_id){
+//        this.id= profile_id;
+//        this.nickname=nickname;
+//        this.rank=rank;
+//        this.follwer_num=follwer_num;
+//        this.follwee_num=follwee_num;
+//        this.state= profile_state;
+//        this.member= Member(member_id);
+//    }
 
     @Id
     @GeneratedValue
-    @Column(name = "profile_name")
+    @Column(name = "profile_id")
     private Long id; // pk
 
     private String nickname;
     private String rank;
 
     @Column(name = "profile_state")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)  //db에 저장되는 값 숫자로 , 받는건 String 으로
     private ProfileState state;
 
     // Member와 Profile은 일대다 관계
@@ -73,6 +83,25 @@ public class Profile {
         relation.setProfile(this);
     }
 
+    /**
+     * 프로필 생성 메소드
+     */
 
+    public static Profile createProfile(Member member, ProfileForm form,Relation relation){
+        Profile profile = new Profile();
+
+        //엔티티로 바꾼다음 서비스로 리턴 -> Repository에서 최종 프로필 생성
+        profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
+        profile.setId(form.getProfile_id());
+        profile.setNickname(form.getNickname());
+        profile.setRank(form.getRank());
+        profile.setFollwee_num(form.getFollwee_num());
+        profile.setFollwer_num(form.getFollwer_num());
+        profile.setState(form.getProfile_state());
+        profile.setRelation(relation);
+
+
+        return profile;
+    }
 
 }
