@@ -1,10 +1,11 @@
 package com.ssafy.petstory.service;
 
+import com.ssafy.petstory.controller.MemberForm;
 import com.ssafy.petstory.domain.Member;
+import com.ssafy.petstory.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.ssafy.petstory.repository.MemberRepository;
 
 import java.util.List;
 
@@ -35,5 +36,43 @@ public class MemberService {
         //validateDuplicateMember(member); // 중복 회원 검증
         memberRepository.save(member);
         return member.getId();
+    }
+
+    /**
+     * 회원 정보 확인
+     */
+
+    @Transactional
+    public Member detail(Long member_id){  //memberRepo에서 처리하고
+
+        Member memberdtail = memberRepository.findOne(member_id);
+        return memberdtail;
+    }
+
+    /**
+     * 회원 수정
+     */
+    @Transactional
+    public void update(Long id, MemberForm form) {
+        Member member = memberRepository.findOne(id);  //id로 해당하는거 찾아와서 수정하자
+        member.setName(form.getMember_name());
+        member.setPassword(form.getPassword());
+        member.setEmail(form.getEmail());
+    }
+    /**
+     * 회원 삭제
+     */
+    @Transactional
+    public void delete(Long id) {
+        Member member = memberRepository.findOne(id);  //id로 해당하는거 찾아와서 삭제하자
+        memberRepository.delete(member);  //id로 해당하는거 찾아와서 수정하자
+    }
+    /**
+     * 로그인
+     */
+    @Transactional
+    public Member login(MemberForm dto){
+        Member member = memberRepository.loginFind(dto.getEmail(),dto.getPassword());
+        return member;
     }
 }
