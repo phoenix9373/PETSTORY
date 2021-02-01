@@ -27,8 +27,12 @@ public class File {
     private String imgFullPath;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "file", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
     private Board board;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "file", fetch = FetchType.LAZY)
+//    private Board board;
 
 
 //    @Builder
@@ -40,17 +44,10 @@ public class File {
     /**
      * File 생성 메서드
      */
-    public static File createFile(Board board, FileDto fileDto) {
+    public static File createFile(FileDto fileDto) {
         File file = new File();
-        file.setBoard(board);
         file.setId(file.getId());
-        file.setFilePath(file.getFilePath());
-
-        System.out.println(fileDto.getFilePath());
-        System.out.println(file.getBoard());
-        System.out.println(file.getId());
-        System.out.println(file.getFilePath());
-
+//        file.setFilePath(file.getFilePath());
 
         return file;
     }

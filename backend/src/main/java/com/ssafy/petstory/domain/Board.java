@@ -51,9 +51,11 @@ public class Board {
     private List<Comment> comments = new ArrayList<>();
 
     // Board와 file는 일대일 관계 -> 여러장 사진 일대다로 바꿔야됨
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "file_id")
-    private File file;
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<File> files = new ArrayList<>();
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "file_id")
+//    private File file;
 
     /**
      * Profile과 Board 연관 관계 (편의) 메서드
@@ -67,9 +69,13 @@ public class Board {
      * Board와 File 연관 관계 (편의) 메서드
      */
     public void setFile(File file) {
-        this.file = file;
+        files.add(file);
         file.setBoard(this);
     }
+//    public void setFile(File file) {
+//        this.file = file;
+//        file.setBoard(this);
+//    }
 
     /**
      * Board와 BoardHashtag 연관 관계 (편의) 메서드
