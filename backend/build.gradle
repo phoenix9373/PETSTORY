@@ -26,6 +26,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
 	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
+	runtimeOnly 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'mysql:mysql-connector-java:8.0.21'
