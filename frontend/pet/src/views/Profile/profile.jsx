@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import UserProfile from '../../components/ProfileModal/UserProfile';
 import UserFeedsTabs from '../../components/ProfileModal/UserFeedsTabs';
 import Modal from 'react-modal';
-import './Profile.css';
+import './profile.css';
 
 Modal.setAppElement('#root');
 // 더미 데이터

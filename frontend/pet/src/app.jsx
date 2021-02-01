@@ -7,11 +7,11 @@ import LoginPage from './views/LoginPage/LoginPage';
 import RegisterPage from './views/RegisterPage/RegisterPage';
 import MainPage from './views/MainPage/MainPage';
 
-import Profile from './views/Profile/Profile';
+import Profile from './views/Profile/profile';
 
 // Component Load
 import NavBar from './views/NavBar/NavBar';
-import Register from './views/Board/register';
+import Create from './views/Board/Create';
 
 // import Auth from './hoc/auth';
 
@@ -24,7 +24,7 @@ function App() {
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/board/register" component={Register} />
+          <Route exact path="/board/create" component={Create} />
           <Route exact path="/main" component={MainPage} />
           <Route exact path="/profile" component={Profile} />
         </Switch>
