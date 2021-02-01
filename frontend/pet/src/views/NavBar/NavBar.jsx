@@ -19,7 +19,7 @@ class NavBar extends Component {
             <NavLink to="/login/">로그인</NavLink>
           </li>
           <li>
-            <NavLink to="/board/register">새글작성</NavLink>
+            <NavLink to="/board/create">새글작성</NavLink>
           </li>
           <li>
             <NavLink to="/board/register">프로필</NavLink>

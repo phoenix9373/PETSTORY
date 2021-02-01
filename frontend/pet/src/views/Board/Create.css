@@ -1,0 +1,39 @@
+
+.image-item {
+    display:flex;
+    justify-content: space-between;
+    width:50px;
+    height:50px;
+    margin : 20px 40px;
+    /* margin-left:20px; */
+
+}
+.uploadimg{ 
+    margin-top: 100px;
+}
+.color-red {
+    background-color:red;
+    float: right;
+}
+.color-yellow {
+    background-color:yellow;
+}
+.image-item__btn-wrapper{
+    display:column;
+    justify-content:flex-start;
+    z-index: 30px;
+    ;
+}
+
+.imageupload {
+    width: 50%;
+    height: 100vh;
+}
+
+.imageupload.active {
+    width: 100vw;
+    height: 100vh;
+    background-color:gray;
+    opacity: 0.9;
+
+}
