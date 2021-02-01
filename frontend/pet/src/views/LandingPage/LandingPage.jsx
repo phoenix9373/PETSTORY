@@ -24,6 +24,7 @@ function LandingPage(props) {
   return (
     <div
       style={{
+        background: '#f6f5f7',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
