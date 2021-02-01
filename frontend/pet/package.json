@@ -4,16 +4,13 @@
   "private": true,
   "proxy": "http://127.0.0.1:8080",
   "secure": false,
-
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-brands-svg-icons": "^5.15.2",
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
-
     "@material-ui/core": "^4.11.3",
-
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.6.2",
@@ -24,6 +21,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-google-login": "^5.2.2",
+    "react-images-uploading": "^3.1.2",
     "react-kakao-login": "^2.0.3",
     "react-modal": "^3.12.1",
     "react-redux": "^7.2.2",
