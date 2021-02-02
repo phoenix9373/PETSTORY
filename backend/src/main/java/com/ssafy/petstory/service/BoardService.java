@@ -109,21 +109,17 @@ public class BoardService {
         return board.getId();
     }
 
+    /**
+     * 게시물 전체 조회
+     */
     public List<BoardQueryDto> findAll() {
         return boardRepository.findAll();
     }
 
     /**
-     * 게시물 전체 조회 V3
-     */
-    public List<Board> findAllV3() {
-        return boardRepository.findAllV3();
-    }
-
-    /**
      * 게시물 상세 조회
      */
-    public Board findOne(Long boardId) {
+    public BoardQueryDto findOne(Long boardId) {
         return boardRepository.findOne(boardId);
     }
 
