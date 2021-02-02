@@ -121,4 +121,20 @@ public class Board {
 //        return order;
 //    }
 
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", context='" + context + '\'' +
+                ", boardDate=" + boardDate +
+                ", likeNum=" + likeNum +
+                ", reportNum=" + reportNum +
+                ", boardHashtags=" + boardHashtags +
+                ", profile=" + profile +
+                ", comments=" + comments +
+                ", files=" + files +
+                '}';
+    }
 }
