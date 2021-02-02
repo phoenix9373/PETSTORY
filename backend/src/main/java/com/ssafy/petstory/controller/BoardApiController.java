@@ -8,10 +8,7 @@ import com.ssafy.petstory.service.FileService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,23 +30,36 @@ public class BoardApiController {
     }
 
     /**
+     * 게시물 전체 조회 - 페이징
+     *
+     * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
+     */
+    @GetMapping("/api/board/findAllPaging")
+    public Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
+                                               @RequestParam(value = "limit") int limit){
+        System.out.println("=======================================================");
+        System.out.println(offset + "      " + limit);
+        System.out.println("=======================================================");
+        return new Result(boardService.findAllPaging(offset, limit));
+    }
+
+    /**
      * 게시물 전체 조회
      * ++ 무한스크롤(페이징)처리 추가해야 함
      */
     @GetMapping("/api/board/findAll")
-//    public Result<BoardQueryDto> findAll(){
-    public List<BoardQueryDto> findAll(){
-        return boardService.findAll();
+    public Result<BoardQueryDto> findAll(){
+        return new Result(boardService.findAll());
     }
 
     /**
      * 게시물 상세 조회
+     *
+     * http://localhost:8080/api/board/findOne/1
      */
     @GetMapping("/api/board/findOne/{boardId}")
     public Result<BoardQueryDto> findOne(@PathVariable("boardId") Long boardId){
-        BoardQueryDto result = boardService.findOne(boardId);
-
-        return new Result(result);
+        return new Result(boardService.findOne(boardId));
     }
 
     /**
