@@ -27,6 +27,40 @@ public class BoardRepository {
     }
 
     /**
+     * 게시물 전체 조회 - 페이징
+     */
+    public List<BoardQueryDto> findAllPaging(int offset, int limit) {
+        // 루트 조회(XToOne 코드 모두 한 번에 조회)
+        List<BoardQueryDto> result = findBoardsPaging(offset, limit);
+
+        // file 컬렉션을 Map 한 방에 조회
+        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
+
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.forEach(b ->
+                b.setFiles(fileMap.get(b.getBoardId())));
+        return result;
+    }
+    /**
+     * 1:N 관계(Collection)을 제외한 나머지를 한 번에 조회
+     * -> XToOne 모두 조회
+     */
+    private List<BoardQueryDto> findBoardsPaging(int offset, int limit) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.BoardQueryDto(b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+                        " from Board b", BoardQueryDto.class)
+//                        " join b.profile p", BoardQueryDto.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    /**
      * 게시물 전체 조회
      */
     public List<BoardQueryDto> findAll() {
