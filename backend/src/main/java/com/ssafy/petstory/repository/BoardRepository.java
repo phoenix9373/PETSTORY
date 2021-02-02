@@ -26,9 +26,8 @@ public class BoardRepository {
         em.persist(board);
     }
 
-    
     /**
-     * 게시물 전체 조회 V5
+     * 게시물 전체 조회
      */
     public List<BoardQueryDto> findAll() {
         // 루트 조회(XToOne 코드 모두 한 번에 조회)
@@ -43,22 +42,21 @@ public class BoardRepository {
         return result;
     }
 
+    /**
+     * 게시물 전체조회를 위한 baord Id들을 찾는 메서드
+     */
     private List<Long> toBoardIds(List<BoardQueryDto> result){
         List<Long> lists = result.stream()
                 .map(b -> b.getBoardId())
                 .collect(Collectors.toList());
-        System.out.println("======================================================================");
-        System.out.println(lists);
-        System.out.println(lists.toString());
-        System.out.println("======================================================================");
         return lists;
     }
 
+    /**
+     * toBoardIds에서 찾은 boardId들로 file 컬렉션을 Map으로 한 방에 조회
+     */
     private Map<Long, List<FileQueryDto>> findFileMap(List<Long> boardIds) {
         List<FileQueryDto> fileDtos = em.createQuery(
-//            "select new com.ssafy.petstory.dto.FileQueryDto(f.id, f.filePath, f.imgFullPath)" +
-//                    " from File f" +
-//                    " where f.board.id in :boardIds", FileQueryDto.class)
         "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
                     " from File f" +
                     " where f.board.id in :boardIds", FileQueryDto.class)
@@ -81,22 +79,31 @@ public class BoardRepository {
     }
 
     /**
-     * 게시물 전체 조회
-     * V3
-     * xToOne 전부 fetch join -> row수가 One을 기준으로 늘어나지 않음
+     * 게시물 상세(단건) 조회
      */
-    public List<Board> findAllV3() {
-        return em.createQuery(
-                "select b from Board b" +
-                        " join fetch b.file f", Board.class)
-                .getResultList();
+    public BoardQueryDto findOne(Long boardId) {
+        Board board = em.find(Board.class, boardId);
+        BoardQueryDto result = new BoardQueryDto(board);
+
+        // file 컬렉션을 Map 한 방에 조회
+        List<FileQueryDto> fileMap = findFileMapOne(boardId);
+
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.setFiles(fileMap);
+
+        return result;
     }
 
     /**
-     * 게시물 상세 조회
+     * 게시물 상세(단건) 조회시 넘어온 boardId로 file 컬렉션을 Map으로 한 방에 조회
      */
-    public Board findOne(Long boardId) {
-        return em.find(Board.class, boardId);
-
+    private List<FileQueryDto> findFileMapOne(Long boardId) {
+        List<FileQueryDto> fileDtos = em.createQuery(
+                "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
+                        " from File f" +
+                        " where f.board.id in :boardId", FileQueryDto.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
+        return fileDtos;
     }
 }
