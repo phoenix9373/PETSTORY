@@ -1,0 +1,82 @@
+{
+  "data": [
+    {
+      "boardId": 1,
+      "title": "title2",
+      "context": "contextxx",
+      "boardDate": "2021-01-29T04:19:21.605272",
+      "file": {
+        "id": 1,
+        "filePath": "testV3ImgFull.jpg",
+        "imgFullPath": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+      },
+      "profileId": "phoenix9373",
+      "profileImg": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+    },
+    {
+      "boardId": 2,
+      "title": "title2",
+      "context": "contextxx",
+      "boardDate": "2021-01-29T04:45:50.507302",
+      "file": {
+        "id": 2,
+        "filePath": "다운로드.png",
+        "imgFullPath": "https://images.unsplash.com/photo-1587723958656-ee042cc565a1?ixid=MXwxMjA3fDB8MHxzZWFyY2h8OHx8Y2F0JTIwcHJvZmlsZXxlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80"
+      },
+      "profileId": "phoenix9373",
+      "profileImg": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+    },
+    {
+      "boardId": 3,
+      "title": "title2",
+      "context": "contextxx",
+      "boardDate": "2021-01-29T04:45:50.507302",
+      "file": {
+        "id": 3,
+        "filePath": "다운로드.png",
+        "imgFullPath": "https://d1u3n4p0t0i6a9.cloudfront.net/다운로드.png"
+      },
+      "profileId": "phoenix9373",
+      "profileImg": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+    },
+    {
+      "boardId": 4,
+      "title": "title2",
+      "context": "contextxx",
+      "boardDate": "2021-01-29T04:45:50.507302",
+      "file": {
+        "id": 4,
+        "filePath": "다운로드.png",
+        "imgFullPath": "https://d1u3n4p0t0i6a9.cloudfront.net/다운로드.png"
+      },
+      "profileId": "phoenix9373",
+      "profileImg": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+    },
+    {
+      "boardId": 5,
+      "title": "title2",
+      "context": "contextxx",
+      "boardDate": "2021-01-29T04:45:50.507302",
+      "file": {
+        "id": 5,
+        "filePath": "다운로드.png",
+        "imgFullPath": "https://d1u3n4p0t0i6a9.cloudfront.net/다운로드.png"
+      },
+      "profileId": "phoenix9373",
+      "profileImg": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+    },
+    {
+      "boardId": 6,
+      "title": "title2",
+      "context": "contextxx",
+      "boardDate": "2021-01-29T04:45:50.507302",
+      "file": {
+        "id": 6,
+        "filePath": "다운로드.png",
+        "imgFullPath": "https://d1u3n4p0t0i6a9.cloudfront.net/다운로드.png"
+      },
+      "profileId": "phoenix9373",
+      "profileImg": "https://d1u3n4p0t0i6a9.cloudfront.net/testV3ImgFull.jpg"
+    }
+  ]
+}
