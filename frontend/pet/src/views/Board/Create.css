@@ -1,4 +1,24 @@
+.contaniner-background {
+    margin-top:100px;
+    background-color: gray;
+}
 
+.input-center {
+    float:right;
+    margin-top: 100px;
+    /* justify-content: flex; */
+    /* align-items: center; */
+
+    /* margin-top:30px */    
+}
+.button-positon {
+    display:flex;
+    justify-content:center;
+}
+
+.button-mg {
+    margin: 30px;
+}
 .image-item {
     display:flex;
     justify-content: space-between;
@@ -26,7 +46,7 @@
 }
 
 .imageupload {
-    width: 50%;
+    width: 100vw;
     height: 100vh;
 }
 
@@ -36,4 +56,13 @@
     background-color:gray;
     opacity: 0.9;
 
+}
+.text-div {
+    display: flex;
+    width: 50%;
+    margin-top: 100px;
+    align-items: center;
+    box-sizing: border-box;
+    border: 1px solid black;
+    float: right;
 }
