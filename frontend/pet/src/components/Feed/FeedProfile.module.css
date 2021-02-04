@@ -1,11 +1,11 @@
-.feed-profile {
+.profile {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   font-size: small;
 }
 
-.feed-profile-img {
+.image {
   width: 30px;
   height: 30px;
   border-radius: 50%;
