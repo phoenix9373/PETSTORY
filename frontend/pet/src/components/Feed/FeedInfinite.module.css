@@ -1,31 +1,22 @@
-.App {
-  font-family: sans-serif;
-  text-align: center;
-}
-
-body {
-  margin: 0;
-  left: 0;
-}
 .item {
   width: 250px;
   opacity: 1;
 }
-.item .thumbnail {
+.thumbnail {
   max-height: 300px;
   overflow: hidden;
   border-radius: 8px;
 }
-.item .thumbnail img {
+img {
   width: 100%;
   border-radius: 8px;
 }
-.item .info {
+.info {
   margin-top: 10px;
   font-weight: bold;
   color: #777;
 }
-.item.animate {
+.animate {
   transition: opacity ease 1s;
   transition-delay: 0.2s;
   opacity: 1;

@@ -1,24 +1,39 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import FeedButton from './FeedButton';
-import FeedProfile from './FeedProfile';
-
-// axios
-import axios from 'axios';
 
 // css 파일
-import './FeedItem.css';
+import styles from './FeedItem.module.css';
 
 // fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareAlt, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 function FeedItem(props) {
+  const [isHover, setIsHover] = useState(false);
+
+  function onIsHover() {
+    setIsHover(true);
+  }
+
+  function outIsHover() {
+    setIsHover(false);
+  }
   return (
-    <div className="feed-item">
-      <img className="feed-item-img" src={props.imageSrc} alt="cat" />
-      <FeedButton />
-      <FontAwesomeIcon className="feed-icon icon-left" icon={faShareAlt} />
-      <FontAwesomeIcon className="feed-icon icon-right" icon={faEllipsisH} />
+    <div
+      className={styles.item}
+      onMouseOver={onIsHover}
+      onMouseOut={outIsHover}
+    >
+      <img className={styles.image} src={props.imageSrc} alt="cat" />
+      <FeedButton isHover={isHover} />
+      <FontAwesomeIcon
+        className={`${styles.icon} ${styles.left}`}
+        icon={faShareAlt}
+      />
+      <FontAwesomeIcon
+        className={`${styles.icon} ${styles.right}`}
+        icon={faEllipsisH}
+      />
     </div>
   );
 }

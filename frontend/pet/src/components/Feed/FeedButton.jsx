@@ -1,5 +1,5 @@
 import React from 'react';
-import './FeedButton.css';
+import styles from './FeedButton.module.css';
 
 // fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,13 +7,17 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
 function FeedButton(props) {
   return (
-    <div className="feed-btn-frame">
-      <button className="feed-btn btn-left" type="button">
-        <span className="btn-text">내 피드</span>
+    <div
+      className={
+        props.isHover ? `${styles.frame} ${styles.active}` : `${styles.frame}`
+      }
+    >
+      <button className={`${styles.btn} ${styles.left}`} type="button">
+        <span className={styles.text}>내 피드</span>
         <FontAwesomeIcon icon={faAngleDown} />
       </button>
-      <button className="feed-btn btn-right" type="button">
-        저장
+      <button className={`${styles.btn} ${styles.right}`} type="button">
+        <span className={styles.text}>저장</span>
       </button>
     </div>
   );

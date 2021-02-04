@@ -1,13 +1,12 @@
 import React from 'react';
 import FeedItem from './FeedItem';
-import FeedProfile from './FeedProfile';
-import './FeedColumn.css';
+import styles from './FeedColumn.module.css';
 
 function FeedColumn(props) {
   return (
-    <div className="feed-column">
-      {props.items.map((item) => (
-        <FeedItem imageSrc={item.file.imgFullPath} key={item.boardId} />
+    <div className={styles.column}>
+      {props.item.map((item) => (
+        <FeedItem imageSrc={item.url} />
       ))}
     </div>
   );
