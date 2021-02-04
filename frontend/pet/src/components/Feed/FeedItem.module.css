@@ -1,4 +1,4 @@
-.feed-item {
+.item {
   position: relative;
   margin: 10px 0;
   width: 200px;
@@ -7,15 +7,17 @@
 
 /* 이미지 */
 
-.feed-item-img {
+.image {
+  display: block;
   width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 10px;
   border: 0;
   box-shadow: 0px 0px 3px gray;
 }
 
-.feed-item:after {
+.item:after {
   content: '';
   width: 100%;
   height: 100%;
@@ -31,18 +33,20 @@
   opacity: 0;
 }
 
-.feed-item:hover:after {
+.item:hover:after {
   opacity: 1;
   cursor: zoom-in;
 }
 
 /* 아이콘 */
 
-.feed-icon {
+.icon {
   display: none;
 }
 
-.feed-item:hover .feed-icon {
+.item:hover .icon {
+  width: 30px;
+  height: 30px;
   cursor: pointer;
   display: inline-block;
   z-index: 1;
@@ -51,14 +55,14 @@
   bottom: 15px;
   right: 10px;
 
-  font-size: 20px;
-  padding: 12px;
+  font-size: 18px;
+  padding: 8px;
   border-radius: 50%;
 
   background-color: white;
   color: black;
 }
 
-.feed-item:hover .icon-left {
-  right: 65px;
+.item:hover .left {
+  right: 55px;
 }
