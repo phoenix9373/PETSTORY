@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import './MapSearch.scss';
+// import './MapSearch.scss';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function MapSearch(props) {
