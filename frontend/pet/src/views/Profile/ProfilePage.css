@@ -1,0 +1,49 @@
+.profileEntire {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.UserProfileBox {
+  width: 80vw;
+}
+
+.profileFeeds {
+  width: 80vw;
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: row;
+  /* justify-content:  */
+  /* width: 480px; */
+  /* margin: 0 10%; */
+}
+
+.profileImg {
+  margin: 30px 30px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.profileFollowerFollowing {
+  display: flex;
+  flex-direction: row;
+}
+
+/* .profileInfo {
+  margin-right: 10%;
+  margin-left: 10%;
+}*/
+
+.follower {
+  margin-right: 10%;
+  cursor: pointer;
+}
+
+.following {
+  margin-right: 10%;
+  margin-left: 10%;
+  cursor: pointer;
+}
