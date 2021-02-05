@@ -114,11 +114,11 @@ export default function Map(props) {
         // LatLngBounds 객체에 좌표를 추가합니다
         const bounds = new kakao.maps.LatLngBounds();
         for (let i = 0; i < data.length; i++) {
-          console.log(data[i]);
-          const li = document.createElement('li');
-          li.innerHTML = `${data[i].place_name}`;
-          const ul = document.getElementById('resulthospital');
-          ul.appendChild(li);
+          // console.log(data[i]);
+          // const li = document.createElement('li');
+          // li.innerHTML = `${data[i].place_name}`;
+          // const ul = document.getElementById('resulthospital');
+          // ul.appendChild(li);
           displayMarker(data[i]);
           bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
         }

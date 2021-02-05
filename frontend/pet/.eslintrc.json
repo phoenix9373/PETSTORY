@@ -19,6 +19,8 @@
     "padding-line-between-statements": 0,
     "no-shadow": 0,
     "array-element-newline": 0,
-    "no-new": 0
+    "no-new": 0,
+    "no-confusing-arrow": ["error", { "allowParens": false }],
+    "operator-linebreak": 0
   }
 }
