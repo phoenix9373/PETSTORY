@@ -4,11 +4,13 @@ import './Account.css';
 import RegisterPage from '../../components/Accounts/Register/RegisterPage';
 import LoginPage from '../../components/Accounts/Login/LoginPage';
 import toast, { Toaster } from 'react-hot-toast';
+import back from '../../assets/back.mp4';
 
 function Account({ history }) {
   if (localStorage.getItem('user')) {
     history.goBack();
   }
+
   const [isActive, setActive] = useState(false);
   const toggleClass = () => {
     const stateActive = isActive;
@@ -18,6 +20,12 @@ function Account({ history }) {
     } else {
       toast.success('회원가입 페이지 입니다.');
     }
+  };
+
+  const [goLogin, setgoLogin] = useState(false);
+  const goLoginHandler = () => {
+    const stategoLogin = goLogin;
+    setgoLogin(!stategoLogin);
   };
 
   return (
@@ -36,8 +44,18 @@ function Account({ history }) {
         }}
       />
       <div className="acoountbody">
+        <video id="backVideo" src={back} type="video/mp4" autoPlay loop muted />
+        {goLogin ? (
+          ''
+        ) : (
+          <button onClick={goLoginHandler} className="account__gologinbtn">
+            우리 사이트에 들어와볼래?
+          </button>
+        )}
         <div
-          className={isActive ? 'container right-panel-active' : 'container'}
+          className={`${
+            isActive ? 'container right-panel-active' : 'container'
+          } ${goLogin ? 'containeractive' : ''}`}
           id="container"
         >
           <RegisterPage toggleClass={toggleClass} />
@@ -52,7 +70,7 @@ function Account({ history }) {
                   id="signIn"
                   onClick={toggleClass}
                 >
-                  로그인
+                  SIGN IN
                 </button>
               </div>
               <div className="overlay-panel overlay-right">
@@ -63,7 +81,7 @@ function Account({ history }) {
                   id="signUp"
                   onClick={toggleClass}
                 >
-                  회원가입
+                  SIGN UP
                 </button>
               </div>
             </div>

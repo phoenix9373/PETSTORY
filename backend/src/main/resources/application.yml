@@ -13,7 +13,7 @@ spring:
     password: ssafy204
 
   jpa:
-    generate-ddl: true
+#    generate-ddl: true
     database: mysql
       #      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database-platform: org.hibernate.dialect.MySQL8Dialect
