@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 // Page Load
 import LandingPage from './views/LandingPage/LandingPage';
 import MainPage from './views/MainPage/MainPage';
-import Profile from './views/Profile/Profile';
+import Profile from './views/Profile/profile';
 import Account from './views/Accounts/Account';
 import Map from './views/Map/Map';
 import NotFound from './views/PageNotFound/PageNotFound';

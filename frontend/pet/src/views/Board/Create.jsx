@@ -1,95 +1,64 @@
-import React from "react";
-import ImageUploading from "react-images-uploading";
-import upload from "../../assets/upload.PNG";
-// import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import "./Create.css";
+import React, { Component } from 'react';
 import axios from 'axios';
 
-export default function Create() {
-  const titleRef = React.createRef();
-  const contextRef = React.createRef();
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 69;
-  const files = new FormData();
-  const onlistChange = (imageList, addUpdateIndex) => {
-    // data for submit
-    for (const image of imageList) {
-      files.append('files', image.file);
+export default class MultipleImageUploadComponent extends Component {
+    fileObj = [];
+    fileArray = [];
+    images = [];
+    titleRef = React.createRef();
+    contextRef = React.createRef();
+    constructor(props) {
+        super(props);
+        this.state = {
+            file: [null],
+        };
+        this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
+        this.uploadFiles = this.uploadFiles.bind(this);
     }
-    // axios 통신하는 위치
-  };
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const request = {
-      title: titleRef.current.value,
-      context: contextRef.current.value,
-    };
-    files.append('title', request.title);
-    files.append('context', request.context);
-    axios.post("/api/board/createV2", files, {})
-      .then(response => console.log(response))
-      .then(result => console.log(result))
-      .catch(error => console.error('error', error));
-    titleRef.current.value = '';
-    contextRef.current.value = '';
-    setImages('');
-  };
+    uploadMultipleFiles(e) {
+        this.fileObj.push(e.target.files);
+        for (let i = 0; i < this.fileObj[0].length; i++) {
+            this.fileArray.push(URL.createObjectURL(this.fileObj[0][i]));
+        }
+        console.log(this.fileArray);
+        this.setState({ file: this.fileArray});
+    }
 
-  return (
-    <form onSubmit={onSubmit}>
-      <ImageUploading
-        multiple
-        value={images}
-        onChange={onlistChange}
-        maxNumber={maxNumber}
-        dataURLKey="data_url"
-      >
-        {({
-          imageList,
-          onImageUpload,
-          onImageRemoveAll,
-          onImageUpdate,
-          onImageRemove,
-          isDragging,
-          dragProps,
-        }) => (
-          // write your building UI
-          <div
-          {...dragProps}>
-            <div
-              className="uploadimg"
-              onClick={onImageUpload}
-            >
-              <img src={upload} alt="왜"/>
+    uploadFiles(e) {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', this.titleRef.current.value);
+        formData.append('context', this.contextRef.current.value);
+        console.log(this.images);
+        for (const image of this.images[0]) {
+        formData.append('files', image);
+        }
+        // console.log(this.state.file);
+        axios.post("/api/board/create", formData, {})
+        .then(response => console.log(response))
+        .then(result => console.log(result))
+        .catch(error => console.error('error', error));
+        this.titleRef.current.value = '';
+        this.contextRef.current.value = '';
+    }
 
-            </div>
-            <div onClick={onImageRemoveAll}>RESET</div>
-            &nbsp;
-            <Grid container spacing={1}>
-            {imageList.map((img, index) => (
-              <Grid key={index} className="image-item">
-               <img src={img.data_url} alt="어디써" width="100" />
-                <div className="image-item__btn-wrapper">
-                  <button onClick={() => onImageUpdate(index)}><i className="fas fa-pen color-yellow"></i></button>
-                  <button onClick={() => onImageRemove(index)}><i className="fas fa-times-circle color-red"></i></button>
+    render() {
+        return (
+            <form onSubmit={this.uploadFiles}>
+                <div className="form-group multi-preview">
+                    {(this.fileArray || []).map(url => (
+                        <img src={url} key={url} width="100px" height="100px" alt="..." />
+                    ))}
                 </div>
-              </Grid>
-            ))}
-            </Grid>
 
-          </div>
-
-        )}
-
-      </ImageUploading>
-      <div className="text-div">
-          <input ref={titleRef} type="text" placeholder="제목을 입력하세요"/>
-          <input ref={contextRef} type="text" placeholder="내용을 입력하세요"/>
-
-      </div>
-      <button>생성하기</button>
-    </form>
-  );
+                <div className="form-group">
+                    <input type="file" className="form-control" onChange={this.uploadMultipleFiles} multiple />
+                        <input ref={this.titleRef} placeholder="제목을 입력하시오" type="text"/>
+                        <input ref={this.contextRef} placeholder="내용을 입력하시오" type="text"/>
+                </div>
+                <button>Upload</button>
+            </form >
+        );
+    }
 }
