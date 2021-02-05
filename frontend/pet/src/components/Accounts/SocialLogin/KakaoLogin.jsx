@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 import KaKaoLogins from 'react-kakao-login';
 import axios from 'axios';
 
-const API_URL_LOGIN = 'http://localhost:9000';
-
 class KakaoLogin extends PureComponent {
   constructor(props) {
     super(props);
@@ -16,7 +14,7 @@ class KakaoLogin extends PureComponent {
     });
     console.log(response);
 
-    axios(`${API_URL_LOGIN}/user/signin/kakao`, {
+    axios(`/user/signin/kakao`, {
       // 백엔드에서 원하는 형태의 endpoint로 입력해서 fetch한다.
       method: 'GET',
       headers: {
@@ -24,7 +22,7 @@ class KakaoLogin extends PureComponent {
         // 받아오는 response객체의 access_token을 통해 유저 정보를 authorize한다.
       },
     })
-      // .then((res) => res.json())
+      .then((res) => res.json())
       .then(
         (res) => localStorage.setItem('token', res.token),
         // 백엔드에서 요구하는 key 값(token)으로 저장해서 localStorage에 저장한다.

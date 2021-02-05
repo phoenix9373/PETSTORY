@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <Router history={history}>
-        <NavBar isLogin={isLogin} />
+        {isLogin && <NavBar isLogin={isLogin} />}
         <Switch>
           <Route path="/login" component={Account} />
           <PrivateRoute exact path="/" component={MainPage} />
