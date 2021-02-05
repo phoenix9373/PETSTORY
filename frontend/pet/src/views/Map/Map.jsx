@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import MapContent from '../../components/map/MapContent';
-import MapSearch from '../../components/map/MapSearch';
+import { withRouter } from 'react-router-dom';
+import MapContent from '../../components/Map/MapContent';
+import MapSearch from '../../components/Map/MapSearch';
 import './Map.scss';
 
-function KakaoMap() {
+function Map() {
   const [searchData, setSearchData] = useState('대전');
 
   const onHandleSearch = (value) => {
@@ -18,4 +19,4 @@ function KakaoMap() {
   );
 }
 
-export default KakaoMap;
+export default withRouter(Map);

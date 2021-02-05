@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 .acoountbody {
-  background: #f6f5f7;
+  background: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
-  height: 80vh;
+  height: 100vh;
   margin: 0px;
 }
 
@@ -32,7 +32,7 @@ span {
   font-size: 12px;
 }
 
-a {
+a.account__a {
   color: #333;
   font-size: 14px;
   text-decoration: none;
