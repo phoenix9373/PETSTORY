@@ -23,7 +23,7 @@ public class BoardHashtag {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "board_id") // 매핑을 뭘로 할 것인지 (fk가 board_id 가 됨)
     private Board board;
 
@@ -36,10 +36,10 @@ public class BoardHashtag {
      * 다대일
      * BoardHashtag와 Board 연관 관계 (편의) 메서드
      */
-    public void setBoard(Board board) {
-        this.board = board;
-        board.getBoardHashtags().add(this);
-    }
+//    public void setBoard(Board board) {
+//        this.board = board;
+//        board.getBoardHashtags().add(this);
+//    }
 
     /**
      * 다대일

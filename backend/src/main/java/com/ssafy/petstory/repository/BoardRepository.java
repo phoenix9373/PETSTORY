@@ -1,6 +1,7 @@
 package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.Board;
+import com.ssafy.petstory.dto.BoardHashtagQueryDto;
 import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.FileQueryDto;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,28 @@ public class BoardRepository {
      */
     public void save(Board board) {
         em.persist(board);
+    }
+
+    /**
+     * 게시물 전체 조회 - 페이징
+     */
+    public List<BoardQueryDto> findAllPagingH(int offset, int limit) {
+        // 루트 조회(XToOne 코드 모두 한 번에 조회)
+        List<BoardQueryDto> result = findBoardsPaging(offset, limit);
+
+        // file 컬렉션을 Map 한 방에 조회
+        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
+
+        // boardHashtag 컬렉션 Map 한 방에 조회
+        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.forEach(b ->
+                b.setFiles(fileMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
+        );
+        return result;
     }
 
     /**
@@ -91,6 +114,22 @@ public class BoardRepository {
                 .getResultList();
         return fileDtos.stream()
                 .collect(Collectors.groupingBy(fileQueryDto -> fileQueryDto.getBoardId())); // fileDtos -> map으로 바꿔서 최적화(코드 작성 편의, 성능 향상)
+    }
+
+    /**
+     * toBoardIds에서 찾은 boardId들로 boardHashtag 컬렉션을 Map으로 한 방에 조회
+     */
+    private Map<Long, List<BoardHashtagQueryDto>> findBoardHashtagMap(List<Long> boardIds) {
+        List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
+        "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+                    " from BoardHashtag bh" +
+                    " join bh.hashtag h" +
+                    " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
+                .setParameter("boardIds", boardIds)
+                .getResultList();
+        System.out.println("4444444444444444444444444444444444444444444444444444444444444");
+        return boardHashtagQueryDtos.stream()
+                .collect(Collectors.groupingBy(boardHashtagQueryDto -> boardHashtagQueryDto.getBoardId())); // fileDtos -> map으로 바꿔서 최적화(코드 작성 편의, 성능 향상)
     }
 
     /**
