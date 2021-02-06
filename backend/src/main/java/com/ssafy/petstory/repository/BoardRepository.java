@@ -1,9 +1,7 @@
 package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.Board;
-import com.ssafy.petstory.domain.Image;
 import com.ssafy.petstory.dto.BoardQueryDto;
-import com.ssafy.petstory.dto.FileDto;
 import com.ssafy.petstory.dto.FileQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -54,11 +52,6 @@ public class BoardRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
-
-
-
-
-    ///////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * 게시물 전체 조회
@@ -140,4 +133,5 @@ public class BoardRepository {
                 .getResultList();
         return fileDtos;
     }
+
 }
