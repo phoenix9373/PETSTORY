@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-//public interface FileRepository extends JpaRepository<File, Long> {
 public class FileRepository {
 
     private final EntityManager em;
@@ -17,6 +16,4 @@ public class FileRepository {
         em.persist(file);
     }
 
-//    @Override
-//    List<File> findAllFiles();
 }
