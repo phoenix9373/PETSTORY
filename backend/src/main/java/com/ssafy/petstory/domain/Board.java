@@ -8,7 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "boards")
@@ -33,49 +35,35 @@ public class Board {
     private long likeNum;
     private long reportNum;
 
-//    private long hashtag_id;
-
-    // BoardHashtag table에 있는 board field에 의해서 매핑됨(이 값의 변경이 fk에 영향을 미치지 않음)
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<BoardHashtag> boardHashtags = new ArrayList<>();
-
-
     // Profile과 Board는 일대다 관계
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id") // 매핑을 뭘로 할 것인 지 (fk가 profile_id가 됨)
     private Profile profile;
+
+    // Board와 BoardHashtag는 일대다 관계
+    // BoardHashtag table에 있는 board field에 의해서 매핑됨(이 값의 변경이 fk에 영향을 미치지 않음)
+//    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // orphanRemoval = true
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY) // orphanRemoval = true
+    private List<BoardHashtag> boardHashtags = new ArrayList<>();
+
 
     // Board와 Comment는 일대다 관계
     // 영속성 전이(cascade)란 쉽게 말해 부모 엔티티가 영속화될때, 자식 엔티티도 같이 영속화되고 부모 엔티티가 삭제 될때, 자식 엔티티도 삭제되는 등 부모의 영속성 상태가 전이되는 것을 이야기한다.
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    // Board와 file는 일대일 관계 -> 여러장 사진 일대다로 바꿔야됨
+    // Board와 file는 일대다 관계
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<File> files = new ArrayList<>();
-//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "file_id")
-//    private File file;
 
     /**
+     * 다대일
      * Profile과 Board 연관 관계 (편의) 메서드
      */
     public void setProfile(Profile profile) {
         this.profile = profile;
         profile.getBoards().add(this);
     }
-
-    /**
-     * Board와 File 연관 관계 (편의) 메서드
-     */
-    public void setFile(File file) {
-        files.add(file);
-        file.setBoard(this);
-    }
-//    public void setFile(File file) {
-//        this.file = file;
-//        file.setBoard(this);
-//    }
 
     /**
      * Board와 BoardHashtag 연관 관계 (편의) 메서드
@@ -89,7 +77,7 @@ public class Board {
      * Board 생성 메서드
      */
 //    public static Board createBoard(Profile profile, String title, String context, BoardHashtag... boardHashtags) {
-    public static Board createBoard(String title, String context) {
+    public static Board createBoard(String title, String context, BoardHashtag... boardHashtags) {
         Board board = new Board();
 //        board.setProfile(profile);
 
@@ -98,43 +86,11 @@ public class Board {
 
         board.setBoardDate(LocalDateTime.now());
 
-
-        // 해쉬태그 추가
-//        for (BoardHashtag boardHashtag : boardHashtags) {
-//            boardHashtag.addBoardhashtag(boardHashtag);
-//        }
-
+        for (BoardHashtag boardHashtag : boardHashtags) {
+            board.addBoardHashtag(boardHashtag);
+        }
 
         return board;
     }
 
-    // ==생성 메소드== //
-//    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
-//        Order order = new Order();
-//        order.setMember(member);
-//        order.setDelivery(delivery);
-//        for (OrderItem orderItem : orderItems) {
-//            order.addOrderItem(orderItem);
-//        }
-//        order.setStatus(OrderStatus.ORDER); // 처음 상태로 강제
-//        order.setOrderDate(LocalDateTime.now());
-//        return order;
-//    }
-
-
-    @Override
-    public String toString() {
-        return "Board{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", context='" + context + '\'' +
-                ", boardDate=" + boardDate +
-                ", likeNum=" + likeNum +
-                ", reportNum=" + reportNum +
-                ", boardHashtags=" + boardHashtags +
-                ", profile=" + profile +
-                ", comments=" + comments +
-                ", files=" + files +
-                '}';
-    }
 }
