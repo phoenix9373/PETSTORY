@@ -29,6 +29,7 @@ public class MemberRepository {
                 .setParameter("name", name)
                 .getResultList();
     }
+
     /**
      * 맴버아이디를 통해 맴버 가져오기
      *public <T> T find(Class<T> entityClass, Object primaryKey,
@@ -49,7 +50,7 @@ public class MemberRepository {
     }
 
     /**
-     * 맴버아이디를 통해 삭제
+     * 맴버아이디를 통해 삭제  //맴버 삭제되면 같은 맴버 id가진 프로필 삭제되게 짜야함 나중에
      */
     public void delete(Member member){
         em.remove(member);
