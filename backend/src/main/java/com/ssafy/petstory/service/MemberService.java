@@ -15,7 +15,7 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
     /**
-     * 중복 회원 검증
+     * 중복 회원 검증 -> 프론트 쪽에서 만들었음
      */
     private void validateDuplicateMember(Member member) {
         // EXCEPTION

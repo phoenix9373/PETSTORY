@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "profiles")
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)  // protected 생성자 생성
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)  // protected 생성자 생성
 //항상 null이 아니길 기대하지만 null이 들어가면 엔티티 안전성이 떨어짐
 public class Profile {
 
@@ -27,11 +27,12 @@ public class Profile {
 //    }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "profile_id")
     private Long id; // pk
 
     private String nickname;
+    @Column(name = "\"rank\"")
     private String rank;
 
     @Column(name = "profile_state")
@@ -48,8 +49,8 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
-    private int follwer_num;
-    private int follwee_num;
+    private int follower_num;
+    private int followee_num;
 
     /**
      * Member와 Profile 연관 관계 (편의) 메서드
@@ -68,39 +69,46 @@ public class Profile {
 //        profile.setMember(member);
 //    }
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // 1:1 관계는 foreign key를 아무데나 넣어도 됨 (주로 access가 많은 곳에 둠)
-    // -> Profile에 relation_id(FK)를 둠
-    @JoinColumn(name = "relation_id")
-    // -> 연관관계 주인을 FK와 가까운 Profile Class에 있는 Relation로 잡음
-    private Relation relation;
-
     /**
-     * Profile과 Relation 양방향 연관 관계 편의 메소드
+     * 릴레이션 프로필하고 연결 필요없다고 판단 02/06
      */
-    public void setRelation(Relation relation) {
-        this.relation = relation;
-        relation.setProfile(this);
-    }
+
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    // 1:1 관계는 foreign key를 아무데나 넣어도 됨 (주로 access가 많은 곳에 둠)
+//    // -> Profile에 relation_id(FK)를 둠
+//    @JoinColumn(name = "relation_id")
+//    // -> 연관관계 주인을 FK와 가까운 Profile Class에 있는 Relation로 잡음
+//    private Relation relation;
+
+//    /**
+//     * Profile과 Relation 양방향 연관 관계 편의 메소드
+//     */
+//    public void setRelation(Relation relation) {
+//        this.relation = relation;
+//        relation.setProfile(this);
+//    }
 
     /**
      * 프로필 생성 메소드
      */
 
-    public static Profile createProfile(Member member, ProfileForm form,Relation relation){
+//    public static Profile createProfile(Member member, ProfileForm form,Relation relation){
+    public static Profile createProfile(Member member, ProfileForm form){
         Profile profile = new Profile();
 
         //엔티티로 바꾼다음 서비스로 리턴 -> Repository에서 최종 프로필 생성
+        //Member m1 = profile.setMember(member);
+
         profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
-        profile.setId(form.getProfile_id());
+//        profile.setId(form.getProfile_id());
         profile.setNickname(form.getNickname());
         profile.setRank(form.getRank());
-        profile.setFollwee_num(form.getFollwee_num());
-        profile.setFollwer_num(form.getFollwer_num());
+        profile.setFollowee_num(form.getFollowee_num());
+        profile.setFollower_num(form.getFollower_num());
         profile.setState(form.getProfile_state());
-        profile.setRelation(relation);
+        //profile.setRelation(relation);
 
-
+        System.out.println("프로필 엔티티에 저장 완료 후 닉네임 확인: "+profile.getNickname());
         return profile;
     }
 
