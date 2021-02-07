@@ -40,15 +40,32 @@ public class BoardService {
     @Transactional // 트랜잭션, 영속성 컨텍스트 -> 영속성 컨텍스트가 자동 변경
     // 값 세팅이 끝난 후 Transactional에 의해 commit이 되고 jpa는 flush(영속성 context중 변경 내역을 찾음)를 날림 -> 변경 내역이 있을 경우 변경 감지(dirty checking)
 //    public Long create(Long profileId, String title, String context, ItemParam... itemParams) {
-    public Long createH(CreateBoardRequest request) throws IOException {
+    public Long createH(CreateBoardRequest request, List<MultipartFile> inputFiles) throws IOException {
 
         // Entity 조회
 //        Profile profile = profileRepository.findOne(profileId);
 
         // 게시물 생성
-//        Board board = Board.createBoard(profile, title, context, boardHashtag);
         Board board = Board.createBoard(request.getTitle(), request.getContext());
 
+        System.out.println("11111111111111111111111111111111111111111111111111111");
+
+        // 이미지 정보 생성
+        FileDto fileDto = new FileDto();
+        if (!inputFiles.get(0).isEmpty()) { // fileService로 옮길까 고민중
+            List<String> imgPathes = awsS3Service.upload(inputFiles);
+            for (String imgPath : imgPathes) {
+                fileDto.setFilePath(imgPath);
+                File file = File.createFile(fileDto);
+//                file.setBoard(board);
+                file.setFilePath(fileDto.getFilePath());
+                file.setImgFullPath("https://" + awsS3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + file.getFilePath());
+                file.setBoard(board);
+                fileRepository.save(file);
+            }
+        }
+
+        System.out.println("222222222222222222222222222222222222222222222222222222222222222222");
 
         // 해쉬태그 생성 -> 생성시 해쉬태그 중복체크
         List<Hashtag> hashtags = boardHashtagService.save(board, request.getHashtags());
@@ -58,6 +75,7 @@ public class BoardService {
             boardHashtagRepository.save(boardHashtag);
         }
 
+        System.out.println("33333333333333333333333333333333333333333333333333333333333");
 
         // 좋아요 누른 유저 검증 및 상태유지
 
@@ -120,6 +138,12 @@ public class BoardService {
      */
     public List<BoardQueryDto> findAllPaging(int offset, int limit) {
         return boardRepository.findAllPaging(offset, limit);
+    }
+    /**
+     * 게시물 전체 조회 - 페이징
+     */
+    public List<BoardQueryDto> findAllPagingH(int offset, int limit) {
+        return boardRepository.findAllPagingH(offset, limit);
     }
 
     /**

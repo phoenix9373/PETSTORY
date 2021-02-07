@@ -15,8 +15,8 @@ public class BoardQueryDto {
     private LocalDateTime boardDate; // 글생성 시간
     private long likeNum;
     private long reportNum;
-//    private long hashtag_id;
     private List<FileQueryDto> files;
+    private List<BoardHashtagQueryDto> boardHashtags;
 
 
     public BoardQueryDto(Board board) {
@@ -35,6 +35,17 @@ public class BoardQueryDto {
         this.boardDate = boardDate;
         this.likeNum = likeNum;
         this.reportNum = reportNum;
+    }
+
+    public BoardQueryDto(Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, List<FileQueryDto> files, List<BoardHashtagQueryDto> boardHashtags) {
+        this.boardId = boardId;
+        this.title = title;
+        this.context = context;
+        this.boardDate = boardDate;
+        this.likeNum = likeNum;
+        this.reportNum = reportNum;
+        this.files = files;
+        this.boardHashtags = boardHashtags;
     }
 
     public BoardQueryDto(Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, List<FileQueryDto> files) {
