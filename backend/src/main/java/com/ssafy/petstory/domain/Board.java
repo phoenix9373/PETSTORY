@@ -43,7 +43,7 @@ public class Board {
     // Board와 BoardHashtag는 일대다 관계
     // BoardHashtag table에 있는 board field에 의해서 매핑됨(이 값의 변경이 fk에 영향을 미치지 않음)
 //    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // orphanRemoval = true
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY) // orphanRemoval = true
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL) // orphanRemoval = true
     private List<BoardHashtag> boardHashtags = new ArrayList<>();
 
 
@@ -72,6 +72,14 @@ public class Board {
         boardHashtags.add(boardHashtag);
         boardHashtag.setBoard(this);
     }
+
+    /**
+     * Board와 BoardHashtag 연관 관계 (편의) 메서드
+     */
+//    public void addFiles(File file) {
+//        files.add(file);
+//        file.setBoard(this);
+//    }
 
     /**
      * Board 생성 메서드

@@ -35,12 +35,20 @@ public class BoardApiController {
      *
      * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
      */
+    @GetMapping("/api/board/findAllPagingH")
+    public Result<BoardQueryDto> findAllPagingH(@RequestParam(value = "offset") int offset,
+                                               @RequestParam(value = "limit") int limit){
+        return new Result(boardService.findAllPagingH(offset, limit));
+    }
+
+    /**
+     * 게시물 전체 조회 - 페이징
+     *
+     * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
+     */
     @GetMapping("/api/board/findAllPaging")
     public Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
                                                @RequestParam(value = "limit") int limit){
-        System.out.println("=======================================================");
-        System.out.println(offset + "      " + limit);
-        System.out.println("=======================================================");
         return new Result(boardService.findAllPaging(offset, limit));
     }
 
@@ -85,19 +93,13 @@ public class BoardApiController {
     @PostMapping("/api/board/createH")
     // @RequestBody : JSON으로 온 body를 Board로 Mapping해서 넣어줌
 //    public CreateBoardResponse createBoard(@RequestParam("profileId") Long profileId, @RequestBody @Valid CreateBoardRequest request) {
-    public CreateBoardResponse createBoardH(CreateBoardRequest request) throws IOException {
+    public CreateBoardResponse createBoardH(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
 
 //        Long id = boardService.create(profileId, request.title, request.context);
-
-        System.out.println("============================================================");
+        System.out.println("=-------------------------------------------");
         System.out.println(request.toString());
-        System.out.println("request = " + request);
-        System.out.println("request.title = " + request.getTitle());
-        System.out.println("request.context = " + request.getContext());
-        System.out.println("request.hashtags = " + request.getHashtags());
-        System.out.println("============================================================");
 
-        Long id = boardService.createH(request);
+        Long id = boardService.createH(request, files);
 
         return new CreateBoardResponse(id);
     }
