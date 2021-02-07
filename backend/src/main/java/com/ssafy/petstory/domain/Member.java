@@ -18,7 +18,7 @@ public class Member {
     @Column(name = "member_id")
     private Long id; // pk
 
-    //    @NotEmptyz
+    //    @NotEmpty
     private String email;
 
     @Column(name = "member_name")
@@ -35,5 +35,6 @@ public class Member {
     // Member와 Postlist은 일대다 관계
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Postlist> postlists = new ArrayList<>();
+
 
 }

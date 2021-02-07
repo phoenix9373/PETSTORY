@@ -12,15 +12,15 @@ import javax.persistence.*;
 public class Relation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "relation_id")
     private Long id;
 
     private long follower_id;
     private long followee_id;
 
-    @JsonIgnore  //데이터 주고 받을 때 영향을 주지 않는다.
-    @OneToOne(mappedBy = "relation", fetch = FetchType.LAZY)
-    private Profile profile;
+//    @JsonIgnore  //데이터 주고 받을 때 영향을 주지 않는다.
+//    @OneToOne(mappedBy = "relation", fetch = FetchType.LAZY)
+//    private Profile profile;
 
 }
