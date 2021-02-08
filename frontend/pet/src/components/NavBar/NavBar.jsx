@@ -51,94 +51,82 @@ function Navbar({ isLogin, toggleTheme }) {
   }, [isLogin]);
 
   window.addEventListener('resize', showButton);
-
-  if (isLogin) {
-    return (
-      <>
-        <div className="navbar">
-          <div className="navbar-container">
-            <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-              PetStory
-            </Link>
-            <div className="menu-icon" onClick={handleClick}>
-              <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-            </div>
-            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-              <li className="nav-item">
-                <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                  피드
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to="/create"
-                  className="nav-links"
-                  onClick={closeMobileMenu}
-                >
-                  게시글 작성
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/map" className="nav-links" onClick={closeMobileMenu}>
-                  지도
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  to="/profile"
-                  className="nav-links"
-                  onClick={closeMobileMenu}
-                >
-                  프로필
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/login"
-                  className="nav-links-mobile"
-                  onClick={closeMobileMenu}
-                >
-                  회원가입
-                </Link>
-              </li>
-            </ul>
-            {button && (
-              <Button onClick={onLogoutHandler} buttonStyle="btn--outline">
+  return (
+    <>
+      <div className="navbar">
+        <div className="navbar-container">
+          <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+            PetStory
+          </Link>
+          <div className="menu-icon" onClick={handleClick}>
+            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+          </div>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <li className="nav-item">
+              <Link to="/" className="nav-links" onClick={closeMobileMenu}>
+                피드
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/create"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                게시글 작성
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/map" className="nav-links" onClick={closeMobileMenu}>
+                지도
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/profile"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                프로필
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/cartoonize"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                카툰
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/login"
+                className="nav-links-mobile"
+                onClick={closeMobileMenu}
+              >
                 Logout
-              </Button>
-            )}
-          </div>
-          <div className="theme-toggle-switch">
-            <Switch
-              checked={theme.checkedA}
-              onChange={handleThemeChange}
-              name="checkedA"
-              color="default"
-              inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
-          </div>
+              </Link>
+            </li>
+          </ul>
+          {button && (
+            <Button onClick={onLogoutHandler} buttonStyle="btn--outline">
+              Logout
+            </Button>
+          )}
         </div>
-      </>
-    );
-  } else {
-    return (
-      <>
-        <div className="navbar">
-          <div className="navbar-container">
-            <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-              PetStory
-            </Link>
-            <div className="menu-icon" onClick={handleClick}>
-              <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
-            </div>
-            <ul className={click ? 'nav-menu active' : 'nav-menu'}></ul>
-            {button && <Button buttonStyle="btn--outline">SIGN IN</Button>}
-          </div>
+        <div className="theme-toggle-switch">
+          <Switch
+            checked={theme.checkedA}
+            onChange={handleThemeChange}
+            name="checkedA"
+            color="default"
+            inputProps={{ 'aria-label': 'secondary checkbox' }}
+          />
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 }
 
 export default Navbar;
