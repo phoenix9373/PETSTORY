@@ -9,6 +9,10 @@ import java.util.List;
 @Data
 public class BoardQueryDto {
 
+    private Long profileId;
+    private String nickname;
+    private String imgFullPath;
+
     private Long boardId;
     private String title;
     private String context;
@@ -58,4 +62,29 @@ public class BoardQueryDto {
         this.files = files;
     }
 
+    public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum) {
+        this.profileId = profileId;
+        this.nickname = nickname;
+        this.imgFullPath = imgFullPath;
+        this.boardId = boardId;
+        this.title = title;
+        this.context = context;
+        this.boardDate = boardDate;
+        this.likeNum = likeNum;
+        this.reportNum = reportNum;
+    }
+
+    public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, List<FileQueryDto> files, List<BoardHashtagQueryDto> boardHashtags) {
+        this.profileId = profileId;
+        this.nickname = nickname;
+        this.imgFullPath = imgFullPath;
+        this.boardId = boardId;
+        this.title = title;
+        this.context = context;
+        this.boardDate = boardDate;
+        this.likeNum = likeNum;
+        this.reportNum = reportNum;
+        this.files = files;
+        this.boardHashtags = boardHashtags;
+    }
 }

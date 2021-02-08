@@ -3,10 +3,7 @@ package com.ssafy.petstory.service;
 import com.ssafy.petstory.controller.MemberForm;
 import com.ssafy.petstory.controller.ProfileForm;
 import com.ssafy.petstory.domain.*;
-import com.ssafy.petstory.dto.BoardQueryDto;
-import com.ssafy.petstory.dto.FileDto;
-import com.ssafy.petstory.dto.LikeDto;
-import com.ssafy.petstory.dto.ReadMultiProfileResponse;
+import com.ssafy.petstory.dto.*;
 import com.ssafy.petstory.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,7 @@ import java.util.List;
 public class ProfileService {
 
     private final ProfileRepository profileRepository;
+    private final BoardRepository boardRepository;
     private final LikeRepository likeRepository;
     private final MemberRepository memberRepository;
     private final AwsS3Service awsS3Service;
@@ -84,12 +82,21 @@ public class ProfileService {
 
     /**
      * 프로필 정보 확인(상세조회)
+     * 해당 프로필이 작성한 모든 게시글 함께 조회
      */
     @Transactional(readOnly = true)
-    public Profile detail(Long profileId) {  //memberRepo에서 처리하고
-
+    public ProfileQueryDto detail(Long profileId) {  //memberRepo에서 처리하고
         Profile profile = profileRepository.findOne(profileId);
-        return profile;
+        ProfileQueryDto profileQueryDto = boardRepository.findProfileOne(profileId);
+        profileQueryDto.setProfileState(profile.getState());
+        profileQueryDto.setNickname(profile.getNickname());
+        profileQueryDto.setMemberId(profile.getMember().getId());
+        profileQueryDto.setProfileId(profileId);
+        profileQueryDto.setRank(profile.getRank());
+        profileQueryDto.setFollowerNum(profile.getFollowerNum());
+        profileQueryDto.setFolloweeNum(profile.getFolloweeNum());
+
+        return profileQueryDto;
     }
 
     /**
