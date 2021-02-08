@@ -6,15 +6,20 @@ import './Map.scss';
 
 function Map() {
   const [searchData, setSearchData] = useState('대전');
+  const [resultNum, setResultNum] = useState(7);
 
   const onHandleSearch = (value) => {
     setSearchData(value);
   };
 
+  const onHandleNum = (value) => {
+    setResultNum(value);
+  };
+
   return (
     <div className="kakaomap">
-      <MapSearch onSearchData={onHandleSearch} />
-      <MapContent searchData={searchData} />
+      <MapSearch onSearchInput={onHandleSearch} onSearchNum={onHandleNum} />
+      <MapContent searchData={searchData} resultNum={resultNum} />
     </div>
   );
 }

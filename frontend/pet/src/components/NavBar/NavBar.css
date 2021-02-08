@@ -1,9 +1,19 @@
+.dark-theme {
+  --clr-nav: linear-gradient(to right, #282c35, #868097);
+  --clr-bcg: #282c35;
+  --clr-font: #fff;
+  --clr-primary: #f8c1d3;
+}
+
+.light-theme {
+  --clr-nav: linear-gradient(to right, #a023b9, #c8b6ff);
+  --clr-bcg: rgb(255, 247, 247);
+  --clr-font: #000000;
+  --clr-primary: #000000;
+}
+
 .navbar {
-  background: linear-gradient(
-    90deg,
-    rgb(11, 45, 235) 0%,
-    rgb(147, 146, 216) 100%
-  );
+  background: var(--clr-nav);
   height: 60px;
   display: flex;
   justify-content: center;
@@ -12,6 +22,7 @@
   position: sticky;
   top: 0;
   z-index: 999;
+  transition: transform 0.6s ease-in-out;
 }
 
 .navbar-container {
@@ -80,6 +91,11 @@
 
 .menu-icon {
   display: none;
+}
+
+.theme-toggle-switch {
+  position: absolute;
+  right: 10px;
 }
 
 @media screen and (max-width: 960px) {
@@ -160,5 +176,9 @@
     background: #fff;
     color: #242424;
     transition: 250ms;
+  }
+
+  .theme-toggle-switch {
+    display: none;
   }
 }

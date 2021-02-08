@@ -84,7 +84,7 @@ function LoginPage(props) {
             Forgot your password?
           </a>
           <button className="account__button" type="submit">
-            로그인
+            SIGN IN
           </button>
         </form>
       </div>

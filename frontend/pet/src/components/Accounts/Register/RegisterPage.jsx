@@ -65,7 +65,6 @@ function RegisterPage(props) {
       <div className="form-container sign-up-container">
         <form className="acccount__form" onSubmit={onSubmitHandler}>
           <h1>Create Account</h1>
-          <span>or use your email for registration</span>
           <input
             className="account__input"
             type="email"
@@ -95,7 +94,7 @@ function RegisterPage(props) {
             onChange={onConfirmPasswordHandler}
           />
           <button className="account__button" type="submit">
-            회원가입
+            SIGN UP
           </button>
         </form>
       </div>
