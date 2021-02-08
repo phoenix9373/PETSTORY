@@ -31,6 +31,18 @@ public class AwsS3Service {
 
     @Transactional
 //    public String upload(List<MultipartFile> files) throws IOException {
+    public String uploadProfileImage(MultipartFile file) throws IOException {
+        amazonS3 = awsConfiguration.setS3Client();
+        String fileName = file.getOriginalFilename();
+
+        amazonS3.putObject(new PutObjectRequest(awsS3Property.getBucket(), fileName, file.getInputStream(), null)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+        return fileName;
+    }
+
+    @Transactional
+//    public String upload(List<MultipartFile> files) throws IOException {
     public List<String> upload(List<MultipartFile> files) throws IOException {
         amazonS3 = awsConfiguration.setS3Client();
         List<String> fileNames = new ArrayList<>();

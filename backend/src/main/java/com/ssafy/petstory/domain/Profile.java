@@ -2,6 +2,7 @@ package com.ssafy.petstory.domain;
 
 import com.ssafy.petstory.controller.ProfileForm;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,8 +37,13 @@ public class Profile {
     private String rank;
 
     @Column(name = "profile_state")
-    @Enumerated(EnumType.ORDINAL)  //db에 저장되는 값 숫자로 , 받는건 String 으로
+    @Enumerated(EnumType.STRING)  //db에 저장되는 값 숫자로 , 받는건 String 으로
     private ProfileState state;
+
+    // Profile과 Image는 일대일 관계
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    private Image image;
 
     // Member와 Profile은 일대다 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -49,8 +55,10 @@ public class Profile {
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
-    private int follower_num;
-    private int followee_num;
+    @Column(name = "follower_num")
+    private int followerNum;
+    @Column(name = "followee_num")
+    private int followeeNum;
 
     /**
      * Member와 Profile 연관 관계 (편의) 메서드
@@ -59,6 +67,14 @@ public class Profile {
     public void setMember(Member member) { // 아래 주석친 메인 코드의 기능을 하는 메서드
         this.member = member;
         member.getProfiles().add(this);
+    }
+
+    /**
+     * Profile과 Image 연관 관계 편의 메소드
+     */
+    public void setImage(Image image) {
+        this.image = image;
+        image.setProfile(this);
     }
 
 //    public static void main(String[] args) {
@@ -100,13 +116,8 @@ public class Profile {
         //Member m1 = profile.setMember(member);
 
         profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
-//        profile.setId(form.getProfile_id());
         profile.setNickname(form.getNickname());
-        profile.setRank(form.getRank());
-        profile.setFollowee_num(form.getFollowee_num());
-        profile.setFollower_num(form.getFollower_num());
-        profile.setState(form.getProfile_state());
-        //profile.setRelation(relation);
+        profile.setState(ProfileState.PUBLIC); // 초기값 -> 전체공개
 
         System.out.println("프로필 엔티티에 저장 완료 후 닉네임 확인: "+profile.getNickname());
         return profile;
