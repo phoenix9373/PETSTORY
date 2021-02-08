@@ -85,9 +85,9 @@ public class Board {
      * Board 생성 메서드
      */
 //    public static Board createBoard(Profile profile, String title, String context, BoardHashtag... boardHashtags) {
-    public static Board createBoard(String title, String context, BoardHashtag... boardHashtags) {
+    public static Board createBoard(Profile profile, String title, String context, BoardHashtag... boardHashtags) {
         Board board = new Board();
-//        board.setProfile(profile);
+        board.setProfile(profile);
 
         board.setTitle(title);
         board.setContext(context);

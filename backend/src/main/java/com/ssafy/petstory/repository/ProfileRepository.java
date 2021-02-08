@@ -3,6 +3,7 @@ package com.ssafy.petstory.repository;
 import com.ssafy.petstory.domain.Like;
 import com.ssafy.petstory.domain.Profile;
 import com.ssafy.petstory.domain.Relation;
+import com.ssafy.petstory.dto.ReadMultiProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -14,12 +15,6 @@ import java.util.List;
 public class ProfileRepository {
     private final EntityManager em;
 
-    public void saveR(Relation relation) {  //테이블에 인서트
-        System.out.println("++++++++++++++");
-        em.persist(relation);
-        System.out.println("릴레이션 테이블 저장후 아이디 확인: "+relation.getId());
-    }
-
     public void saveP(Profile profile){
         System.out.println("+++++++++++++여기서 문제발생");
         em.persist(profile);
@@ -30,7 +25,15 @@ public class ProfileRepository {
      * 프로필 다중 조회
      */
     public List<Profile> findByMember_id(Long id) {
-        return em.createQuery("select m from Profile m where m.member.id = :id", Profile.class) // ":name" 파라미터 바인딩
+        return em.createQuery("select f from Profile f where f.member.id = :id", Profile.class) // ":name" 파라미터 바인딩
+                .setParameter("id", id)
+                .getResultList();
+    }
+    public List<ReadMultiProfileResponse> findByMemberId(Long id) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.ReadMultiProfileResponse(f.id, f.nickname, f.rank, f.image.imgFullPath)" +
+                " from Profile f" +
+                " where f.member.id = :id", ReadMultiProfileResponse.class) // ":name" 파라미터 바인딩
                 .setParameter("id", id)
                 .getResultList();
     }
