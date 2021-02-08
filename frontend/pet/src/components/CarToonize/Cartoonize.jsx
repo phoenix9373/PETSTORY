@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './CarToonize.css';
+import styles from './Cartoonize.module.css';
 import {
   CartoonWorkerManager,
   generateCartoonDefaultConfig,
@@ -9,16 +9,20 @@ import { withRouter } from 'react-router-dom';
 
 function CarToonize({ img }) {
   useEffect(() => {
+    // cartoonize 모듈 불러옴옴
     const manager = new CartoonWorkerManager();
     const config = generateCartoonDefaultConfig();
     const params = generateDefaultCartoonParams();
-    console.log(params);
+
+    // 태그생성
     const srcCanvas = document.createElement('canvas');
     const dstCanvas = document.createElement('canvas');
-    document.getElementById('origin__img').appendChild(srcCanvas);
+
+    // result__img에 자식요소 추가가
     document.getElementById('result__img').appendChild(dstCanvas);
     const srcImage = document.createElement('img');
     srcImage.src = img;
+
     if (srcImage.src) {
       srcImage.onload = () => {
         manager
@@ -40,8 +44,7 @@ function CarToonize({ img }) {
 
   return (
     <>
-      <div id="origin__img"></div>
-      <div id="result__img"></div>
+      <div className={styles.container} id="result__img"></div>
     </>
   );
 }

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../../_actions/userAction';
+import { loginUser } from '../../_actions/userAction';
 import toast from 'react-hot-toast';
-import kakaoIcon from '../../../assets/kakaotalk.png';
+import kakaoIcon from '../../assets/kakaotalk.png';
 import { FcGoogle } from 'react-icons/fc';
 // import KaKaoLogins from '../SocialLogin/KakaoLogin';
 // import GoogleLogins from '../SocialLogin/GoogleLogins';
