@@ -3,15 +3,25 @@ import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../_actions/userAction';
+import Switch from '@material-ui/core/Switch';
 import './NavBar.css';
 
-function Navbar({ isLogin }) {
+function Navbar({ isLogin, toggleTheme }) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
   const dispatch = useDispatch();
+  const [theme, setState] = useState({
+    checkedA: true,
+    checkedB: true,
+  });
+
+  const handleThemeChange = (event) => {
+    toggleTheme();
+    setState({ ...theme, [event.target.name]: event.target.checked });
+  };
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -41,6 +51,7 @@ function Navbar({ isLogin }) {
   }, [isLogin]);
 
   window.addEventListener('resize', showButton);
+
   if (isLogin) {
     return (
       <>
@@ -97,6 +108,15 @@ function Navbar({ isLogin }) {
                 Logout
               </Button>
             )}
+          </div>
+          <div className="theme-toggle-switch">
+            <Switch
+              checked={theme.checkedA}
+              onChange={handleThemeChange}
+              name="checkedA"
+              color="default"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
           </div>
         </div>
       </>

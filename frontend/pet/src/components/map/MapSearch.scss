@@ -1,15 +1,35 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+.dark-theme {
+  --clr-bcg: #282c35;
+  --clr-font: #fff;
+  --clr-primary: #132faa;
+}
 
-.MapSearch__form {
+.light-theme {
+  --clr-bcg: rgb(255, 247, 247);
+  --clr-font: #282c35;
+  --clr-primary: #000000;
+}
+
+form.mapsearch__form {
   display: flex;
   flex-direction: row;
   font-family: 'Montserrat', sans-serif;
-  margin: 10px;
+  margin: 30px;
   padding: 0px;
 
-  .MapSearch__btn {
+  .MuiFormControl-root.mapsearch__input {
+    width: 500px;
+    margin: auto 10px;
+  }
+  .MuiFormControl-root.mapsearch__num {
+    width: 200px;
+    margin: auto 20px;
+  }
+
+  .mapsearch__btn {
     padding: 0px;
-    background-color: white;
+    background-color: var(--clr-bcg);
     color: black;
     font-weight: bold;
     border: none;
@@ -22,14 +42,9 @@
     &:active {
       transform: scale(0.9);
     }
+
+    .mapsearch__icon {
+      color: var(--clr-primary);
+    }
   }
-}
-
-.nonactive {
-  text-align: center;
-  font-weight: bold;
-}
-
-.active {
-  display: none;
 }

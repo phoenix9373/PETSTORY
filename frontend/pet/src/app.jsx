@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { history } from './utils/history';
 import { PrivateRoute } from './hoc/PrivateRoute';
+import './app.css';
 
 // Page Load
 import Account from './views/Accounts/Account';
@@ -10,12 +11,30 @@ import MainPage from './views/MainPage/MainPage';
 import ProfilePage from './views/Profile/ProfilePage';
 import Map from './views/Map/Map';
 import PageNotFound from './views/PageNotFound/PageNotFound';
-import NavBar from './components/NavBar/NavBar';
+
 // Component Load
 import SelectProfileModal from './components/ProfileModal/SelectProfileModal';
+import NavBar from './components/NavBar/NavBar';
+
+const getStorageTheme = () => {
+  let theme = 'light-theme';
+  if (localStorage.getItem('theme')) {
+    theme = localStorage.getItem('theme');
+  }
+  return theme;
+};
 
 function App() {
   const [isLogin, setIslogin] = useState(false);
+  const [theme, setTheme] = useState(getStorageTheme());
+
+  const toggleTheme = () => {
+    if (theme === 'light-theme') {
+      setTheme('dark-theme');
+    } else {
+      setTheme('light-theme');
+    }
+  };
 
   const users = () => {
     const user = localStorage.getItem('user');
@@ -28,13 +47,23 @@ function App() {
   };
 
   useEffect(() => {
+    document.documentElement.className = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
     users();
   }, [localStorage.getItem('user')]);
 
   return (
     <>
+      {/* `{' '}
+      <button className="btn" onClick={toggleTheme}>
+        toggle
+      </button>
+      ` */}
       <Router history={history}>
-        {isLogin && <NavBar isLogin={isLogin} />}
+        {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
         <Switch>
           <Route path="/login" component={Account} />
           <PrivateRoute exact path="/" component={MainPage} />

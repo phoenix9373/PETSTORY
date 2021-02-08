@@ -1,19 +1,23 @@
 /* global kakao */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import './MapContent.scss';
 
-export default function Map(props) {
-  const [searchResult, setSearchResult] = useState(false);
+export default function Map({ searchData, resultNum }) {
+  // const [searchResult, setSearchResult] = useState(false);
 
-  const mapscript = (search) => {
-    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+  const mapscript = (searchData2, resultNum2) => {
+    // 마커를 담을 배열입니다
+    let markers = [];
+
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-      level: 7, // 지도의 확대 레벨
+      center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+      level: 3, // 지도의 확대 레벨
     };
 
-    const map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+    // 지도를 생성합니다
+    const map = new kakao.maps.Map(mapContainer, mapOption);
     // 지도에 마커와 인포윈도우를 표시하는 함수입니다
     // 지도 타입 변경 컨트롤을 생성한다
     const mapTypeControl = new kakao.maps.MapTypeControl();
@@ -27,135 +31,252 @@ export default function Map(props) {
     // 지도의 우측에 확대 축소 컨트롤을 추가한다
     map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
 
-    // 지도 중심 좌표 변화 이벤트를 등록한다
-    kakao.maps.event.addListener(map, 'center_changed', () => {
-      console.log(`지도의 중심 좌표는 ${map.getCenter().toString()} 입니다.`);
-    });
-
-    // 지도 확대 레벨 변화 이벤트를 등록한다
-    kakao.maps.event.addListener(map, 'zoom_changed', () => {
-      console.log(`지도의 현재 확대레벨은 ${map.getLevel()}레벨 입니다.`);
-    });
-
-    // 지도 영역 변화 이벤트를 등록한다
-    kakao.maps.event.addListener(map, 'bounds_changed', () => {
-      const mapBounds = map.getBounds();
-      const message = `지도의 남서쪽, 북동쪽 영역좌표는 ${mapBounds.toString()}입니다.`;
-
-      console.log(message);
-    });
-
-    // 지도 클릭 이벤트를 등록한다 (좌클릭 : click, 우클릭 : rightclick, 더블클릭 : dblclick)
-    kakao.maps.event.addListener(map, 'click', (mouseEvent) => {
-      console.log(
-        `지도에서 클릭한 위치의 좌표는 ${mouseEvent.latLng.toString()} 입니다.`,
-      );
-    });
-
-    // 지도 드래깅 이벤트를 등록한다 (드래그 시작 : dragstart, 드래그 종료 : dragend)
-    kakao.maps.event.addListener(map, 'drag', () => {
-      const message = `지도를 드래그 하고 있습니다.  + '지도의 중심 좌표는 '
-      ${map.getCenter().toString()} 입니다.`;
-      console.log(message);
-    });
-    // 마커 이미지의 주소
-    const markerImageUrl =
-      'https://i.ibb.co/KmLHFHZ/red-flat-pets-gps-logo-design-paw-map-marker-vector-animal-walking-takes-care-location-position-navi.png';
-    const markerImageSize = new kakao.maps.Size(50, 56); // 마커 이미지의 크기
-    const markerImageOptions = {
-      offset: new kakao.maps.Point(23, 33), // 마커 좌표에 일치시킬 이미지 안의 좌표
-    };
-
-    // 마커 이미지를 생성한다
-    const markerImage = new kakao.maps.MarkerImage(
-      markerImageUrl,
-      markerImageSize,
-      markerImageOptions,
-    );
     // 장소 검색 객체를 생성합니다
     const ps = new kakao.maps.services.Places();
-    // 지도에 마커를 표시하는 함수입니다
-    function displayMarker(place) {
-      // 마커를 생성하고 지도에 표시합니다
+
+    // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
+    const infowindow = new kakao.maps.InfoWindow({
+      zIndex: 1,
+      removable: true,
+    });
+
+    // 검색결과 항목을 Element로 반환하는 함수입니다
+    function getListItem(index, places) {
+      const el = document.createElement('li');
+      let itemStr =
+        `<span class="markerbg marker_${index + 1}"></span>` +
+        `<div class="info">` +
+        `   <h5>${places.place_name}</h5>`;
+
+      if (places.road_address_name) {
+        itemStr +=
+          `    <span>${places.road_address_name}</span>` +
+          `   <span class="jibun gray">${places.address_name}</span>`;
+      } else {
+        itemStr += `    <span>${places.address_name}</span>`;
+      }
+
+      itemStr += `  <span class="tel">${places.phone}</span>`;
+      itemStr += `</div>`;
+
+      el.innerHTML = itemStr;
+      el.className = 'item';
+
+      return el;
+    }
+
+    // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+    function addMarker(position, idx, title) {
+      const imageSrc =
+        'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png'; // 마커 이미지 url, 스프라이트 이미지를 씁니다
+      const imageSize = new kakao.maps.Size(36, 37); // 마커 이미지의 크기
+      const imgOptions = {
+        spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+        spriteOrigin: new kakao.maps.Point(0, idx * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+        offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+      };
+      const markerImage = new kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imgOptions,
+      );
       const marker = new kakao.maps.Marker({
-        map,
+        position, // 마커의 위치
         image: markerImage,
-        position: new kakao.maps.LatLng(place.y, place.x),
       });
 
+      marker.setMap(map); // 지도 위에 마커를 표출합니다
+      markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+      return marker;
+    }
+
+    // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+    function removeMarker() {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      markers = [];
+    }
+
+    // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+    function displayPagination(pagination) {
+      const paginationEl = document.getElementById('pagination');
+      const fragment = document.createDocumentFragment();
+      let i;
+
+      // 기존에 추가된 페이지번호를 삭제합니다
+      while (paginationEl.hasChildNodes()) {
+        paginationEl.removeChild(paginationEl.lastChild);
+      }
+
+      for (i = 1; i <= pagination.last; i++) {
+        const el = document.createElement('a');
+        el.href = '#';
+        el.innerHTML = i;
+
+        if (i === pagination.current) {
+          el.className = 'on';
+        } else {
+          el.onclick = (function (i) {
+            return function () {
+              pagination.gotoPage(i);
+            };
+          })(i);
+        }
+
+        fragment.appendChild(el);
+      }
+      paginationEl.appendChild(fragment);
+    }
+    function closeOverlay() {
+      infowindow.close();
+    }
+    // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+    // 인포윈도우에 장소명을 표시합니다
+    function displayInfowindow(marker, place) {
       const content =
-        '<div className="marker__wrap">' +
-        '    <div className="marker__info">' +
-        '        <div className="marker__title">' +
+        '<div class="marker__wrap">' +
+        '    <div class="marker__info">' +
+        '        <div class="marker__title">' +
         `           <a href="${place.place_url}" target="_blank">${place.place_name}</a>` +
-        '            <div className="marker__close" onclick="closeOverlay()" title="닫기"></div>' +
         '        </div>' +
         '        <hr>' +
-        '        <div className="marker__body">' +
-        '            <div className="marker__desc">' +
-        `                <div className="ellipsis">${place.road_address_name}</div>` +
-        `                <div className="phone">${place.phone}</div>` +
+        '        <div class="marker__body">' +
+        '            <div class="marker__desc">' +
+        `                <div class="ellipsis">${place.road_address_name}</div>` +
+        `                <div class="phone">${place.phone}</div>` +
         '            </div>' +
         '        </div>' +
         '    </div>' +
         '</div>';
-      // 마커에 클릭이벤트를 등록합니다
-      kakao.maps.event.addListener(marker, 'click', () => {
-        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infowindow.setContent(content);
-        infowindow.open(map, marker);
-      });
+
+      infowindow.setContent(content);
+      infowindow.open(map, marker);
     }
-    // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-    function placesSearchCB(data, status, pagination) {
-      if (status === kakao.maps.services.Status.OK) {
-        setSearchResult(false);
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        const bounds = new kakao.maps.LatLngBounds();
-        for (let i = 0; i < data.length; i++) {
-          // console.log(data[i]);
-          // const li = document.createElement('li');
-          // li.innerHTML = `${data[i].place_name}`;
-          // const ul = document.getElementById('resulthospital');
-          // ul.appendChild(li);
-          displayMarker(data[i]);
-          bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-        console.log(map);
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        map.setBounds(bounds);
-      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-        setSearchResult(true);
-      } else if (status === kakao.maps.services.Status.ERROR) {
-        setSearchResult(true);
+
+    // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+    function removeAllChildNods(el) {
+      while (el.hasChildNodes()) {
+        el.removeChild(el.lastChild);
       }
     }
+
+    // 검색 결과 목록과 마커를 표출하는 함수입니다
+    function displayPlaces(places) {
+      const listEl = document.getElementById('placesList');
+      const menuEl = document.getElementById('menu_wrap');
+      const fragment = document.createDocumentFragment();
+      const bounds = new kakao.maps.LatLngBounds();
+      const listStr = '';
+
+      // 검색 결과 목록에 추가된 항목들을 제거합니다
+      removeAllChildNods(listEl);
+
+      // 지도에 표시되고 있는 마커를 제거합니다
+      removeMarker();
+
+      for (let i = 0; i < places.length; i++) {
+        // 마커를 생성하고 지도에 표시합니다
+        const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+        const marker = addMarker(placePosition, i);
+        const itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+        console.log(itemEl);
+        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+        // LatLngBounds 객체에 좌표를 추가합니다
+        bounds.extend(placePosition);
+
+        // 마커와 검색결과 항목에 mouseover 했을때
+        // 해당 장소에 인포윈도우에 장소명을 표시합니다
+        // mouseout 했을 때는 인포윈도우를 닫습니다
+        (function (marker2, title) {
+          console.log(marker2);
+          kakao.maps.event.addListener(marker2, 'click', () => {
+            displayInfowindow(marker2, title);
+          });
+
+          // kakao.maps.event.addListener(marker2, 'mouseout', () => {
+          //   infowindow.close();
+          // });
+
+          itemEl.onclick = function () {
+            displayInfowindow(marker2, title);
+          };
+
+          itemEl.onmouseout = function () {
+            infowindow.close();
+          };
+        })(marker, places[i]);
+
+        fragment.appendChild(itemEl);
+      }
+
+      // 검색결과 항목들을 검색결과 목록 Elemnet에 추가합니다
+      listEl.appendChild(fragment);
+      menuEl.scrollTop = 0;
+
+      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+      map.setBounds(bounds);
+    }
+
+    // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+    function placesSearchCB(data, status, pagination) {
+      if (status === kakao.maps.services.Status.OK) {
+        // 정상적으로 검색이 완료됐으면
+        // 검색 목록과 마커를 표출합니다
+        displayPlaces(data);
+
+        // 페이지 번호를 표출합니다s
+        displayPagination(pagination);
+      } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+        toast.error('검색 결과가 존재하지 않습니다.');
+      } else if (status === kakao.maps.services.Status.ERROR) {
+        toast.error('검색 결과 중 오류가 발생했습니다.');
+      }
+    }
+
+    // 키워드 검색을 요청하는 함수입니다
+    function searchPlaces() {
+      const keyword = `${searchData2} 동물병원`;
+      const searchoptions = {
+        size: resultNum2,
+      };
+      if (!keyword.replace(/^\s+|\s+$/g, '')) {
+        toast.error('키워드를 입력해주세요!');
+        return false;
+      }
+      // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+      return ps.keywordSearch(keyword, placesSearchCB, searchoptions);
+    }
+
     // 키워드로 장소를 검색합니다
-    ps.keywordSearch(`${search}+동물병원`, placesSearchCB);
+    searchPlaces();
   };
-  // const temp = hospitals.map((hospital) => <li>{hospital}</li>);
+
   useEffect(() => {
-    mapscript(props.searchData);
-  }, [props.searchData]);
+    mapscript(searchData, resultNum);
+  }, [searchData, resultNum]);
 
   return (
     <>
-      <div className={searchResult ? 'nonactive' : 'active'}>
-        검색결과가 없습니다
+      <Toaster />
+      <div className="map_wrap">
+        <div
+          id="map"
+          style={{
+            width: '100%',
+            height: '100%',
+            borderRadius: '20px',
+            // position: 'relative',
+            // overflow: 'hidden',
+          }}
+        ></div>
+
+        <div id="menu_wrap" className="bg_white">
+          <ul id="placesList"></ul>
+          <div id="pagination"></div>
+        </div>
       </div>
-      <div
-        id="map"
-        style={{
-          display: 'flex',
-          top: '20px',
-          border: 'none',
-          borderRadius: '25px',
-          width: '100%',
-          height: '70vh',
-        }}
-      ></div>
-      <ul id="resulthospital"></ul>
     </>
   );
 }
