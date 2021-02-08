@@ -62,6 +62,7 @@ public class BoardRepository {
                 b.setFiles(fileMap.get(b.getBoardId())));
         return result;
     }
+
     /**
      * 1:N 관계(Collection)을 제외한 나머지를 한 번에 조회
      * -> XToOne 모두 조회
@@ -86,9 +87,15 @@ public class BoardRepository {
         // file 컬렉션을 Map 한 방에 조회
         Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
 
+        // boardHashtag 컬렉션 Map 한 방에 조회
+        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
         // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
         result.forEach(b ->
-                b.setFiles(fileMap.get(b.getBoardId())));
+                b.setFiles(fileMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
+        );
         return result;
     }
 
@@ -127,7 +134,6 @@ public class BoardRepository {
                     " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
                 .setParameter("boardIds", boardIds)
                 .getResultList();
-        System.out.println("4444444444444444444444444444444444444444444444444444444444444");
         return boardHashtagQueryDtos.stream()
                 .collect(Collectors.groupingBy(boardHashtagQueryDto -> boardHashtagQueryDto.getBoardId())); // fileDtos -> map으로 바꿔서 최적화(코드 작성 편의, 성능 향상)
     }
@@ -152,18 +158,26 @@ public class BoardRepository {
         BoardQueryDto result = new BoardQueryDto(board);
 
         // file 컬렉션을 Map 한 방에 조회
-        List<FileQueryDto> fileMap = findFileMapOne(boardId);
+        List<FileQueryDto> fileOne = findFileOne(boardId);
+        // boardHashtag 컬렉션 Map 한 방에 조회
+       List<BoardHashtagQueryDto> boardhashtagOne = findBoardHashtagOne(boardId);
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
 
         // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
-        result.setFiles(fileMap);
+        result.setFiles(fileOne);
+        result.setBoardHashtags(boardhashtagOne);
 
         return result;
     }
 
+    public Board findBoard(Long boardId) {
+        return em.find(Board.class, boardId);
+    }
+
     /**
-     * 게시물 상세(단건) 조회시 넘어온 boardId로 file 컬렉션을 Map으로 한 방에 조회
+     * 게시물 상세(단건) 조회시 넘어온 boardId로 file 컬렉션을 조회
      */
-    private List<FileQueryDto> findFileMapOne(Long boardId) {
+    private List<FileQueryDto> findFileOne(Long boardId) {
         List<FileQueryDto> fileDtos = em.createQuery(
                 "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
                         " from File f" +
@@ -171,6 +185,24 @@ public class BoardRepository {
                 .setParameter("boardId", boardId)
                 .getResultList();
         return fileDtos;
+    }
+
+    /**
+     * toBoardIds에서 찾은 boardId로 boardHashtag 컬렉션을 조회
+     */
+    private List<BoardHashtagQueryDto> findBoardHashtagOne(Long boardIds) {
+        List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
+                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+                        " from BoardHashtag bh" +
+                        " join bh.hashtag h" +
+                        " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
+                .setParameter("boardIds", boardIds)
+                .getResultList();
+        return boardHashtagQueryDtos;
+    }
+
+    public void delete(Board board) {
+        em.remove(board);
     }
 
 }
