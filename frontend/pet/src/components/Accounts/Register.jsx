@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../../../_actions/userAction';
+import { registerUser } from '../../_actions/userAction';
 import toast from 'react-hot-toast';
 
 function RegisterPage(props) {

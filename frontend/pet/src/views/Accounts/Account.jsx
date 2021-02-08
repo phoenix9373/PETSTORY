@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Account.css';
-import RegisterPage from '../../components/Accounts/Register/RegisterPage';
-import LoginPage from '../../components/Accounts/Login/LoginPage';
+import RegisterPage from '../../components/Accounts/Register';
+import LoginPage from '../../components/Accounts/Login';
 import toast, { Toaster } from 'react-hot-toast';
 import back from '../../assets/back.mp4';
 
