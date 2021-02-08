@@ -86,12 +86,6 @@ public class BoardService {
     public List<BoardQueryDto> findAllPaging(int offset, int limit) {
         return boardRepository.findAllPaging(offset, limit);
     }
-    /**
-     * 게시물 전체 조회 - 페이징
-     */
-    public List<BoardQueryDto> findAllPagingH(int offset, int limit) {
-        return boardRepository.findAllPagingH(offset, limit);
-    }
 
     /**
      * 게시물 상세 조회
