@@ -11,6 +11,7 @@ import MainPage from './views/MainPage/MainPage';
 import ProfilePage from './views/Profile/ProfilePage';
 import Map from './views/Map/Map';
 import PageNotFound from './views/PageNotFound/PageNotFound';
+import CarToonize from './views/Cartoonize/CartoonizePage';
 
 // Component Load
 import SelectProfileModal from './components/ProfileModal/SelectProfileModal';
@@ -38,7 +39,7 @@ function App() {
 
   const users = () => {
     const user = localStorage.getItem('user');
-    console.log(user);
+    // console.log(user);
     if (user === null) {
       setIslogin(false);
     } else {
@@ -57,11 +58,6 @@ function App() {
 
   return (
     <>
-      {/* `{' '}
-      <button className="btn" onClick={toggleTheme}>
-        toggle
-      </button>
-      ` */}
       <Router history={history}>
         {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
         <Switch>
@@ -71,6 +67,7 @@ function App() {
           <PrivateRoute path="/map" component={Map} />
           <PrivateRoute path="/profile" component={ProfilePage} />
           <PrivateRoute path="/select" component={SelectProfileModal} />
+          <PrivateRoute path="/cartoonize" component={CarToonize} />
           <Route component={PageNotFound} />
         </Switch>
       </Router>
