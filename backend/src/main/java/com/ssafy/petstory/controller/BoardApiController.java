@@ -36,17 +36,6 @@ public class BoardApiController {
      *
      * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
      */
-    @GetMapping("/api/board/findAllPagingH")
-    public Result<BoardQueryDto> findAllPagingH(@RequestParam(value = "offset") int offset,
-                                               @RequestParam(value = "limit") int limit){
-        return new Result(boardService.findAllPagingH(offset, limit));
-    }
-
-    /**
-     * 게시물 전체 조회 - 페이징
-     *
-     * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
-     */
     @GetMapping("/api/board/findAllPaging")
     public Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
                                                @RequestParam(value = "limit") int limit){

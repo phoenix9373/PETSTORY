@@ -1,9 +1,11 @@
 package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.Board;
+import com.ssafy.petstory.domain.Profile;
 import com.ssafy.petstory.dto.BoardHashtagQueryDto;
 import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.FileQueryDto;
+import com.ssafy.petstory.dto.ProfileQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,7 +30,7 @@ public class BoardRepository {
     /**
      * 게시물 전체 조회 - 페이징
      */
-    public List<BoardQueryDto> findAllPagingH(int offset, int limit) {
+    public List<BoardQueryDto> findAllPaging(int offset, int limit) {
         // 루트 조회(XToOne 코드 모두 한 번에 조회)
         List<BoardQueryDto> result = findBoardsPaging(offset, limit);
 
@@ -47,21 +49,6 @@ public class BoardRepository {
         return result;
     }
 
-    /**
-     * 게시물 전체 조회 - 페이징
-     */
-    public List<BoardQueryDto> findAllPaging(int offset, int limit) {
-        // 루트 조회(XToOne 코드 모두 한 번에 조회)
-        List<BoardQueryDto> result = findBoardsPaging(offset, limit);
-
-        // file 컬렉션을 Map 한 방에 조회
-        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
-
-        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
-        result.forEach(b ->
-                b.setFiles(fileMap.get(b.getBoardId())));
-        return result;
-    }
 
     /**
      * 1:N 관계(Collection)을 제외한 나머지를 한 번에 조회
@@ -69,9 +56,10 @@ public class BoardRepository {
      */
     private List<BoardQueryDto> findBoardsPaging(int offset, int limit) {
         return em.createQuery(
-                "select new com.ssafy.petstory.dto.BoardQueryDto(b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
-                        " from Board b", BoardQueryDto.class)
-//                        " join b.profile p", BoardQueryDto.class)
+                "select new com.ssafy.petstory.dto.BoardQueryDto" +
+                        "(p.id, p.nickname, p.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+                        " from Board b" +
+                        " join b.profile p", BoardQueryDto.class)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
@@ -144,9 +132,10 @@ public class BoardRepository {
      */
     private List<BoardQueryDto> findBoards() {
         return em.createQuery(
-                "select new com.ssafy.petstory.dto.BoardQueryDto(b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
-                        " from Board b", BoardQueryDto.class)
-//                        " join b.profile p", BoardQueryDto.class)
+                "select new com.ssafy.petstory.dto.BoardQueryDto" +
+                        "(p.id, p.nickname, p.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+                        " from Board b " +
+                        " join b.profile p", BoardQueryDto.class)
                 .getResultList();
     }
 
@@ -157,10 +146,14 @@ public class BoardRepository {
         Board board = em.find(Board.class, boardId);
         BoardQueryDto result = new BoardQueryDto(board);
 
+        result.setProfileId(board.getProfile().getId());
+        result.setNickname(board.getProfile().getNickname());
+        result.setImgFullPath(board.getProfile().getImage().getImgFullPath());
+
         // file 컬렉션을 Map 한 방에 조회
         List<FileQueryDto> fileOne = findFileOne(boardId);
         // boardHashtag 컬렉션 Map 한 방에 조회
-       List<BoardHashtagQueryDto> boardhashtagOne = findBoardHashtagOne(boardId);
+        List<BoardHashtagQueryDto> boardhashtagOne = findBoardHashtagOne(boardId);
         // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
 
         // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
@@ -203,6 +196,50 @@ public class BoardRepository {
 
     public void delete(Board board) {
         em.remove(board);
+    }
+
+
+
+    /**
+     * 프로필 조회 (자신이 쓴 게시물까지)
+     * 수정시 수정할 프로필 찾아오기 + 삭제 시 삭제할 프로필 찾아오기
+     */
+    public ProfileQueryDto findProfileOne(Long profileId) {
+        Profile profile = em.find(Profile.class, profileId);
+        ProfileQueryDto getProfile = new ProfileQueryDto(profile);
+        getProfile.setImgFullPath(profile.getImage().getImgFullPath());
+
+        List<BoardQueryDto> result = findProfileBoard(profileId);
+
+        // file 컬렉션을 Map 한 방에 조회
+        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
+
+        // boardHashtag 컬렉션 Map 한 방에 조회
+        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.forEach(b ->
+                b.setFiles(fileMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
+        );
+
+        getProfile.setBoardQueryDtos(result);
+        return getProfile;
+    }
+
+    /**
+     * 게시물 상세(단건) 조회시 넘어온 boardId로 file 컬렉션을 조회
+     */
+    private List<BoardQueryDto> findProfileBoard(Long profileId) {
+        List<BoardQueryDto> boardQueryDtos = em.createQuery(
+                "select new com.ssafy.petstory.dto.BoardQueryDto" +
+                        "(b.profile.id, b.profile.nickname, b.profile.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+                        " from Board b " +
+                        " where b.profile.id in :profileId", BoardQueryDto.class)
+                .setParameter("profileId", profileId)
+                .getResultList();
+        return boardQueryDtos;
     }
 
 }
