@@ -21,9 +21,7 @@ public class BoardHashtagRepository {
      * @return
      */
     public BoardHashtag save(BoardHashtag boardHashtag){
-        System.out.println("nbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
         em.persist(boardHashtag);
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         return boardHashtag;
     }
 
@@ -62,4 +60,29 @@ public class BoardHashtagRepository {
         return Optional.ofNullable(hashtag); // 맞냐?
     }
 
+
+    /**
+     * board update시 사용
+     */
+//    public Optional<BoardHashtag> findByBoardId(Long boardId) {
+    public List<BoardHashtag> findByBoardId(Long boardId) {
+        return em.createQuery(
+                " select bh" +
+                        " from BoardHashtag bh" +
+                        " where bh.board.id = :boardId", BoardHashtag.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
+//                .stream()
+//                .findFirst();
+    }
+
+    /**
+     * boardHash 삭제
+     */
+    public void delete(Long boardId) {
+        List<BoardHashtag> boardHashtags = findByBoardId(boardId);
+        for (BoardHashtag boardHashtag : boardHashtags) {
+            em.remove(boardHashtag);
+        }
+    }
 }

@@ -83,7 +83,7 @@ public class ProfileController {
      * 프로필 조회2(맴버의 다중프로필 조회 - 로그인 시 사용)
      * */
     @GetMapping("/show/{memberId}")
-    public ResponseEntity<Result<ReadMultiProfileResponse>> show(@PathVariable("memberId") Long memberId) {
+    public ResponseEntity<ReadMultiProfileResponse> show(@PathVariable("memberId") Long memberId) {
 
         List<ReadMultiProfileResponse> profiles = profileService.showProfile(memberId);//id 받은걸로 엔티티 검색
 
@@ -91,7 +91,7 @@ public class ProfileController {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
 
-        return new ResponseEntity(new Result<>(profiles), HttpStatus.OK);
+        return new ResponseEntity(profiles, HttpStatus.OK);
     }//맴버정보보기를 눌러서 확인
 
     /**
