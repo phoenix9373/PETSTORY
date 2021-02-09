@@ -3,6 +3,7 @@
 // 도우미 함수입니다. 사용자가 로그인하지 않은 경우 빈 개체가 반환됩니다.
 // auth 헤더는 JWT 인증을 사용하여 서버 API에 대한 인증 된
 // HTTP 요청을 만드는 데 사용됩니다.
+
 export function authHeader() {
   const user = JSON.parse(localStorage.getItem('user'));
 

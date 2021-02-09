@@ -5,7 +5,7 @@ import { PrivateRoute } from './hoc/PrivateRoute';
 import './app.css';
 
 // Page Load
-import Account from './views/Accounts/Account';
+import LandingPage from './views/LandingPage/Account';
 import Create from './views/Board/Create';
 import MainPage from './views/MainPage/MainPage';
 import ProfilePage from './views/Profile/ProfilePage';
@@ -62,7 +62,7 @@ function App() {
       <Router history={history}>
         {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
         <Switch>
-          <Route path="/login" component={Account} />
+          <Route path="/login" component={LandingPage} />
           <PrivateRoute exact path="/" component={MainPage} />
           <PrivateRoute path="/create" component={Create} />
           <PrivateRoute path="/map" component={Map} />

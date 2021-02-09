@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import './Account.css';
+import './Account.scss';
 import RegisterPage from '../../components/Accounts/Register';
 import LoginPage from '../../components/Accounts/Login';
 import toast, { Toaster } from 'react-hot-toast';
@@ -28,6 +28,48 @@ function Account({ history }) {
     setgoLogin(!stategoLogin);
   };
 
+  // 중앙 버블 만드는 js
+  const bubbleLifeTime = 10;
+  const noOfBubbles = 80;
+
+  function createCircle() {
+    const circle = document.createElement('div');
+    circle.classList.add('circle');
+    circle.style.animationDelay = `${Math.random() * bubbleLifeTime}s`;
+
+    const side = `${10 + Math.floor(Math.random() * 5)}px`;
+    circle.style.width = side;
+    circle.style.height = side;
+
+    return circle;
+  }
+
+  function createBubble() {
+    const circleContainer = document.createElement('div');
+    circleContainer.classList.add('circle_container');
+    circleContainer.style.transform = `rotate(${Math.floor(
+      Math.random() * 360,
+    )}deg)`;
+
+    const circle = createCircle();
+    circleContainer.appendChild(circle);
+
+    return circleContainer;
+  }
+
+  function init() {
+    let bubble;
+    const wrapper = document.querySelector('.intro__wrapper');
+    for (let i = 0; i < noOfBubbles; i++) {
+      bubble = createBubble();
+      wrapper.appendChild(bubble);
+    }
+  }
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <>
       <Toaster
@@ -45,6 +87,11 @@ function Account({ history }) {
       />
       <div className="acoountbody">
         <video id="backVideo" src={back} type="video/mp4" autoPlay loop muted />
+        <div className="intro__wrapper">
+          <div className="intro__container">
+            <div className="intro__name">PetStory</div>
+          </div>
+        </div>
         {goLogin ? (
           ''
         ) : (
