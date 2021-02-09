@@ -18,6 +18,18 @@ function Navbar({ isLogin, toggleTheme }) {
     checkedB: true,
   });
 
+  // 스크롤 이벤트
+  const [scrolled, setScrolled] = useState(false);
+  const handleScroll = () => {
+    const offset = window.scrollY;
+    if (offset > 100) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  };
+
+  // 테마 변경 함수
   const handleThemeChange = (event) => {
     toggleTheme();
     setState({ ...theme, [event.target.name]: event.target.checked });
@@ -47,14 +59,25 @@ function Navbar({ isLogin, toggleTheme }) {
   };
 
   useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+  });
+
+  useEffect(() => {
     showButton();
   }, [isLogin]);
 
   window.addEventListener('resize', showButton);
   return (
     <>
-      <div className="navbar">
-        <div className="navbar-container">
+      <div className={scrolled ? 'navbar active' : 'navbar'}>
+        <div
+          className={
+            scrolled ? 'navbar-background active' : 'navbar-background'
+          }
+        ></div>
+        <div
+          className={scrolled ? 'navbar-container active' : 'navbar-container'}
+        >
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
             PetStory
           </Link>
@@ -108,21 +131,27 @@ function Navbar({ isLogin, toggleTheme }) {
                 Logout
               </Link>
             </li>
+            <li className="nav-item">
+              {button && (
+                <Button
+                  className="nav-links"
+                  onClick={onLogoutHandler}
+                  buttonStyle="btn--outline"
+                >
+                  Logout
+                </Button>
+              )}
+            </li>
           </ul>
-          {button && (
-            <Button onClick={onLogoutHandler} buttonStyle="btn--outline">
-              Logout
-            </Button>
-          )}
-        </div>
-        <div className="theme-toggle-switch">
-          <Switch
-            checked={theme.checkedA}
-            onChange={handleThemeChange}
-            name="checkedA"
-            color="default"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
+          <div className="theme-toggle-switch">
+            <Switch
+              checked={theme.checkedA}
+              onChange={handleThemeChange}
+              name="checkedA"
+              color="default"
+              inputProps={{ 'aria-label': 'secondary checkbox' }}
+            />
+          </div>
         </div>
       </div>
     </>

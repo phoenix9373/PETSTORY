@@ -9,6 +9,7 @@
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
   height: 100vh;
+  width: 100vw;
   margin: 0px;
 }
 
@@ -43,7 +44,7 @@ a.account__a {
 button.account__button {
   border-radius: 20px;
   border: 1px solid #ff4b2b;
-  background-color: #c300ff;
+  background-color: #ef5f91;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -114,7 +115,7 @@ input {
   right: 3vw;
   top: 90vh;
   border-radius: 20px;
-  background-color: #6259db;
+  background-color: #ef5f91;
   color: #ffffff;
   font-size: 18px;
   font-weight: bold;
@@ -126,7 +127,7 @@ input {
 
 .account__gologinbtn:hover {
   border-radius: 20px;
-  background-color: #6259dba2;
+  background-color: #ef5f917a;
   cursor: pointer;
 }
 
@@ -193,9 +194,9 @@ input {
 }
 
 .overlay {
-  background: #ff416c;
-  background: -webkit-linear-gradient(to right, #9627e6, #c8b6ff);
-  background: linear-gradient(to right, #9627e6, #c8b6ff);
+  background: #ff93c1;
+  background: -webkit-linear-gradient(to right, #b92c64, #ff93c1);
+  background: linear-gradient(to right, #b92c64, #ff93c1);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -264,6 +265,71 @@ input {
   width: 1.8em;
   height: 1.8em;
   color: yellow;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Pacifico);
+
+.circle_container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 10px;
+  transform-origin: left center;
+  .circle {
+    position: absolute;
+    border-radius: 100%;
+    background: rgba(255, 255, 255, 0.3);
+    left: 0;
+    opacity: 0;
+    animation-name: move;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0px);
+    opacity: 0;
+  }
+
+  1% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateX(90vmin);
+    transform: translateY(45vmin);
+    opacity: 0;
+    display: none;
+  }
+}
+
+.intro__wrapper .intro__container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 70vmin;
+  height: 70vmin;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 100%;
+  box-shadow: inset 0px 0px 30px 30px rgba(200, 200, 200, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > div {
+    font-family: 'Pacifico', cursive;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .intro__name {
+    font-size: 10vmax;
+  }
 }
 
 #backVideo {

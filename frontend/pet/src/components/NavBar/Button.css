@@ -1,5 +1,21 @@
 :root {
-  --primary: #fff;
+  --clr-primary: #fff;
+}
+
+.dark-theme {
+  --clr-nav: linear-gradient(to right, #282c35, #868097);
+  --clr-bcg: #282c35;
+  --clr-font: #fff;
+  --clr-primary: #f8c1d3;
+  --clr-boxshodow: 0 2px 5px 2px rgba(219, 219, 224, 0.2);
+}
+
+.light-theme {
+  --clr-nav: linear-gradient(to right, #a023b9, #c8b6ff);
+  --clr-bcg: rgb(255, 247, 247);
+  --clr-font: #000000;
+  --clr-primary: #000000;
+  --clr-boxshodow: 0 2px 5px 2px rgba(0, 0, 0, 0.2);
 }
 
 .btn {
@@ -11,16 +27,16 @@
 }
 
 .btn--primary {
-  background-color: var(--primary);
+  background-color: var(--clr-primary);
   color: #242424;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--clr-primary);
 }
 
 .btn--outline {
   background-color: transparent;
-  color: #fff;
+  color: var(--clr-primary);
   padding: 8px 20px;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--clr-primary);
   transition: all 0.3s ease-out;
 }
 
@@ -37,7 +53,7 @@
 .btn--large:hover,
 .btn--medium:hover {
   transition: all 0.3s ease-out;
-  background: #fff;
-  color: #242424;
+  background: var(--clr-primary);
+  color: var(--clr-primary);
   transition: 250ms;
 }
