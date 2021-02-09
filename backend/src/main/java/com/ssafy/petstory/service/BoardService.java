@@ -4,6 +4,7 @@ import com.ssafy.petstory.domain.*;
 import com.ssafy.petstory.dto.CreateBoardRequest;
 import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.FileDto;
+import com.ssafy.petstory.dto.UpdateBoardRequest;
 import com.ssafy.petstory.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true) // 데이터의 변경이 없는 읽기 전용 메서드에 사용, 영속성 컨텍스트를 플러시 하지 않으므로 약간의 성능 향상(읽기 전용에는 다 적용)
@@ -26,7 +31,7 @@ public class BoardService {
     private final HashtagRepository hashtagRepository;
     private final BoardHashtagService boardHashtagService;
     private final HashtagService hashtagService;
-    private FileService fileService;
+    private final FileService fileService;
 
 
     /**
@@ -43,21 +48,17 @@ public class BoardService {
         Board board = Board.createBoard(profile, request.getTitle(), request.getContext());
 
         // 이미지 정보 생성
-        FileDto fileDto = new FileDto();
         if (!inputFiles.get(0).isEmpty()) { // fileService로 옮길까 고민중
+            FileDto fileDto = new FileDto();
             List<String> imgPathes = awsS3Service.upload(inputFiles);
             for (String imgPath : imgPathes) {
                 fileDto.setFilePath(imgPath);
-                File file = File.createFile(fileDto);
-//                file.setBoard(board);
-                file.setFilePath(fileDto.getFilePath());
-                file.setImgFullPath("https://" + awsS3Service.CLOUD_FRONT_DOMAIN_NAME + "/" + file.getFilePath());
+                File file = fileService.createFile(fileDto);
                 file.setBoard(board);
-                fileRepository.save(file);
             }
         }
 
-        // 해쉬태그 생성 -> 생성시 해쉬태그 중복체크
+        // 해시태그 생성 -> 생성시 해시태그 중복체크
         List<Hashtag> hashtags = boardHashtagService.save(board, request.getHashtags());
         for (Hashtag hashtag : hashtags) {
             BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag(hashtag);
@@ -104,11 +105,60 @@ public class BoardService {
     /**
      * 게시물 수정
      */
-//    @Transactional
-//    public void update(Long boardId){
-//        Board board = boardRepository.findBoard(boardId);
-//        board.change(); // dirty checking
-//    }
+    @Transactional
+    public Long update(Long boardId, UpdateBoardRequest request, List<MultipartFile> inputFiles) throws IOException {
+        Board board = boardRepository.findBoard(boardId);
+        board.update(request.getTitle(), request.getContext()); // dirty checking
+
+
+        boardHashtagService.update(boardId, board.getBoardHashtags(), request.getHashtags());
+
+        /**
+         * boardHashtag에 boardId가 같은 row에서 hashtagName이 같은 애는 남기고
+         * 다른 애들은 모두 지운 후,
+         * request.hashtagNames에서 매핑 결과가 없는 애만 해시태그에 추가
+         *
+         */
+
+//        for (String hashtag : request.getHashtags()) {
+//            System.out.println("------------------------------------------------------------");
+//            board.getBoardHashtags().forEach(bh -> {
+//                if(bh.getHashtag().getName() != hashtag){
+//                    notDupHashtagNames.add(hashtag);
+//                }else {
+//
+//                }
+//            });
+
+//            board.getBoardHashtags().stream().map((bh) -> {
+//                return bh.getHashtag().getName() != hashtag;
+//            }).anyMatch(Objects::isNull);
+
+//            System.out.println(collect);
+//        }
+
+
+        List<Hashtag> hashtags = boardHashtagService.save(board, request.getHashtags());
+        for (Hashtag hashtag : hashtags) {
+            if(hashtag.getBoardHashtags() != board.getBoardHashtags()) {
+                BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag(hashtag);
+                boardHashtag.setBoard(board);
+                boardHashtagRepository.save(boardHashtag);
+            }
+        }
+
+        // 이미지 정보 생성 -> 중복된 데이터인지 확인 후 데이터 생성
+        if (!inputFiles.get(0).isEmpty()) { // fileService로 옮길까 고민중
+            FileDto fileDto = new FileDto();
+            List<String> imgPathes = awsS3Service.upload(inputFiles);
+            for (String imgPath : imgPathes) {
+                fileDto.setFilePath(imgPath);
+                File file = fileService.createFile(fileDto);
+                file.setBoard(board);
+            }
+        }
+        return board.getId();
+    }
 
 
     /**

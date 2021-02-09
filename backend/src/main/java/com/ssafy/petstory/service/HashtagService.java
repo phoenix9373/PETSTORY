@@ -21,7 +21,6 @@ public class HashtagService {
 
         Hashtag hashtag = hashtagRepository.findByName(hashtagName)
                 .orElse(Hashtag.createHashtag(hashtagName));
-//        return hashtag;
         return hashtagRepository.save(hashtag);
     }
 
