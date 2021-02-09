@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ProfileModal from './ProfileModal';
-import Follower from './Follower';
 import Modal from 'react-modal';
 import axios from 'axios';
 import ModifyProfile from './ModifyProfile';
+import MbtiModal from './MbtiModal';
+// import FollowerList from './FollwoerList';
 
 function UserProfile(props) {
   // const dispatch = useDispatch();
@@ -11,6 +12,7 @@ function UserProfile(props) {
   const [isFolloweeModal, setFolloweeModal] = useState(false);
   const [isModifyModal, setModifyModal] = useState(false);
   const [test, setTest] = useState(false);
+  const [mbtiTest, setMbtiTest] = useState(false);
   const [followers, setFollowers] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -64,6 +66,13 @@ function UserProfile(props) {
 
   const closeTestModal = () => {
     setTest(false);
+  };
+  const handleMbti = () => {
+    setMbtiTest(!mbtiTest);
+  };
+
+  const closeMbtiTestModal = () => {
+    setMbtiTest(false);
   };
 
   const closeModifyModal = () => {
@@ -142,6 +151,8 @@ function UserProfile(props) {
     <div className="UserProfileBox">
       <button onClick={handleTest}>프로필 생성 모달 테스트</button>
       <ProfileModal test={test} onClose={closeTestModal} />
+      <button onClick={handleMbti}>MBTI 모달 테스트</button>
+      <MbtiModal mbtiTest={mbtiTest} onClose={closeMbtiTestModal} />
       <div className="profileCard">
         <img
           src="https://i.ytimg.com/vi/AwrFPJk_BGU/maxresdefault.jpg"
@@ -157,7 +168,8 @@ function UserProfile(props) {
             <h3 className="follower" onClick={handleFollowerModal}>
               팔로워: {props.profile.follower_num}
             </h3>
-            <Modal
+            {/* {isFollowerModal && <FollowerList />} */}
+            {/* <Modal
               isOpen={isFollowerModal}
               onRequestClose={handleFollowerModal}
               style={{
@@ -175,7 +187,7 @@ function UserProfile(props) {
                 ))}
               </ul>
               <button onClick={handleFollowerModal}>닫기</button>
-            </Modal>
+            </Modal> */}
             <h3 className="following" onClick={handleFolloweeModal}>
               팔로잉: {props.profile.followee_num}
             </h3>

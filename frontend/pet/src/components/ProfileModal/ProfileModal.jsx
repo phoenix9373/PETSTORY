@@ -13,7 +13,6 @@ function ProfileModal(props) {
 
   const handleAddForm = (e) => {
     e.preventDefault();
-    // 문자,숫자,마침표만 입력되도록 향후 추가
     const profileForm = {
       // member_id: sessionStorage.getItem('member_id')
       member_id: 22,
