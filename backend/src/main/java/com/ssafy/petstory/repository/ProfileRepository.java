@@ -15,6 +15,9 @@ import java.util.List;
 public class ProfileRepository {
     private final EntityManager em;
 
+    /**
+     * 프로필 생성
+     */
     public void saveP(Profile profile){
         System.out.println("+++++++++++++여기서 문제발생");
         em.persist(profile);
@@ -24,27 +27,26 @@ public class ProfileRepository {
     /**
      * 프로필 다중 조회
      */
-    public List<Profile> findByMember_id(Long id) {
-        return em.createQuery("select f from Profile f where f.member.id = :id", Profile.class) // ":name" 파라미터 바인딩
-                .setParameter("id", id)
-                .getResultList();
-    }
     public List<ReadMultiProfileResponse> findByMemberId(Long id) {
         return em.createQuery(
-                "select new com.ssafy.petstory.dto.ReadMultiProfileResponse(f.id, f.nickname, f.rank, f.image.imgFullPath)" +
-                " from Profile f" +
-                " where f.member.id = :id", ReadMultiProfileResponse.class) // ":name" 파라미터 바인딩
+                "select new com.ssafy.petstory.dto.ReadMultiProfileResponse(p.id, p.nickname, p.rank, p.image.imgFullPath)" +
+                " from Profile p" +
+                " where p.member.id = :id", ReadMultiProfileResponse.class) // ":name" 파라미터 바인딩
                 .setParameter("id", id)
                 .getResultList();
     }
 
     /**
-     *수정시 수정할 프로필 찾아오기 + 삭제 시 삭제할 프로필 찾아오기
+     * 프로필 조회
+     * 수정시 수정할 프로필 찾아오기 + 삭제 시 삭제할 프로필 찾아오기
      */
     public Profile findOne(Long id) {
         return em.find(Profile.class, id);
     }
 
+    /**
+     * 프로필 삭제
+     */
     public void delete(Profile profile){
         em.remove(profile);
     }

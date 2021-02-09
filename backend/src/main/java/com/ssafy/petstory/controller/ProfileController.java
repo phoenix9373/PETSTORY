@@ -6,6 +6,7 @@ import com.ssafy.petstory.domain.Member;
 import com.ssafy.petstory.domain.Profile;
 import com.ssafy.petstory.domain.Relation;
 import com.ssafy.petstory.dto.LikeDto;
+import com.ssafy.petstory.dto.ProfileQueryDto;
 import com.ssafy.petstory.dto.ReadMultiProfileResponse;
 import com.ssafy.petstory.service.ProfileService;
 import lombok.AllArgsConstructor;
@@ -67,25 +68,15 @@ public class ProfileController {
      * 프로필 조회1(세부조회)
      * */
     @GetMapping("/detail/profile/{profileId}")   // 프로필 아이디 받아서 findone 조회 후 폼에 담아서 객체하나 리턴
-    public ResponseEntity<ProfileForm> detail(@PathVariable("profileId") Long profileId, ProfileForm form) {
+    public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId, ProfileForm form) {
 
-        Profile profile = profileService.detail(profileId);  //id 받은걸로 엔티티 검색
+        ProfileQueryDto profile = profileService.detail(profileId);//id 받은걸로 엔티티 검색
 
         if (profile == null) {//해당아이디로 검색된 정보가 없음
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        form.setProfileId(profile.getId());
-        form.setMemberId(profile.getMember().getId());
-        form.setFolloweeNum(profile.getFolloweeNum());
-        form.setFollowerNum(profile.getFollowerNum());
-        form.setNickname(profile.getNickname());
-        form.setProfileState(profile.getState());
-        form.setRank(profile.getRank());
-        form.setImgFullPath(profile.getImage().getImgFullPath());
-
-
-        return new ResponseEntity<>(form, HttpStatus.OK);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
     }//맴버정보보기를 눌러서 확인
 
     /**
