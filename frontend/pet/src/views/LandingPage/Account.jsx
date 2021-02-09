@@ -37,7 +37,7 @@ function Account({ history }) {
     circle.classList.add('circle');
     circle.style.animationDelay = `${Math.random() * bubbleLifeTime}s`;
 
-    const side = `${10 + Math.floor(Math.random() * 5)}px`;
+    const side = `${10 + Math.floor(Math.random() * 10)}px`;
     circle.style.width = side;
     circle.style.height = side;
 

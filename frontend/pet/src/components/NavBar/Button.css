@@ -19,7 +19,7 @@
 }
 
 .btn {
-  padding: 8px 20px;
+  padding: 8px 10px;
   border-radius: 2px;
   outline: none;
   border: none;
@@ -53,7 +53,6 @@
 .btn--large:hover,
 .btn--medium:hover {
   transition: all 0.3s ease-out;
-  background: var(--clr-primary);
-  color: var(--clr-primary);
-  transition: 250ms;
+  border: 1px solid var(--clr-primary);
+  transition: 100ms;
 }
