@@ -75,13 +75,13 @@ public class BoardApiController {
     /**
      * 게시물 수정
      */
-//    @PutMapping
-//    public CreateBoardResponse updateBoard(UpdateBoardRequest request, List<MultipartFile> files){
-//
-//        Long id = boardService.update(request, files);
-//
-//        return new CreateBoardResponse(id);
-//    }
+    @PutMapping("/api/board/update/{boardId}")
+    public CreateBoardResponse updateBoard(@PathVariable("boardId") Long boardId, UpdateBoardRequest request, List<MultipartFile> files) throws IOException {
+
+        Long id = boardService.update(boardId, request, files);
+
+        return new CreateBoardResponse(id);
+    }
 
     /**
      * 게시물 삭제
