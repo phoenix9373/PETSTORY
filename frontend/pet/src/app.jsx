@@ -16,6 +16,7 @@ import CarToonize from './views/Cartoonize/CartoonizePage';
 // Component Load
 import SelectProfileModal from './components/ProfileModal/SelectProfileModal';
 import NavBar from './components/NavBar/NavBar';
+import MbtiModal from './components/ProfileModal/MbtiModal';
 
 const getStorageTheme = () => {
   let theme = 'light-theme';
@@ -68,6 +69,7 @@ function App() {
           <PrivateRoute path="/profile" component={ProfilePage} />
           <PrivateRoute path="/select" component={SelectProfileModal} />
           <PrivateRoute path="/cartoonize" component={CarToonize} />
+          <PrivateRoute path="/mbti" component={MbtiModal} />
           <Route component={PageNotFound} />
         </Switch>
       </Router>
