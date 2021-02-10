@@ -93,12 +93,6 @@ public class BoardApiController {
     }
 
 
-//    @Data
-//    static class CreateBoardRequest {
-//        private String title;
-//        private String context;
-//
-//    }
 
     @Data
     static class CreateBoardResponse {
