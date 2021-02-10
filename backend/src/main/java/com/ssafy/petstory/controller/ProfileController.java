@@ -103,7 +103,7 @@ public class ProfileController {
         profileService.update(profileId, image, form);
 
         return new ResponseEntity<>("프로필 정보가 수정되었습니다.", HttpStatus.OK);
-    }//맴버정보보기를 눌러서 확인
+    } // 맴버정보보기를 눌러서 확인
 
     /**
      * 프로필 정보 삭제

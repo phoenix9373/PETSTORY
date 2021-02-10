@@ -1,5 +1,6 @@
 package com.ssafy.petstory.domain;
 
+import com.ssafy.petstory.dto.CommentDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,13 +13,14 @@ import javax.persistence.*;
 public class Comment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long itd;
+    private Long id;
 
-    private String comment;
+    @Column(name = "comment_content")
+    private String content;
 
-    private long profile_id;
+    private long profileId;
 
     // Board과 Comment는 일대다 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,10 +38,22 @@ public class Comment {
     /**
      * Comment 생성 메서드
      */
-    public static Comment createComment() {
+    public static Comment createComment(CommentDto request, Board board) {
         Comment comment = new Comment();
+        comment.setBoard(board);
+        comment.setContent(request.getContent());
+        comment.setProfileId(request.getProfileId());
 
         return comment;
     }
-    
+
+    /**
+     * Comment 수정 메서드
+     */
+    public static Comment update(CommentDto request, Comment comment, Board board) {
+        comment.setContent(request.getContent());
+//        comment.setBoard(board);
+        return comment;
+    }
+
 }
