@@ -12,9 +12,9 @@ import ProfilePage from './views/Profile/ProfilePage';
 import Map from './views/Map/Map';
 import PageNotFound from './views/PageNotFound/PageNotFound';
 import CarToonize from './views/Cartoonize/CartoonizePage';
+import SelectProfileModal from './views/Profile/SelectProfileModal';
 
 // Component Load
-import SelectProfileModal from './components/ProfileModal/SelectProfileModal';
 import NavBar from './components/NavBar/NavBar';
 import MbtiModal from './components/ProfileModal/MbtiModal';
 
