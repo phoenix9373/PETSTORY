@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../../_actions/userAction';
 import Switch from '@material-ui/core/Switch';
-import './NavBar.css';
+import './NavBar.scss';
+import peticon from '../../assets/peticon.png';
 
 function Navbar({ isLogin, toggleTheme }) {
   const [click, setClick] = useState(false);
@@ -20,12 +21,34 @@ function Navbar({ isLogin, toggleTheme }) {
 
   // 스크롤 이벤트
   const [scrolled, setScrolled] = useState(false);
+  const [scrollNum, setScrollNum] = useState();
+
   const handleScroll = () => {
     const offset = window.scrollY;
-    if (offset > 100) {
-      setScrolled(true);
-    } else {
+    if (offset < 80) {
       setScrolled(false);
+      setScrollNum('');
+    } else if (offset < 500) {
+      setScrolled(true);
+      setScrollNum(1);
+    } else if (offset < 1000) {
+      setScrollNum(2);
+    } else if (offset < 1500) {
+      setScrollNum(3);
+    } else if (offset < 2000) {
+      setScrollNum(4);
+    } else if (offset < 2500) {
+      setScrollNum(5);
+    } else if (offset < 3000) {
+      setScrollNum(6);
+    } else if (offset < 3500) {
+      setScrollNum(7);
+    } else if (offset < 4000) {
+      setScrollNum(8);
+    } else if (offset < 4500) {
+      setScrollNum(9);
+    } else if (offset < 5000) {
+      setScrollNum(10);
     }
   };
 
@@ -59,26 +82,28 @@ function Navbar({ isLogin, toggleTheme }) {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-  });
-
-  useEffect(() => {
     showButton();
   }, [isLogin]);
 
+  window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', showButton);
+
   return (
     <>
       <div className={scrolled ? 'navbar active' : 'navbar'}>
+        <div className="pixelart-to-css"></div>
         <div
           className={
-            scrolled ? 'navbar-background active' : 'navbar-background'
+            scrolled
+              ? `navbar-background active${scrollNum}`
+              : `navbar-background`
           }
         ></div>
         <div
           className={scrolled ? 'navbar-container active' : 'navbar-container'}
         >
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
+            <img className="navbar-icon" src={peticon} />
             PetStory
           </Link>
           <div className="menu-icon" onClick={handleClick}>
