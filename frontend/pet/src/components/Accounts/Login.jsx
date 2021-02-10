@@ -41,7 +41,7 @@ function LoginPage(props) {
       .then((res) => {
         if (res.payload !== undefined) {
           localStorage.setItem('user', JSON.stringify(res.payload));
-          props.history.push('/');
+          props.history.push('/select');
           window.location.reload();
         } else {
           toast.error('잘못된 정보를 입력하셧습니다.');
