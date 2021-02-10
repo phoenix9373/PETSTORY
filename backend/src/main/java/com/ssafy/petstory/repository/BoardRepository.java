@@ -163,6 +163,9 @@ public class BoardRepository {
         return result;
     }
 
+    /**
+     * 게시물 조회
+     */
     public Board findBoard(Long boardId) {
         return em.find(Board.class, boardId);
     }
@@ -194,6 +197,9 @@ public class BoardRepository {
         return boardHashtagQueryDtos;
     }
 
+    /**
+     * 게시물 삭제
+     */
     public void delete(Board board) {
         em.remove(board);
     }
