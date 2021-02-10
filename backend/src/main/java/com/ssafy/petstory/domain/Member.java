@@ -33,8 +33,8 @@ public class Member {
     private List<Profile> profiles = new ArrayList<>();
 
     // Member와 Postlist은 일대다 관계
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-    private List<Postlist> postlists = new ArrayList<>();
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<MemberPostlist> memberPostlists = new ArrayList<>();
 
 
 }
