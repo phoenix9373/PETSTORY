@@ -21,9 +21,6 @@ import java.util.List;
 public class BoardApiController {
 
     private final BoardService boardService;
-    private final FileService fileService;
-    private final AwsS3Service awsS3Service;
-
 
     @Data
     @AllArgsConstructor

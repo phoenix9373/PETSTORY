@@ -4,7 +4,7 @@ import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Hashtag;
 import com.ssafy.petstory.repository.BoardHashtagRepository;
-import com.ssafy.petstory.repository.HashtagRepository;
+import com.ssafy.petstory.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,12 +18,15 @@ import java.util.stream.Collectors;
 public class BoardHashtagService {
 
     private final BoardHashtagRepository boardHashtagRepository;
-    private final HashtagRepository hashtagRepository;
     private final HashtagService hashtagService;
+    private final BoardRepository boardRepository;
 
-    public List<Hashtag> save(Board board, List<String> hashtagNames){
+    public void save(BoardHashtag boardHashtag) {
+        boardHashtagRepository.save(boardHashtag);
+    }
+
+    public List<Hashtag> saveByNames(Board board, List<String> hashtagNames){
         List<Hashtag> hashtags = mapToHashtag(hashtagNames);
-
         return hashtags;
     }
 

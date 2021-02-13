@@ -2,6 +2,7 @@ package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Hashtag;
+import com.ssafy.petstory.dto.HashtagDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -21,16 +22,6 @@ public class HashtagRepository {
     }
 
     public Optional<Hashtag> findByName(String name) {
-//        List<Hashtag> hashtags = em.createQuery(
-//                "select h from Hashtag h" +
-//                        " where h.name = :name", Hashtag.class)
-//                .setParameter("name", name)
-//                .getResultList();
-//        if (hashtags.isEmpty()) {
-//            return Optional.ofNullable(null);
-//        }else {
-//            return Optional.ofNullable(hashtags.get(0));
-//        }
         return em.createQuery(
                 "select h from Hashtag h" +
                         " where h.name = :name", Hashtag.class)
@@ -38,5 +29,26 @@ public class HashtagRepository {
                 .getResultList()
                 .stream()
                 .findFirst();
+    }
+
+   public List<String> findByHashtagNameStartsWith(String hashtagName) {
+        return em.createQuery(
+                "select h.name from Hashtag h" +
+                        " where h.name like :hashtagName", String.class)
+                .setParameter("hashtagName", "%" + hashtagName + "%")
+                .getResultList();
+    }
+
+    /**
+     * 인기 해시태그 조회
+     */
+    public List<HashtagDto> findPopularHashtags(int offset, int limit) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.HashtagDto(h.id, h.name)" +
+                        " from Hashtag h" +
+                        " order by h.cnt desc", HashtagDto.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
     }
 }

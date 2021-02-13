@@ -1,8 +1,8 @@
 package com.ssafy.petstory.service;
 
 import com.ssafy.petstory.domain.*;
-import com.ssafy.petstory.dto.CreateBoardRequest;
 import com.ssafy.petstory.dto.BoardQueryDto;
+import com.ssafy.petstory.dto.CreateBoardRequest;
 import com.ssafy.petstory.dto.FileDto;
 import com.ssafy.petstory.dto.UpdateBoardRequest;
 import com.ssafy.petstory.repository.*;
@@ -12,11 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true) // 데이터의 변경이 없는 읽기 전용 메서드에 사용, 영속성 컨텍스트를 플러시 하지 않으므로 약간의 성능 향상(읽기 전용에는 다 적용)
@@ -24,13 +20,9 @@ import java.util.stream.Collectors;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-    private final BoardHashtagRepository boardHashtagRepository;
     private final ProfileRepository profileRepository;
-    private final FileRepository fileRepository;
     private final AwsS3Service awsS3Service;
-    private final HashtagRepository hashtagRepository;
     private final BoardHashtagService boardHashtagService;
-    private final HashtagService hashtagService;
     private final FileService fileService;
 
 
@@ -57,15 +49,16 @@ public class BoardService {
                 file.setBoard(board);
             }
         }
-
         // 해시태그 생성 -> 생성시 해시태그 중복체크
-        List<Hashtag> hashtags = boardHashtagService.save(board, request.getHashtags());
+        List<Hashtag> hashtags = boardHashtagService.saveByNames(board, request.getHashtags());
+        System.out.println("!!!!!!!!!!!!11111111111111111111111111111");
+
         for (Hashtag hashtag : hashtags) {
             BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag(hashtag);
             boardHashtag.setBoard(board);
-            boardHashtagRepository.save(boardHashtag);
+            boardHashtagService.save(boardHashtag);
         }
-
+        System.out.println("2222222222222222222222222222222222222222222");
         // 좋아요 누른 유저 검증 및 상태유지
 
         // 게시물 저장
@@ -100,7 +93,6 @@ public class BoardService {
         private Long id;
         private String image;
     }
-
 
     /**
      * 게시물 수정
@@ -138,12 +130,12 @@ public class BoardService {
 //        }
 
 
-        List<Hashtag> hashtags = boardHashtagService.save(board, request.getHashtags());
+        List<Hashtag> hashtags = boardHashtagService.saveByNames(board, request.getHashtags());
         for (Hashtag hashtag : hashtags) {
-            if(hashtag.getBoardHashtags() != board.getBoardHashtags()) {
+            if (hashtag.getBoardHashtags() != board.getBoardHashtags()) {
                 BoardHashtag boardHashtag = BoardHashtag.createBoardHashtag(hashtag);
                 boardHashtag.setBoard(board);
-                boardHashtagRepository.save(boardHashtag);
+                boardHashtagService.save(boardHashtag);
             }
         }
 

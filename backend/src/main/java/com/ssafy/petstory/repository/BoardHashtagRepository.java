@@ -18,9 +18,10 @@ public class BoardHashtagRepository {
 
     /**
      * 해시태그 생성
+     *
      * @return
      */
-    public BoardHashtag save(BoardHashtag boardHashtag){
+    public BoardHashtag save(BoardHashtag boardHashtag) {
         em.persist(boardHashtag);
         return boardHashtag;
     }
@@ -28,7 +29,7 @@ public class BoardHashtagRepository {
     /**
      * 1:N 관계인 boardHashtags hashtagName으로 조회
      */
-    public List<BoardHashtagQueryDto> findByHashtagName(String hashtagName){
+    public List<BoardHashtagQueryDto> findByHashtagName(String hashtagName) {
         return em.createQuery(
                 "select new com.ssafy.petstory.dto.BoardHashtagQueryDto()" +
                         " from BoardHashtag bh" +
@@ -39,16 +40,18 @@ public class BoardHashtagRepository {
     }
 
     public Optional<BoardHashtag> findByHashtag(Long id) {
-        List<BoardHashtag> boardHashtags = em.createQuery(
+        return em.createQuery(
                 "select bh from BoardHashtag bh" +
                         " where bh.hashtag.id = :id", BoardHashtag.class)
                 .setParameter("id", id)
-                .getResultList();
-        if(boardHashtags.isEmpty()){
-            return Optional.ofNullable(null);
-        }else {
-            return Optional.ofNullable(boardHashtags.get(0));
-        }
+                .getResultList()
+                .stream()
+                .findFirst();
+//        if(boardHashtags.isEmpty()){
+//            return Optional.ofNullable(null);
+//        }else {
+//            return Optional.ofNullable(boardHashtags.get(0));
+//        }
     }
 
     public Optional<Hashtag> findByName(String name) {
@@ -58,6 +61,17 @@ public class BoardHashtagRepository {
                 .setParameter("name", name)
                 .getSingleResult();
         return Optional.ofNullable(hashtag); // 맞냐?
+    }
+
+    /**
+     * hashtag id를 가진 board들 검색하기 위한 boardhagtag 검색
+     */
+    public List<BoardHashtag> findBoardHashtag(Long hashtagId) {
+        return em.createQuery(
+                "select bh from BoardHashtag bh" +
+                        " where bh.hashtag.id = :hashtagId", BoardHashtag.class)
+                .setParameter("hashtagId", hashtagId)
+                .getResultList();
     }
 
 
@@ -85,4 +99,6 @@ public class BoardHashtagRepository {
             em.remove(boardHashtag);
         }
     }
+
+
 }
