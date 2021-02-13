@@ -1,6 +1,7 @@
 package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.Board;
+import com.ssafy.petstory.domain.BoardHashtag;
 import com.ssafy.petstory.domain.Profile;
 import com.ssafy.petstory.dto.BoardHashtagQueryDto;
 import com.ssafy.petstory.dto.BoardQueryDto;
@@ -238,14 +239,69 @@ public class BoardRepository {
      * 게시물 상세(단건) 조회시 넘어온 boardId로 file 컬렉션을 조회
      */
     private List<BoardQueryDto> findProfileBoard(Long profileId) {
-        List<BoardQueryDto> boardQueryDtos = em.createQuery(
+        return em.createQuery(
                 "select new com.ssafy.petstory.dto.BoardQueryDto" +
                         "(b.profile.id, b.profile.nickname, b.profile.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
                         " from Board b " +
                         " where b.profile.id in :profileId", BoardQueryDto.class)
                 .setParameter("profileId", profileId)
                 .getResultList();
-        return boardQueryDtos;
     }
 
+    /**
+     * 해시태그로 게시글들 전체 조회
+     */
+    public List<BoardQueryDto> findByHashtag(List<BoardHashtag> boardHashtags) {
+        List<Long> boardIds = toBoardIdsByBoardHashtag(boardHashtags);
+        List<BoardQueryDto> result = findBoardsByBoardIds(boardIds);
+
+        // file 컬렉션을 Map 한 방에 조회
+        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
+
+        // boardHashtag 컬렉션 Map 한 방에 조회
+        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.forEach(b ->
+                b.setFiles(fileMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
+        );
+        return result;
+    }
+
+    /**
+     * 해시태그에 해당하는 boardId들 조회
+     */
+    private List<Long> toBoardIdsByBoardHashtag(List<BoardHashtag> boardHashtags){
+        List<Long> lists = boardHashtags.stream()
+                .map(bh -> bh.getBoard().getId())
+                .collect(Collectors.toList());
+        return lists;
+    }
+
+    /**
+     * BoardHashtag에 해당하는
+     * 1:N 관계(Collection)을 제외한 나머지를 한 번에 조회
+     * -> XToOne 모두 조회
+     */
+    private List<BoardQueryDto> findBoardsByBoardIds(List<Long> boardIds) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.BoardQueryDto" +
+                        "(p.id, p.nickname, p.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+                        " from Board b " +
+                        " join b.profile p" +
+                        " where b.id in :boardIds", BoardQueryDto.class)
+                .setParameter("boardIds", boardIds)
+                .getResultList();
+
+
+//        em.createQuery(
+//                "select new com.ssafy.petstory.dto.BoardQueryDto" +
+//                        "(b.profile.id, b.profile.nickname, b.profile.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
+//                        " from Board b " +
+//                        " where b.boardHashtag.id in :boardHashtagId", BoardQueryDto.class)
+//                .setParameter("boardHashtagId", boardHashtagId)
+//                .getResultList();
+    }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.petstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,18 +25,15 @@ public class Hashtag {
     @Column(name = "hashtag_name")
     private String name;
 
+    @JsonIgnore
+    @Column(name = "hashtag_cnt")
+    private int cnt;
+
     @OneToMany(mappedBy = "hashtag", fetch = FetchType.LAZY) // cascade?
     List<BoardHashtag> boardHashtags = new ArrayList<>();
 
-    /**
-     * Hastag 중복 확인
-     */
 
-    @Builder
-    public Hashtag(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+
 
     /**
      * 생성 메서드
@@ -46,7 +44,6 @@ public class Hashtag {
 
         Hashtag hashtag = new Hashtag();
         hashtag.setName(hashtagName);
-        System.out.println(hashtag.getName());
         return hashtag;
     }
 }
