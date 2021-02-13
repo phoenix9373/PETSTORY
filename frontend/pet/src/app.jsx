@@ -12,7 +12,7 @@ import ProfilePage from './views/Profile/ProfilePage';
 import Map from './views/Map/Map';
 import PageNotFound from './views/PageNotFound/PageNotFound';
 import CarToonize from './views/Cartoonize/CartoonizePage';
-import SelectProfileModal from './views/Profile/SelectProfileModal';
+import UserDetail from './views/Accounts/UserDetailPage';
 
 // Component Load
 import NavBar from './components/NavBar/NavBar';
@@ -40,7 +40,6 @@ function App() {
 
   const users = () => {
     const user = localStorage.getItem('user');
-    // console.log(user);
     if (user === null) {
       setIslogin(false);
     } else {
@@ -70,6 +69,7 @@ function App() {
           <PrivateRoute path="/select" component={SelectProfileModal} />
           <PrivateRoute path="/cartoonize" component={CarToonize} />
           <PrivateRoute path="/mbti" component={MbtiModal} />
+          <PrivateRoute path="/userdetail" component={UserDetail} />
           <Route component={PageNotFound} />
         </Switch>
       </Router>

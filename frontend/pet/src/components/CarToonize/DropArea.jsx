@@ -6,16 +6,11 @@ function DropArea({ transForm }) {
   const [rowdata, setRowData] = useState(false);
   const [err, setErr] = useState(false);
 
-  const onDrop = (e) => {
-    e.preventDefault();
-    const {
-      dataTransfer: { files },
-    } = e;
+  const filesTrans = (files) => {
     setRowData(files);
-
     const reader = new FileReader();
     const fileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-    const { size, type } = files[0];
+    const { size, type } = files;
 
     setData(false);
     if (!fileTypes.includes(type)) {
@@ -32,36 +27,76 @@ function DropArea({ transForm }) {
     };
   };
 
+  const onImageChange = (e) => {
+    const files = e.target.files;
+    filesTrans(files);
+  };
+
+  const onDrop = (e) => {
+    console.log(e);
+    e.preventDefault();
+    const {
+      dataTransfer: { files },
+    } = e;
+    filesTrans(files);
+  };
+
   const onDragOver = (e) => {
     e.preventDefault();
   };
 
-  const ImageTrans = () => {
-    transForm(rowdata);
+  const removeImg = () => {
+    setData(false);
+    const temp = document.getElementById('result__img');
+    if (temp.firstChild) {
+      let first = temp.firstChild;
+      while (first) {
+        temp.removeChild(temp.firstChild);
+        first = temp.firstChild;
+      }
+    }
   };
+
+  const ImageTrans = () => {
+    const temp = document.getElementById('result__img');
+    if (temp === null) {
+      transForm(rowdata);
+    } else {
+      let first = temp.firstChild;
+      while (first) {
+        temp.removeChild(temp.firstChild);
+        first = temp.firstChild;
+      }
+      transForm(rowdata);
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       {err && <p>{err}</p>}
-      <div
-        className={styles.dropAreaStyle}
-        onDrop={(e) => onDrop(e)}
-        onDragOver={(e) => onDragOver(e)}
-      >
-        {data && <img className={styles.dropAreaImageStyle} src={data} />}
-      </div>
+      <label htmlFor="CartoonImage">
+        <div
+          className={styles.dropAreaStyle}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+        >
+          {!data && (
+            <div className={styles.placegHolderImage}>
+              여기에 이미지를 드래그 하거나 클릭해 주세요
+            </div>
+          )}
+          {data && <img className={styles.dropAreaImageStyle} src={data} />}
+        </div>
+      </label>
+      <input
+        type="file"
+        id="CartoonImage"
+        style={{ display: 'none' }}
+        onChange={onImageChange}
+      />
       <div className={styles.button__wrapper}>
         {data && (
-          <button
-            className={styles.button}
-            onClick={() => {
-              setData(false);
-              const temp = document.getElementById('result__img');
-              if (temp.lastElementChild) {
-                const child = temp.lastElementChild;
-                temp.removeChild(child);
-              }
-            }}
-          >
+          <button className={styles.button} onClick={removeImg}>
             Remove
           </button>
         )}
