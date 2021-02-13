@@ -96,7 +96,7 @@ function Account({ history }) {
           ''
         ) : (
           <button onClick={goLoginHandler} className="account__gologinbtn">
-            우리 사이트에 들어와볼래?
+            우리 사이트에 들어와 볼래?
           </button>
         )}
         <div

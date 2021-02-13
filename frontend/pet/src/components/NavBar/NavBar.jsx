@@ -71,6 +71,7 @@ function Navbar({ isLogin, toggleTheme }) {
       .then((res) => {
         if (res.payload) {
           localStorage.removeItem('user');
+          localStorage.removeItem('profileId');
           window.location.reload();
           // props.history.push('/login');
         } else {
@@ -91,7 +92,7 @@ function Navbar({ isLogin, toggleTheme }) {
   return (
     <>
       <div className={scrolled ? 'navbar active' : 'navbar'}>
-        <div className="pixelart-to-css"></div>
+        <div className={`pixelart-to-css active${scrollNum}`}></div>
         <div
           className={
             scrolled
@@ -145,6 +146,15 @@ function Navbar({ isLogin, toggleTheme }) {
                 onClick={closeMobileMenu}
               >
                 카툰
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link
+                to="/userdetail"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                멤버정보
               </Link>
             </li>
             <li>

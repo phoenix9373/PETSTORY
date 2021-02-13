@@ -5,8 +5,7 @@ import { loginUser } from '../../_actions/userAction';
 import toast from 'react-hot-toast';
 import kakaoIcon from '../../assets/kakaotalk.png';
 import { FcGoogle } from 'react-icons/fc';
-// import KaKaoLogins from '../SocialLogin/KakaoLogin';
-// import GoogleLogins from '../SocialLogin/GoogleLogins';
+import KakaoLogin from './KakaoLogin';
 
 function LoginPage(props) {
   const [Email, setEmail] = useState('');
@@ -58,6 +57,7 @@ function LoginPage(props) {
         <form className="acccount__form" onSubmit={onSubmitHandler}>
           <h1>Sign in</h1>
           <div className="social-container">
+            {/* <KakaoLogin /> */}
             <a className="account__a" href="#" className="social">
               <img className="account__kakao" src={kakaoIcon} />
             </a>
@@ -80,9 +80,6 @@ function LoginPage(props) {
             placeholder="Password"
             onChange={onPasswordHanlder}
           />
-          <a className="account__a" href="#">
-            Forgot your password?
-          </a>
           <button className="account__button" type="submit">
             SIGN IN
           </button>
