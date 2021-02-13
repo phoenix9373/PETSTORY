@@ -11,6 +11,7 @@ function CartoonizePage() {
   // 이미지 파일 업로드시 임시 URL을 얻기 위해 createObjectURL을 사용함
   const handleChangeFile = (event) => {
     setImgFile(URL.createObjectURL(event[0]));
+    console.log(`asdasd`, URL.createObjectURL(event[0]));
   };
 
   return (

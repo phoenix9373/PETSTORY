@@ -292,12 +292,44 @@
 
 .pixelart-to-css {
   position: absolute;
-  left: 10px;
+  left: 1vw;
   z-index: 100040;
+  transition: all 0.7s ease;
   animation: x 1s infinite;
   -webkit-animation: x 1s infinite;
   -moz-animation: x 1s infinite;
   -o-animation: x 1s infinite;
+}
+
+.pixelart-to-css.active1 {
+  left: 2vw;
+}
+.pixelart-to-css.active2 {
+  left: 3vw;
+}
+.pixelart-to-css.active3 {
+  left: 4vw;
+}
+.pixelart-to-css.active4 {
+  left: 5vw;
+}
+.pixelart-to-css.active5 {
+  left: 6vw;
+}
+.pixelart-to-css.active6 {
+  left: 7vw;
+}
+.pixelart-to-css.active7 {
+  left: 8vw;
+}
+.pixelart-to-css.active8 {
+  left: 9vw;
+}
+.pixelart-to-css.active9 {
+  left: 10vw;
+}
+.pixelart-to-css.active10 {
+  left: 10vw;
 }
 
 @keyframes x {
