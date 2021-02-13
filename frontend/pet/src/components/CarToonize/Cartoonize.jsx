@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Cartoonize.module.css';
 import {
   CartoonWorkerManager,
@@ -8,12 +8,14 @@ import {
 import { withRouter } from 'react-router-dom';
 
 function CarToonize({ img }) {
-  useEffect(() => {
-    // cartoonize 모듈 불러옴옴
-    const manager = new CartoonWorkerManager();
-    const config = generateCartoonDefaultConfig();
-    const params = generateDefaultCartoonParams();
+  const [cartoonizedImage, setCartoonizedImage] = useState(null);
 
+  // cartoonize 모듈 불러옴옴
+  const manager = new CartoonWorkerManager();
+  const config = generateCartoonDefaultConfig();
+  const params = generateDefaultCartoonParams();
+
+  useEffect(() => {
     // 태그생성
     const srcCanvas = document.createElement('canvas');
     const dstCanvas = document.createElement('canvas');
@@ -37,6 +39,7 @@ function CarToonize({ img }) {
             dstCanvas
               .getContext('2d')
               .drawImage(res, 0, 0, dstCanvas.width, dstCanvas.height);
+            setCartoonizedImage(dstCanvas.toDataURL());
           });
       };
     }
