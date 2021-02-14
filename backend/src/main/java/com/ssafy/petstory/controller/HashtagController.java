@@ -50,5 +50,12 @@ public class HashtagController {
         return new Result(hashtagService.findPopularHashtags());
     }
 
+    /**
+     * 게시물 상세보기에서 연관 해시태그(top4) 조회
+     */
+//    @GetMapping("/api/hashtag/findRelated")
+//    public Result<HashtagDto> findRelated(String hashtagName) {
+//        return new Result(hashtagService.findRelatedHashtags(hashtagName));
+//    }
 
 }
