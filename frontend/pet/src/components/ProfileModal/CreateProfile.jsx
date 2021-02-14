@@ -1,47 +1,75 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
 import { useDispatch } from 'react-redux';
 import { addProfile } from '../../_actions/profileAction';
+// component
+import MbtiModal from './MbtiModal';
+// image
+import dogIcon from '../../assets/tempImage.png';
+// library
+import Modal from 'react-modal';
+import toast from 'react-hot-toast';
 
 function CreateProfile(props) {
   const [imgFile, setImgFile] = useState(null);
+  const [encodingImage, setEncodingImage] = useState(null);
+  const [isMbti, setIsMbti] = useState(false);
   const inputRef = React.createRef();
   const dispatch = useDispatch();
 
-  const handleTestClose = () => {
+  // Create 모달
+  const onCloseModal = () => {
     props.onClose();
+    setEncodingImage(null);
   };
 
+  // MBTI 모달
+  const handleMbtiModal = () => {
+    setIsMbti(!isMbti);
+  };
+
+  // 프로필 생성 : 미리보기를 위해 이미지 인코딩
   const convertImg = (e) => {
-    if (e.target.files[0]) {
-      // const imageUrl = URL.createObjectURL(e.target.files[0]);
-      // setImgFile({ imageUrl });
-      setImgFile(e.target.files[0]);
-    }
+    setImgFile(e.target.files[0]);
+    const imageUrl = URL.createObjectURL(e.target.files[0]);
+    setEncodingImage(imageUrl);
+
+    const newProfileInfo = { name: 'imgFullPath', value: imageUrl }; // img를 select로 보내주기
+    props.handleInput(newProfileInfo);
   };
 
-  const handleAddForm = (e) => {
+  // 프로필 생성 : nickname을 select에 보내주기
+  const sendToSelect = (e) => {
+    const newProfileInfo = { name: 'nickname', value: inputRef.current.value };
+    props.handleInput(newProfileInfo);
+  };
+
+  // 프로필 생성 : formData -> axios,
+  const handleAddForm = async (e) => {
     e.preventDefault();
+
+    if (inputRef.current.value === '' || inputRef.current.value === null) {
+      toast.error('닉네임을 입력해주세요');
+      return;
+    }
+
+    if (imgFile === null || imgFile === undefined) {
+      toast.error('프로필 이미지를 입력해주세요');
+      return;
+    }
 
     const formData = new FormData();
     formData.append('memberId', props.memberId);
     formData.append('nickname', inputRef.current.value);
     formData.append('image', imgFile);
 
-    console.log(`form ${String.valueOf(formData)}`);
-
-    dispatch(addProfile(formData))
+    await dispatch(addProfile(formData))
       .then((res) => {
-        const stringfyRes = JSON.stringify(res);
-        console.log(`ProfileModal-프로필 생성 응답:${stringfyRes});
-        }`);
-        window.location.href = 'http://localhost:3000/select';
+        const id = res.payload.id;
+        props.onSubmit(id);
       })
-      .catch((err) => {
-        // 에러나도 여기로 안들어감
-        console.log('ProfileModal-프로필 생성 but 에러');
-        console.log(err);
-      });
+      .catch((err) => console.log(err));
+
+    setEncodingImage(null);
   };
 
   const body = (
@@ -51,12 +79,46 @@ function CreateProfile(props) {
         <p>
           Petstory를 이용할 다른 사용자를 등록하시려면 프로필을 추가해주세요.
         </p>
-        <input type="file" onChange={convertImg}></input>
-        <input ref={inputRef} type="text" placeholder="닉네임"></input>
+        {encodingImage ? (
+          <img
+            className="profileImageInModify"
+            src={encodingImage}
+            alt="프로필이미지"
+          />
+        ) : (
+          <img
+            className="profileImageInModify"
+            src={dogIcon}
+            alt="임시프로필"
+          />
+        )}
+        <input
+          type="file"
+          files={props.imgFullPath}
+          id="profileImg"
+          name="imgFullPath"
+          onChange={convertImg}
+        />
+        <input
+          name="nickname"
+          // value={props.nickname}
+          ref={inputRef}
+          type="text"
+          placeholder="닉네임"
+          onChange={sendToSelect}
+        />
+        <button type="button" onClick={handleMbtiModal}>
+          MBTI
+        </button>
+        <MbtiModal
+          mbtiTest={isMbti}
+          onClose={handleMbtiModal}
+          onSubmit={handleAddForm}
+        />
         <button type="button" onClick={handleAddForm}>
           완료
         </button>
-        <button type="button" onClick={handleTestClose}>
+        <button type="button" onClick={onCloseModal}>
           취소
         </button>
       </form>
@@ -67,7 +129,7 @@ function CreateProfile(props) {
     <Modal
       // className="modal"
       isOpen={props.newProfile}
-      onRequestClose={handleTestClose}
+      onRequestClose={onCloseModal}
       style={{
         content: {
           top: '20%',

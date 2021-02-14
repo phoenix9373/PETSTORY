@@ -68,7 +68,7 @@ function App() {
           <PrivateRoute path="/detail/:boardId" component={DetailPage} />
           <PrivateRoute path="/create" component={Create} />
           <PrivateRoute path="/map" component={Map} />
-          <PrivateRoute path="/profile" component={ProfilePage} />
+          <PrivateRoute path="/profile/:profileId" component={ProfilePage} />
           <PrivateRoute path="/select" component={SelectProfileModal} />
           <PrivateRoute path="/cartoonize" component={CarToonize} />
           <PrivateRoute path="/mbti" component={MbtiModal} />

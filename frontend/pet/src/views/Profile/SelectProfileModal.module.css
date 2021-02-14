@@ -1,11 +1,11 @@
 .EntireProfilesBox {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 
 .ProfileBox {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }

@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import ProfileModal from './CreateProfile';
-import Modal from 'react-modal';
+import { useDispatch } from 'react-redux';
+import { followProfile } from '../../_actions/profileAction';
+// component, css
 import ModifyProfile from './ModifyProfile';
 import FollowerList from './FollowerList';
+// library
+import Modal from 'react-modal';
 
 function UserProfile(props) {
   // const dispatch = useDispatch();
   const [isFollowerModal, setFollowerModal] = useState(false);
   const [isFolloweeModal, setFolloweeModal] = useState(false);
   const [isModifyModal, setModifyModal] = useState(false);
-  const [test, setTest] = useState(false);
+  const [loginProfileId, setLoginProfileId] = useState(null);
+  const dispatch = useDispatch();
 
-  const handleTest = () => {
-    setTest(!test);
-  };
+  // profileId 가져오기
+  const jsonProfileId = localStorage.getItem('profileId');
+  const profileId = JSON.parse(jsonProfileId);
+  useEffect(() => {
+    setLoginProfileId(profileId);
+  }, [jsonProfileId]);
 
-  const closeTestModal = () => {
-    setTest(false);
-  };
-
+  // 모달 - 수정
   const closeModifyModal = () => {
     setModifyModal(false);
-  };
-
-  const handleFollowerModal = () => {
-    setFollowerModal(!isFollowerModal);
-  };
-
-  const handleFolloweeModal = () => {
-    setFolloweeModal(!isFolloweeModal);
   };
 
   const handleModifyModal = () => {
@@ -36,48 +32,29 @@ function UserProfile(props) {
     console.log(`isModifyModal ${isModifyModal}`);
   };
 
-  // dispatch(ProfileById()).then((res) => {
-  //   const profile = res.data;
-  // });
-  const followerListInModal = (
-    <div className="modal-body">
-      <h2>follower 목록</h2>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-      <p>body안</p>
-    </div>
-  );
+  const handleModify = (modiProfile) => {
+    console.log('==============Userprofile에서 받은거');
+    console.log(modiProfile);
+    props.handleModify(modiProfile);
+  };
+
+  // 모달 - Follower목록
+  const handleFollowerModal = () => {
+    setFollowerModal(!isFollowerModal);
+  };
+
+  const handleFollow = (e) => {
+    e.preventDefault();
+    const profileId = localStorage.getItem('profileId');
+    const followForm = new FormData();
+    followForm.append('follower_ee', profileId);
+    dispatch(followProfile(followForm)); // type이 안맞다는 에러뜬다.
+  };
+
+  // 모달 - Followee 목록
+  const handleFolloweeModal = () => {
+    setFolloweeModal(!isFolloweeModal);
+  };
 
   const followeeListInModal = (
     <div className="modal-body">
@@ -93,8 +70,6 @@ function UserProfile(props) {
 
   return (
     <div className="UserProfileBox">
-      <button onClick={handleTest}>프로필 생성 모달 테스트</button>
-      <ProfileModal test={test} onClose={closeTestModal} />
       <div className="profileCard">
         <img
           src={props.profile.imgFullPath}
@@ -132,13 +107,21 @@ function UserProfile(props) {
           </div>
         </div>
       </div>
-      <button type="button" onClick={handleModifyModal}>
-        edit profile
-      </button>
+      {/* 내 프로필이면 '프로필 편집', 남의 프로필이면 '팔로우' 버튼 */}
+      {props.profile.profileId === loginProfileId ? (
+        <button type="button" onClick={handleModifyModal}>
+          edit profile
+        </button>
+      ) : (
+        <button type="button" onClick={handleFollow}>
+          팔로우
+        </button>
+      )}
       <ModifyProfile
         profile={props.profile}
         isOpen={isModifyModal}
-        onModify={closeModifyModal}
+        closeModal={closeModifyModal}
+        handleModify={handleModify}
       />
     </div>
   );
