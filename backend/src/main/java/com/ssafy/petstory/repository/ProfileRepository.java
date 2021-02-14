@@ -29,7 +29,7 @@ public class ProfileRepository {
      */
     public List<ReadMultiProfileResponse> findByMemberId(Long id) {
         return em.createQuery(
-                "select new com.ssafy.petstory.dto.ReadMultiProfileResponse(p.id, p.nickname, p.rank, p.image.imgFullPath)" +
+                "select new com.ssafy.petstory.dto.ReadMultiProfileResponse(p.id, p.nickname, p.state, p.rank, p.image.imgFullPath)" +
                 " from Profile p" +
                 " where p.member.id = :id", ReadMultiProfileResponse.class) // ":name" 파라미터 바인딩
                 .setParameter("id", id)

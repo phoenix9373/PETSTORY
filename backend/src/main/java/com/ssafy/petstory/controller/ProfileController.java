@@ -40,11 +40,12 @@ public class ProfileController {
      * 프로필 생성
      * */
     @PostMapping("/profiles/new")  // post - 맴버로 로그인 후 프로필 생성 클릭 시 -> 프론트에서 맴버 id(세션에 저장된), 받아와 Member타입은 null로
-    public ResponseEntity<String> create(@Valid ProfileForm proform, MultipartFile image, BindingResult result) throws IOException {
+    public CreateProfileResponse create(@Valid ProfileForm proform, MultipartFile image, BindingResult result) throws IOException {
 
 
         if (result.hasErrors()) {
-            return new ResponseEntity<>("error입니다. 파라미터명, 형식 확인", HttpStatus.FORBIDDEN);
+            return new CreateProfileResponse(00000L);
+//            return new ResponseEntity<>("error입니다. 파라미터명, 형식 확인", HttpStatus.FORBIDDEN);
         }
 
         System.out.println("=================================================== 받은 닉네임 확인");
@@ -52,15 +53,16 @@ public class ProfileController {
 
         //service -> 1. 맴버 id를 이용해 member 찾고   -> 2. entity 메서드 profile 엔티티에 연관관계 지어주고 서비스에서 db에 바로 넣어준다
         //이때 relation 테이블도 함께 생성된다.
-        profileService.createProfile(proform, image);
+        Long profileId = profileService.createProfile(proform, image);
 
 
 //        profile.set(form.getMember_name());
 //        profile.setEmail(form.getEmail());
 //        profile.setPassword(form.getPassword());
 
-        return new ResponseEntity<>("success", HttpStatus.OK); //이건 컨트롤러에서 해당 뷰를 보여주는 것이 아니라 redirect 오른쪽 주소로 url 요청 다시하는거(새로고침)
+//        return new ResponseEntity(profileId, HttpStatus.OK); //이건 컨트롤러에서 해당 뷰를 보여주는 것이 아니라 redirect 오른쪽 주소로 url 요청 다시하는거(새로고침)
         //ResponseEntity로 성공 메세지 전달 가능
+        return new CreateProfileResponse(profileId);
     }
 
 
@@ -167,5 +169,16 @@ public class ProfileController {
 
         return new ResponseEntity<>("success", HttpStatus.OK); //이건 컨트롤러에서 해당 뷰를 보여주는 것이 아니라 redirect 오른쪽 주소로 url 요청 다시하는거(새로고침)
         //ResponseEntity로 성공 메세지 전달 가능
+    }
+
+
+
+    @Data
+    static class CreateProfileResponse {
+        private Long id;
+
+        public CreateProfileResponse(Long id) {
+            this.id = id;
+        }
     }
 }
