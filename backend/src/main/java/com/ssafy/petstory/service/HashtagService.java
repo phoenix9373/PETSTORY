@@ -61,9 +61,15 @@ public class HashtagService {
      * 인기 해시태그 조회
      * @return
      */
-//    public List<PopulatHashtagDto> findPopularHashtags() {
     public List<HashtagDto> findPopularHashtags() {
         return hashtagRepository.findPopularHashtags(0, 10);
     }
 
+    /**
+     * 게시물 상세보기에서 연관 해시태그(상위 4) 조회
+     * @return
+     */
+    public List<HashtagDto> findRelatedHashtags(String hashtagName){
+        return hashtagRepository.findRelatedHashtags(0, 4, hashtagName);
+    }
 }
