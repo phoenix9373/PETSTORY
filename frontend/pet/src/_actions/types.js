@@ -8,3 +8,4 @@ export const MYSTORY_USER = 'MYSTORY_USER';
 export const FOLLOWERLIST = 'FOLLOWERLIST';
 export const FOLLOWEELIST = 'FOLLOWEELIST';
 export const GET_FEED_DATA = 'GETFEEDDATA';
+export const CREATE_BOARD = 'CREATE_BOARD';
