@@ -1,9 +1,6 @@
 package com.ssafy.petstory.controller;
 
-import com.ssafy.petstory.dto.BoardQueryDto;
-import com.ssafy.petstory.dto.CreateBoardRequest;
-import com.ssafy.petstory.dto.FileDto;
-import com.ssafy.petstory.dto.UpdateBoardRequest;
+import com.ssafy.petstory.dto.*;
 import com.ssafy.petstory.service.AwsS3Service;
 import com.ssafy.petstory.service.BoardService;
 import com.ssafy.petstory.service.FileService;
@@ -54,7 +51,7 @@ public class BoardApiController {
      * http://localhost:8080/api/board/findOne/1
      */
     @GetMapping("/api/board/findOne/{boardId}")
-    public Result<BoardQueryDto> findOne(@PathVariable("boardId") Long boardId){
+    public Result<BoardDetailDto> findOne(@PathVariable("boardId") Long boardId){
         return new Result(boardService.findOne(boardId));
     }
 

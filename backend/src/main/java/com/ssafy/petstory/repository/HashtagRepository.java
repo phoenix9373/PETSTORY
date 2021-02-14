@@ -31,13 +31,18 @@ public class HashtagRepository {
                 .findFirst();
     }
 
-   public List<String> findByHashtagNameStartsWith(String hashtagName) {
+    /**
+     * 해시태그 자동완성
+     * %검색명%
+     */
+    public List<String> findByHashtagNameStartsWith(String hashtagName) {
         return em.createQuery(
                 "select h.name from Hashtag h" +
                         " where h.name like :hashtagName", String.class)
                 .setParameter("hashtagName", "%" + hashtagName + "%")
                 .getResultList();
     }
+
 
     /**
      * 인기 해시태그 조회
@@ -51,4 +56,23 @@ public class HashtagRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
+
+    /**
+     * 게시물 상세보기 시 연관 해시태그
+     * 이름으로 검색 후 cnt(인기) 순으로 내림차순 후 4개 조회
+     * 
+     * 기능 삭제
+     */
+    public List<HashtagDto> findRelatedHashtags(int offset, int limit, String hashtagName) {
+        return em.createQuery(
+                "select new com.ssafy.petstory.dto.HashtagDto(h.id, h.name)" +
+                        " from Hashtag h" +
+                        " where h.name like :hashtagName" +
+                        " order by h.cnt desc", HashtagDto.class)
+                .setParameter("hashtagName", "%" + hashtagName + "%")
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
 }
