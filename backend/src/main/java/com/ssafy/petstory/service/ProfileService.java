@@ -30,7 +30,7 @@ public class ProfileService {
     /**
      * 프로필 생성
      */
-    public void createProfile(ProfileForm proform, MultipartFile file) throws IOException {
+    public Long createProfile(ProfileForm proform, MultipartFile file) throws IOException {
 
         Member member = memberRepository.findOne(proform.getMemberId()); //memberId를 통해 member 엔티티를 찾아온다.(프로필에 넣어줄거임)
 
@@ -52,6 +52,7 @@ public class ProfileService {
         }
 
         profileRepository.saveP(profile);
+        return profile.getId();
     }
 
     /**
@@ -76,8 +77,8 @@ public class ProfileService {
      * --> memberService로 가는 게 맞을 듯
      */
     @Transactional(readOnly = true)
-    public List<ReadMultiProfileResponse> showProfile(Long member_id) {
-       return profileRepository.findByMemberId(member_id);
+    public List<ReadMultiProfileResponse> showProfile(Long memberId) {
+       return profileRepository.findByMemberId(memberId);
     }
 
     /**
