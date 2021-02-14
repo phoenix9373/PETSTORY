@@ -1,13 +1,10 @@
-
 import { request } from '../utils/axios';
+import { CREATE_BOARD } from './types';
 
-const BOARD_API_BASE_URL = '/board';
-
-export function CreateArticle(BoardForm) {
-    const data = request('POST', `${BOARD_API_BASE_URL}/create`, BoardForm);
-    return {
-        type: BoardForm,
-        payload: data,
-    };
+export function createArticle(BoardForm) {
+  const data = request('POST', '/api/board/create', BoardForm);
+  return {
+    type: CREATE_BOARD,
+    payload: data,
+  };
 }
-// 이거뭐야..

@@ -38,6 +38,7 @@ function LoginPage(props) {
 
     dispatch(loginUser(body))
       .then((res) => {
+        console.log(res);
         if (res.payload !== undefined) {
           localStorage.setItem('user', JSON.stringify(res.payload));
           props.history.push('/select');
