@@ -7,10 +7,11 @@ import { GridLayout } from '@egjs/react-infinitegrid';
 
 // components
 import FeedItem from './FeedItem';
+import Progress from '../ComponentUI/Progress';
 
 function FeedInfinite(props) {
   const [items, setItems] = useState([]);
-  const [temp, setTemp] = useState(100);
+  const [temp, setTemp] = useState(1);
   const [startIdx, setStartIdx] = useState(0);
   const dispatch = useDispatch();
 
@@ -25,16 +26,16 @@ function FeedInfinite(props) {
     setTemp((temp) => temp + 100);
     // 그룹키, 개수, start 인덱스
     const getItems = await getFeedData(startIdx, startIdx + num);
-    if (typeof getItems === 'undefined') {
+    if (typeof getItems === 'undefined' || getItems.length < num) {
       return [];
     }
     const newItems = [...getItems].map(
-      (item, index) =>
+      (item) =>
         item.files && (
           <FeedItem
             groupKey={groupKey}
-            imageSrc={item.files[0].imgFullPath}
-            key={temp + index}
+            key={item.boardId && temp + item.boardId}
+            feedItem={item}
           />
         ),
     );
@@ -46,9 +47,8 @@ function FeedInfinite(props) {
   // 아이템 추가했을 때 발생하는 이벤트
   async function onAppend({ groupKey, startLoading, endLoading }) {
     startLoading();
-    const addedItems = await loadItems(groupKey + 1, 10);
+    const addedItems = await loadItems(groupKey + 1, 5);
     if (addedItems) {
-      console.log(addedItems);
       setItems((items) => items.concat(addedItems));
     } else {
       endLoading();
@@ -64,6 +64,7 @@ function FeedInfinite(props) {
     <div>
       <GridLayout
         tag="div"
+        loading={<Progress></Progress>}
         options={{
           isConstantSize: true,
           transitionDuration: 0.2,

@@ -21,6 +21,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     backgroundColor: '#ff1744',
     borderRadius: '0 10px 10px 0',
+    paddingRight: '30px',
+    paddingLeft: '30px',
     '&:hover': {
       backgroundColor: '#c4001d',
     },
@@ -29,6 +31,8 @@ const useStyles = makeStyles((theme) => ({
     // 좌측 버튼 - 저장소 선택
     backgroundColor: '#fafafa',
     borderRadius: '10px 0 0 10px',
+    paddingRight: '30px',
+    paddingLeft: '30px',
     '&:hover': {
       backgroundColor: '#c2c2c2',
     },
@@ -42,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     transform: 'translateX(-50%)',
     zIndex: 1,
-    width: '90%',
+    width: 'fit-content',
     '&:hover .button': {
       display: 'inline-block',
     },
