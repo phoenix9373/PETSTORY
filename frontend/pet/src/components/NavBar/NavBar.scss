@@ -237,15 +237,11 @@
     display: table;
   }
 
-  .nav-links:hover {
-    border: none;
-    color: #242424;
-  }
-
   .navbar-logo {
     position: absolute;
     top: 0;
     left: 0;
+    text-decoration: none;
     transform: translate(20%, 20%);
   }
 

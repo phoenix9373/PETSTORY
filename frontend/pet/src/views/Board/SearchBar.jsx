@@ -1,35 +1,38 @@
-import React from "react";
+import React from 'react';
 
-const SearchBar = ({ results,
-    keyword,
-    updateField,
-    onhandleInputChange, onhandleInputKeyDown}) => {
+const SearchBar = ({
+  results,
+  keyword,
+  updateField,
+  onhandleInputChange,
+  onhandleInputKeyDown,
+}) => {
   // renders our results using the SearchPreview component
-  const updateText = text => {
-    updateField("keyword", text);
-    updateField("results", []);
-};
+  const updateText = (text) => {
+    updateField('keyword', text);
+    updateField('results', []);
+  };
 
   const cancelSearch = () => {
-    updateField("keyword", "");
+    updateField('keyword', '');
   };
 
   const renderResults = results.map(({ position, name, age }, index) => (
-      <SearchPreview
-        key={index}
-        updateText={updateText}
-        index={index}
-        name={name}
-      />
-    ));
+    <SearchPreview
+      key={index}
+      updateText={updateText}
+      index={index}
+      name={name}
+    />
+  ));
   return (
     <div className="auto">
-      {/* <button
+      <button
         onClick={() => cancelSearch()}
-        className={`cancel-btn ${keyword.length > 0 ? "active" : "inactive"}`}
+        className={`cancel-btn ${keyword.length > 0 ? 'active' : 'inactive'}`}
       >
         clear!
-      </button> */}
+      </button>
       <input
         className="search-bar"
         placeholder="Search"
@@ -37,7 +40,7 @@ const SearchBar = ({ results,
         onChange={onhandleInputChange}
         placeholder="태그"
         onKeyDown={onhandleInputKeyDown}
-        onChange={e => updateField("keyword", e.target.value)}
+        onChange={(e) => updateField('keyword', e.target.value)}
       />
 
       {results.length > 0 ? (
@@ -48,15 +51,15 @@ const SearchBar = ({ results,
 };
 
 // stateless component to render preview results
-const SearchPreview = ({ name, index, updateText}) => (
-    <div
-      onClick={() => updateText(name)}
-      className={`search-preview ${index === 0 ? "start" : ""}`}
-    >
-      <div className="first">
-        <p className="name">{name}</p>
-      </div>
+const SearchPreview = ({ name, index, updateText }) => (
+  <div
+    onClick={() => updateText(name)}
+    className={`search-preview ${index === 0 ? 'start' : ''}`}
+  >
+    <div className="first">
+      <p className="name">{name}</p>
     </div>
-  );
+  </div>
+);
 
 export default SearchBar;

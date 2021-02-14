@@ -19,4 +19,4 @@ export const request = (method, url, data, params = {}) =>
       console.log('@@@@@', res);
       return res.data;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
