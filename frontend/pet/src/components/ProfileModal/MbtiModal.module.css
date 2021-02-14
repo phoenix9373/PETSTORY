@@ -1,4 +1,7 @@
-.small-question-box {
+.bigQuestionBox {
+  overflow: hidden;
+}
+.smallQuestionBox {
   display: flex;
   align-items: center;
   justify-content: space-around;
