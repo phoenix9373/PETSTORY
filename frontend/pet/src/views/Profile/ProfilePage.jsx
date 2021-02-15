@@ -8,32 +8,12 @@ import axios from 'axios';
 
 Modal.setAppElement('#root');
 function Profile(props) {
-  console.log(props.match.params.profileId);
-
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleModify = (modi) => {
-    console.log('==============================프로필페이지의 modi');
-    const temp = JSON.stringify(modi);
-    console.log(temp);
-
-    // const modiProfile = {
-    //   profileState: modi.profileState,
-    //   nickname: modi.nickname,
-    //   imgFullPath: modi.imgFullPath, // 이미지 변경 시 확인
-    // };
-    // return setProfile(profile.concat(modiProfile));
-  };
-
-  // const onFinalModify = (e) => {
-  //   console.log('profilePage에서');
-  //   console.log(e);
-  // };
-
+  // 프로필 정보 요청
   const profileId = props.match.params.profileId;
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -70,7 +50,13 @@ function Profile(props) {
   if (!profile) {
     return <div>profiles없다</div>;
   }
-  console.log(profile);
+
+  // 프로필 수정
+  const handleModify = (modiInfo) => {
+    const { name, value } = modiInfo;
+    setProfile({ ...profile, [name]: value });
+  };
+
   return (
     <div className="profileEntire">
       <div>
