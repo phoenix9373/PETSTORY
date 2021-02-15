@@ -38,7 +38,6 @@ public class BoardApiController {
 
     /**
      * 게시물 전체 조회
-     * ++ 무한스크롤(페이징)처리 추가해야 함
      */
     @GetMapping("/api/board/findAll")
     public Result<BoardQueryDto> findAll(){
