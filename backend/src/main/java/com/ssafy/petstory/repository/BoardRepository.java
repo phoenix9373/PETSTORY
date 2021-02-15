@@ -59,7 +59,8 @@ public class BoardRepository {
                 "select new com.ssafy.petstory.dto.BoardQueryDto" +
                         "(p.id, p.nickname, p.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
                         " from Board b" +
-                        " join b.profile p", BoardQueryDto.class)
+                        " join b.profile p" +
+                        " order by b.boardDate desc", BoardQueryDto.class)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
