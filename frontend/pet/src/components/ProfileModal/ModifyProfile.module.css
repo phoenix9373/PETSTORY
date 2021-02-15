@@ -1,0 +1,24 @@
+.modal {
+  background-color: white;
+  width: 80vw;
+}
+
+.stateBox {
+  display: flex;
+  justify-content: space-around;
+}
+
+label {
+  margin: 10px 10px;
+}
+
+.profileImageInModify {
+  margin: 30px 30px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.imgBox {
+  display: flex;
+}
