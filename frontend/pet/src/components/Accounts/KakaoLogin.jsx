@@ -1,34 +1,41 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import KaKaoLogins from 'react-kakao-login';
 import axios from 'axios';
 
-class KakaoLogin extends PureComponent {
+export default class KakaoLogin extends Component {
   constructor(props) {
     super(props);
-
     this.state = {};
   }
+
   responseKaKao = (response) => {
     this.setState({
       data: response,
     });
     console.log(response);
+    const body = {
+      email: JSON.stringify(response.profile.kakao_account.email),
+      name: JSON.stringify(response.profile.kakao_account.profile.nickname),
+    };
+    console.log(body);
 
-    axios(`/user/signin/kakao`, {
+    axios(`/kakaologin`, {
       // 백엔드에서 원하는 형태의 endpoint로 입력해서 fetch한다.
-      method: 'GET',
+      method: 'POST',
       headers: {
         Authorization: response.response.access_token,
         // 받아오는 response객체의 access_token을 통해 유저 정보를 authorize한다.
       },
+      data: body,
     })
       .then((res) => res.json())
       .then(
-        (res) => localStorage.setItem('token', res.token),
+        (res) => localStorage.setItem('user', res),
         // 백엔드에서 요구하는 key 값(token)으로 저장해서 localStorage에 저장한다.
         // 여기서 중요한것은 처음에 console.log(res)해서 들어오는
         // access_token 값을 백엔드에 전달해줘서 백엔드에 저장 해두는
         // 절차가 있으므로 까먹지 말 것!
+        (window.location.href = 'http://localhost:3000/select'),
         // eslint-disable-next-line
         alert('로그인 성공하였습니다'),
       );
@@ -51,5 +58,3 @@ class KakaoLogin extends PureComponent {
     );
   }
 }
-
-export default KakaoLogin;
