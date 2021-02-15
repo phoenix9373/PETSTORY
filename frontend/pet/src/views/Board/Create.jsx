@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import SearchBar from './SearchBar';
 import { createArticle } from '../../_actions/boardAction';
 import { MdCancel, MdCloudUpload } from 'react-icons/md';
 import { FaCat } from 'react-icons/fa';
+import axios from 'axios';
 import './Create.scss';
 
 export default class Create extends Component {
@@ -11,6 +11,7 @@ export default class Create extends Component {
   fileArrayFirst = null;
   titleRef = React.createRef();
   contextRef = React.createRef();
+  hashtagRef = React.createRef();
   constructor(props) {
     super(props);
     this.state = {
@@ -18,15 +19,17 @@ export default class Create extends Component {
       file: [],
       keyword: '',
       results: [],
+      cursor: 0,
     };
     this.pushAxios = this.pushAxios.bind(this);
     this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
     this.handleRemoveItem = this.handleRemoveItem.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleInputKeyDown = this.handleInputKeyDown.bind(this);
+    this.hashtagsubmitHandler = this.hashtagsubmitHandler.bind(this);
+    this.hashtagAutocomplete = this.hashtagAutocomplete.bind(this);
     this.previewHandler = this.previewHandler.bind(this);
+    this.hashtagOnkeyDown = this.hashtagOnkeyDown.bind(this);
   }
 
   pushAxios(e) {
@@ -44,6 +47,7 @@ export default class Create extends Component {
     const axios = createArticle(formData);
     this.titleRef.current.value = '';
     this.contextRef.current.value = '';
+    this.hashtagRef.current.value = '';
     this.props.history.push('/');
   }
 
@@ -103,37 +107,22 @@ export default class Create extends Component {
     e.preventDefault();
   }
 
-  onSearch = async (text) => {
-    let stockData;
-    let data;
-    try {
-      stockData = await fetch(
-        `https://financialmodelingprep.com/api/v3/search?query=${text}&limit=10&exchange=NASDAQ&apikey=abf4ef28fc7fd607624d9a8941444c42`,
-      );
-      data = await stockData.json();
-    } catch (err) {
-      console.err(err.message);
+  previewHandler(index) {
+    if (!this.fileArray[index]) {
+      return;
     }
-    this.setState({ results: data });
-  };
-
-  updateField = (field, value) => {
-    if (field === 'keyword') this.onSearch(value);
-    this.setState({ [field]: value });
-  };
-
-  handleInputChange(evt) {
-    this.setState({ input: evt.target.value });
+    this.fileArrayFirst = this.fileArray[index].URL;
+    this.setState({ file: this.fileArray });
   }
 
-  handleInputKeyDown(evt) {
-    evt.preventDefault();
-    if (evt.keyCode === 13) {
-      const { value } = evt.target;
+  hashtagsubmitHandler(e) {
+    if (e.charCode === 13) {
+      const temp = this.hashtagRef.current.value;
+      this.setState((state) => ({ results: [] }));
       this.setState((state) => ({
-        hashtags: [...state.hashtags, value],
-        keyword: '',
+        hashtags: [...state.hashtags, temp],
       }));
+      this.hashtagRef.current.value = '';
     }
   }
 
@@ -145,17 +134,47 @@ export default class Create extends Component {
     };
   }
 
-  previewHandler(index) {
-    if (!this.fileArray[index]) {
+  hashtagAutocomplete(e) {
+    e.preventDefault();
+    const temp = this.hashtagRef.current.value;
+    if (temp) {
+      axios
+        .get(`/api/hashtag/findOne/${temp}`)
+        .then((res) => {
+          console.log(res.data.data);
+          this.setState((state) => ({ results: res.data.data }));
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }
+
+  suggestionClickHandler(idx) {
+    this.hashtagRef.current.value = this.state.results[idx];
+    this.setState((state) => ({ results: [] }));
+  }
+
+  hashtagOnkeyDown(e) {
+    const { cursor, results } = this.state;
+    if (e.keyCode === 13 && results[cursor]) {
+      this.hashtagRef.current.value = results[cursor];
+      this.setState((state) => ({ results: [] }));
       return;
     }
-    this.fileArrayFirst = this.fileArray[index].URL;
-    this.setState({ file: this.fileArray });
+    if (e.keyCode === 38 && cursor > 0) {
+      this.setState((prevState) => ({
+        cursor: prevState.cursor - 1,
+      }));
+    } else if (e.keyCode === 40 && cursor < results.length - 1) {
+      this.setState((prevState) => ({
+        cursor: prevState.cursor + 1,
+      }));
+    }
   }
 
   render() {
-    const { suggestions } = this.state;
-    const { results, keyword } = this.state;
+    const { cursor } = this.state;
     return (
       <div className="contaniner">
         <div className="headers">
@@ -222,10 +241,11 @@ export default class Create extends Component {
                 placeholder="title"
                 id="name"
                 type="input"
+                autoComplete="off"
                 required
               />
               <label htmlFor="title" className="form__label title">
-                제목입니다
+                제목
               </label>
             </div>
             <div className="form__group field">
@@ -238,30 +258,55 @@ export default class Create extends Component {
                 required
               />
               <label htmlFor="context" className="form__label context">
-                내용입니다
+                내용
               </label>
             </div>
-            <SearchBar
-              suggestions={suggestions}
-              results={results}
-              keyword={keyword}
-              updateField={this.updateField}
-              onhandleInputKeyDown={this.handleInputKeyDown}
-              onhandleInputChange={this.handleInputChange}
-            />
-            <div className="input-tag">
-              <ul className="input-tag__tags">
-                {this.state.hashtags.map((item, i) => (
-                  <li
-                    className="input-tag__tags__li"
-                    key={i}
-                    onClick={this.handleRemoveItem(i)}
-                  >
-                    {item}
-                    <span>+</span>
-                  </li>
-                ))}
-              </ul>
+            <ul className="hashtag__container">
+              {this.state.hashtags.map((item, i) => (
+                <li
+                  className="hashtag__item"
+                  key={i}
+                  onClick={this.handleRemoveItem(i)}
+                >
+                  #{item}
+                </li>
+              ))}
+            </ul>
+            <div className="form__group field">
+              <input
+                className="form__field "
+                placeholder="hashtag"
+                ref={this.hashtagRef}
+                id="hashtag"
+                type="input"
+                required
+                autoComplete="off"
+                onChange={this.hashtagAutocomplete}
+                onKeyPress={this.hashtagsubmitHandler}
+                onKeyDown={this.hashtagOnkeyDown}
+              />
+              <label htmlFor="hashtag" className="form__label title">
+                해쉬태그
+              </label>
+              {this.state.results !== [] ? (
+                <ul htmlfor="hashtag" className="hashtag__suggest__wrapper">
+                  {this.state.results.map((item, idx) => (
+                    <li
+                      key={item.id}
+                      className={
+                        cursor === idx
+                          ? 'hashtag__suggest__item active'
+                          : 'hashtag__suggest__item'
+                      }
+                      onClick={() => this.suggestionClickHandler(idx)}
+                    >
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                ''
+              )}
             </div>
           </div>
         </div>
