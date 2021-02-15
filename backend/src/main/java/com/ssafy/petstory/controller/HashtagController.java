@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,17 +30,18 @@ public class HashtagController {
      * 해시태그로 게시글 검색
      */
     @GetMapping("/api/hashtag/findBoards")
-    public Result<BoardQueryDto> findBoardsByHashtag(String hashtagName){
-        return new Result(hashtagService.findBoardsByHashtag(hashtagName));
+    public Result<BoardQueryDto> findBoardsByHashtag(@RequestBody HashtagDto dto){
+        return new Result(hashtagService.findBoardsByHashtag(dto.getHashtagName()));
     }
 
     /**
      * 해시태그 자동완성
      *  : like query
      */
-    @GetMapping("/api/hashtag/findOne")
-    public Result<String> findOne(String hashtagName){
-        return new Result(hashtagService.findHashtagName(hashtagName));
+    @GetMapping("/api/hashtag/findOne/{hashtagName}")
+    public Result<HashtagDto> findOne(@PathVariable("hashtagName") String temp){
+        System.out.println(temp);
+        return new Result(hashtagService.findHashtagName(temp));
     }
 
     /**
