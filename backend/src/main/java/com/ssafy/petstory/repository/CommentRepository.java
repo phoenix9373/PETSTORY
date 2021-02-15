@@ -29,7 +29,7 @@ public class CommentRepository {
      */
     public List<CommentDto> findAll(Long boardId) {
         return em.createQuery(
-                "select new com.ssafy.petstory.dto.CommentDto(c.profileId, c.id, c.content)" +
+                "select new com.ssafy.petstory.dto.CommentDto(c.profileId, c.board.id, c.id, c.content)" +
                         " from Comment c" +
                         " where c.board.id in :boardId", CommentDto.class)
                 .setParameter("boardId", boardId)
