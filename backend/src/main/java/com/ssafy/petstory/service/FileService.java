@@ -52,5 +52,18 @@ public class FileService {
         return file;
     }
 
+    /**
+     * imgFullPath로 검색
+     */
+    public List<File> findByImgFullPath(List<String> imgFullPaths) {
+        return fileRepository.findByImgFullPaths(imgFullPaths);
+    }
+
+    /**
+     * 게시물 수정시 이미지 변경 내역에 따른 수정(유지, 삭제)
+     */
+    public void checkImageAndUpdate(Long boardId, List<String> imgFullPaths) {
+        fileRepository.checkImageAndUpdate(boardId, imgFullPaths);
+    }
 
 }

@@ -19,5 +19,13 @@ public class UpdateBoardRequest {
     private String context;
 
     private List<String> hashtags;
-//    private List<File>     files;
+    private List<String> imgFullPaths;
+
+    public UpdateBoardRequest(Long profileId, String title, String context, List<String> hashtags, List<String> imgFullPaths) {
+        this.profileId = profileId;
+        this.title = title;
+        this.context = context;
+        this.hashtags = hashtags;
+        this.imgFullPaths = imgFullPaths;
+    }
 }

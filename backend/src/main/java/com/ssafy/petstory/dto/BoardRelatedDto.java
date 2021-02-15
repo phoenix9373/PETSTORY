@@ -10,4 +10,8 @@ public class BoardRelatedDto {
     public BoardRelatedDto(Long boardId) {
         this.boardId = boardId;
     }
+
+    public BoardRelatedDto() {
+
+    }
 }
