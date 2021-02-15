@@ -25,15 +25,19 @@ function UserFeedsTabs(props) {
       </Tabs>
       <TabPanel value={value} index={0}>
         {/* props defined 에러 난 이유: 여기는 UI 자리인데 html태그없이 써서 + 함수컴포넌트니까 this안쓰고 인자로 props */}
-        {props.profile.boardQueryDtos.length > 0 ? (
+        {props.profile.boardQueryDtos === [] ? (
+          <p>작성한 글이 없습니다..</p>
+        ) : (
           props.profile.boardQueryDtos.map((article, index) => (
             <div key={article.boardId}>
-              <img src={article.files[0].imgFullPath} />
+              {article.files ? (
+                <img src={article.files[0].imgFullPath} alt="게시물 이미지" />
+              ) : (
+                <p>이미지가 없는 게시물</p>
+              )}
               <div> {article.title} </div>
             </div>
           ))
-        ) : (
-          <p>작성한 글이 없습니다..</p>
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>

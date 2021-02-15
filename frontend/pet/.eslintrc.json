@@ -21,6 +21,7 @@
     "array-element-newline": 0,
     "no-new": 0,
     "no-confusing-arrow": ["error", { "allowParens": false }],
-    "operator-linebreak": 0
+    "operator-linebreak": 0,
+    "no-param-reassign": 0
   }
 }
