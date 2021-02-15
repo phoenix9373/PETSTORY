@@ -134,7 +134,12 @@ public class BoardService {
             }
         }
 
-        // 이미지 정보 생성 -> 중복된 데이터인지 확인 후 데이터 생성
+        // 이미 게시물의 있던 이미지의 수정 내역 확인(유지, 삭제)
+        if(!request.getImgFullPaths().get(0).isEmpty()){
+            fileService.checkImageAndUpdate(boardId, request.getImgFullPaths());
+        }
+
+        // 이미지 생성
         if (!inputFiles.get(0).isEmpty()) { // fileService로 옮길까 고민중
             FileDto fileDto = new FileDto();
             List<String> imgPathes = awsS3Service.upload(inputFiles);

@@ -27,10 +27,10 @@ public class CommentDto {
     /**
      * 수정
      */
-    public CommentDto(Long profileId, Long boardId, String content, Long commentId) {
+    public CommentDto(Long profileId, Long boardId, Long commentId, String content) {
         this.profileId = profileId;
         this.boardId = boardId;
-        this.content = content;
         this.commentId = commentId;
+        this.content = content;
     }
 }
