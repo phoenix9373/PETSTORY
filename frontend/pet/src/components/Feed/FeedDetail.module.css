@@ -17,13 +17,16 @@
 
 .section {
   width: 30vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .images {
   width: 30vw;
   margin-right: 20px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 
 .image {
@@ -152,4 +155,24 @@
   text-align: center;
   color: gray;
   margin-top: 10px;
+}
+
+.form {
+  padding: 0;
+}
+
+.input,
+.input:focus {
+  outline: none;
+  border: none;
+}
+
+.input {
+  border-radius: 10px;
+  box-shadow: 0px 0px 1px 1px black;
+}
+
+.input:focus {
+  border-radius: 10px;
+  box-shadow: 0px 0px 1px 3px palevioletred;
 }

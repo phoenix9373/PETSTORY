@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // CSS
 import styles from './FeedDetail.module.css';
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FeedDetail(props) {
+function FeedDetail() {
   // Util - style, history and location(react router push)
   const location = useLocation();
   const classes = useStyles();
@@ -40,12 +40,12 @@ function FeedDetail(props) {
 
   // States
   const [comments, setComments] = useState([]);
-  const [commentIndex, setCommentIndex] = useState(0);
-  const [visibleComments, setVisibleComments] = useState([]);
 
   // UI 존재 유무에 대한 State
   const [loading, setLoading] = useState(false);
-  const [moreInfo, setMoreInfo] = useState(false);
+
+  // 댓글 작성 Ref
+  const commentRef = useRef('');
 
   // Methods
   const fetchDetail = async () => {
@@ -60,24 +60,6 @@ function FeedDetail(props) {
     setLoading(true);
   };
 
-  // 디테일 페이지에 보여지는 Comment를 3개씩 늘려준다.
-  const onHandleVisibleComments = (start) => {
-    // start가 크면 종료.
-    const endIndex = start + 3;
-    const items = [];
-    for (let i = start; i < endIndex; ++i) {
-      if (i > comments.length) {
-        break;
-      }
-      if (comments[i] !== undefined) {
-        items.push(comments[i]);
-      }
-    }
-
-    setCommentIndex(() => endIndex);
-    setVisibleComments((prev) => prev.concat(items));
-  };
-
   // 프로필 페이지 이동
   const handleProfile = () => {
     history.push(`/profile/${feedItem.profileId}`);
@@ -89,18 +71,35 @@ function FeedDetail(props) {
     // history.push()
   };
 
+  // 댓글 작성 요청
+  const fetchCreateComment = async (data) => {
+    request('POST', '/api/comment/create', data);
+  };
+
+  // 댓글 작성
+  const handleCommentCreate = (e) => {
+    e.preventDefault();
+    const content = commentRef.current.value;
+    const profileId = Number(localStorage.getItem('profileId'));
+    const boardId = feedItem.boardId;
+
+    const data = {
+      profileId,
+      boardId,
+      content,
+    };
+
+    console.log(data);
+
+    fetchCreateComment(data);
+
+    commentRef.current.value = '';
+  };
+
   // useEffect
   useEffect(() => {
     fetchDetail();
   }, []);
-
-  useEffect(() => {
-    console.log(`${comments.length}, ${visibleComments.length}`);
-    if (loading && comments.length === visibleComments.length) {
-      // "더 보기" 비활성화
-      setMoreInfo(() => true);
-    }
-  }, [visibleComments]);
 
   return (
     <>
@@ -120,70 +119,77 @@ function FeedDetail(props) {
 
         {/* 표시될 정보 */}
         <div className={styles.section}>
-          {/* 프로필 및 리스트 아이콘 */}
-          <div className={styles.user}>
-            <div className={styles.profile}>
-              {feedItem.imgFullPath && (
-                <Avatar
-                  imageSrc={feedItem.imgFullPath}
-                  onHandleProfile={handleProfile}
-                />
-              )}
-              <span onClick={handleProfile} className={styles.profileId}>
-                {feedItem.nickname}
-              </span>
+          <div className={styles.sectionTop}>
+            {/* 프로필 및 리스트 아이콘 */}
+            <div className={styles.user}>
+              <div className={styles.profile}>
+                {feedItem.imgFullPath && (
+                  <Avatar
+                    imageSrc={feedItem.imgFullPath}
+                    onHandleProfile={handleProfile}
+                  />
+                )}
+                <span onClick={handleProfile} className={styles.profileId}>
+                  {feedItem.nickname}
+                </span>
+              </div>
+
+              <ListMenu
+                profileId={feedItem.profileId}
+                boardId={feedItem.boardId}
+                useClasses={`${classes.root} ${styles.option}`}
+              ></ListMenu>
             </div>
 
-            <ListMenu
-              boardId={feedItem.boardId}
-              useClasses={`${classes.root} ${styles.option}`}
-            ></ListMenu>
-          </div>
-
-          {/* 본문 내용 - 글, 태그 */}
-          <div className={styles.info}>
-            <span className={styles.text}>{feedItem.context}</span>
-            <ul className={styles.tags}>
-              {/* {tags.map((tag) => (
+            {/* 본문 내용 - 글, 태그 */}
+            <div className={styles.info}>
+              <span className={styles.text}>{feedItem.context}</span>
+              <ul className={styles.tags}>
+                {/* {tags.map((tag) => (
                 <li className={styles.tag}>{tag}</li>
               ))} */}
-              {feedItem.boardHashtags &&
-                feedItem.boardHashtags.map((tag) => (
-                  <li onClick={handleTag} className={styles.tag}>
-                    #{tag.hashtagName}
-                  </li>
-                ))}
-            </ul>
-          </div>
-
-          {/* 댓글표시 */}
-          <div className={styles.comments}>
-            <div className={styles.title}>
-              <h3 className={styles.titleText}>발도장</h3>
-              <Pets fontSize="small"></Pets>
+                {feedItem.boardHashtags &&
+                  feedItem.boardHashtags.map((tag) => (
+                    <li onClick={handleTag} className={styles.tag}>
+                      #{tag.hashtagName}
+                    </li>
+                  ))}
+              </ul>
             </div>
-            {/* 더보기 버튼을 누를때마다 items에 push 함. */}
-            {visibleComments &&
-              visibleComments.map((comment) => (
-                <Comment comment={comment}></Comment>
-              ))}
-            {comments.length === 0 && (
-              <h5 className={styles.commentInfo}>아직 댓글이 없습니다.</h5>
-            )}
-            {comments.length > 0 && (
-              <button
-                className={`${styles.moreButton} ${
-                  moreInfo ? styles.disabled : ''
-                }`}
-                type="button"
-                onClick={() => onHandleVisibleComments(commentIndex)}
-              >
-                <span className={styles.commentMore}>
-                  더보기
-                  <ExpandMore className={classes.moreIcon} />
-                </span>
-              </button>
-            )}
+          </div>
+          <div className={styles.sectionBottom}>
+            {/* 댓글표시 */}
+            <div className={styles.comments}>
+              <div className={styles.title}>
+                <h3 className={styles.titleText}>발도장</h3>
+                <Pets fontSize="small"></Pets>
+              </div>
+              {/* 더보기 버튼을 누를때마다 items에 push 함. */}
+              {comments &&
+                comments.map((comment) => (
+                  <Comment comment={comment}></Comment>
+                ))}
+              {comments.length === 0 && (
+                <h5 className={styles.commentInfo}>아직 댓글이 없습니다.</h5>
+              )}
+            </div>
+            <div className={styles.commentForm}>
+              <form className={styles.form} onSubmit={handleCommentCreate}>
+                <input
+                  type="text"
+                  className={styles.input}
+                  placeholder="댓글을 작성하세요"
+                  ref={commentRef}
+                />
+                {/* <button
+                  className={styles.submit}
+                  onClick={handleCommentCreate}
+                  type="button"
+                >
+                  <Pets fontSize="small"></Pets>
+                </button> */}
+              </form>
+            </div>
           </div>
         </div>
       </div>
