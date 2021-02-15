@@ -98,7 +98,7 @@ function FeedItem(props) {
       <FeedButton />
       {/* 아이콘 요소 */}
       <div className="wrapper">
-        <Fab
+        {/* <Fab
           className="icon left"
           size="small"
           color="primary"
@@ -106,7 +106,7 @@ function FeedItem(props) {
           onClick={handleShare}
         >
           <Share fontSize="default" />
-        </Fab>
+        </Fab> */}
 
         <IconButton
           className="icon right"
@@ -119,9 +119,10 @@ function FeedItem(props) {
 
         <Menu
           id="simple-menu"
+          getContentAnchorEl={null}
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: 'bottom',
+            vertical: 'middle',
             horizontal: 'center',
           }}
           transformOrigin={{

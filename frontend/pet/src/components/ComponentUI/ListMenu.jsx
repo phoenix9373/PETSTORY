@@ -68,6 +68,7 @@ function ListMenu(props) {
 
       <Menu
         id="simple-menu"
+        getContentAnchorEl={null}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',
@@ -82,14 +83,17 @@ function ListMenu(props) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>신고하기</MenuItem>
-        <MenuItem onClick={handleClose}>숨기기</MenuItem>
         <MenuItem onClick={handleClose}>팔로우 요청</MenuItem>
-        <MenuItem className={customClasses.modify} onClick={handleModify}>
-          수정
-        </MenuItem>
-        <MenuItem className={customClasses.delete} onClick={handleDelete}>
-          삭제
-        </MenuItem>
+        {Number(localStorage.getItem('profileId')) === props.profileId && (
+          <MenuItem className={customClasses.modify} onClick={handleModify}>
+            수정
+          </MenuItem>
+        )}
+        {Number(localStorage.getItem('profileId')) === props.profileId && (
+          <MenuItem className={customClasses.delete} onClick={handleDelete}>
+            삭제
+          </MenuItem>
+        )}
       </Menu>
     </>
   );
