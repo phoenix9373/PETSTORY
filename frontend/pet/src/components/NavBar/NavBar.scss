@@ -140,6 +140,9 @@
 }
 
 .navbar-logo {
+  width: fit-content;
+  padding-left: 180px;
+  padding-right: 30px;
   color: inherit;
   justify-self: start;
   margin-left: 20px;
@@ -517,4 +520,15 @@
     height: 3px;
     width: 3px;
   }
+}
+
+.navbar__right {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding-right: 100px;
+}
+.navbar__section {
+  display: flex;
+  justify-content: space-evenly;
 }

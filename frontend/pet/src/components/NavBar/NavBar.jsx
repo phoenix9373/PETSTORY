@@ -7,6 +7,10 @@ import Switch from '@material-ui/core/Switch';
 import './NavBar.scss';
 import peticon from '../../assets/peticon.png';
 
+// Components
+import SearchBar from '../ComponentUI/SearchBar';
+import NavbarIcons from '../ComponentUI/NavbarIcons';
+
 function Navbar({ isLogin, toggleTheme }) {
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
@@ -108,16 +112,22 @@ function Navbar({ isLogin, toggleTheme }) {
           }
         ></div>
         <div
-          className={scrolled ? 'navbar-container active' : 'navbar-container'}
+          className={`navbar__section ${
+            scrolled ? 'navbar-container active' : 'navbar-container'
+          }`}
         >
           <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
             <img className="navbar-icon" src={peticon} />
             PetStory
           </Link>
-          <div className="menu-icon" onClick={handleClick}>
+          {/* <div className="menu-icon" onClick={handleClick}>
             <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+          </div> */}
+          <div className="navbar__right">
+            <SearchBar></SearchBar>
+            <NavbarIcons></NavbarIcons>
           </div>
-          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          {/* <ul className={click ? 'nav-menu active' : 'nav-menu'}>
             <li className="nav-item">
               <Link to="/" className="nav-links" onClick={closeMobileMenu}>
                 피드
@@ -139,7 +149,11 @@ function Navbar({ isLogin, toggleTheme }) {
             </li>
             <li className="nav-item">
               <Link
+<<<<<<< HEAD
+                to="/select"
+=======
                 to={`/profile/${profileId}`}
+>>>>>>> upstream/develop
                 className="nav-links"
                 onClick={closeMobileMenu}
               >
@@ -193,7 +207,7 @@ function Navbar({ isLogin, toggleTheme }) {
                 </Button>
               )}
             </li>
-          </ul>
+          </ul> */}
           <div className="theme-toggle-switch">
             <Switch
               checked={theme.checkedA}
