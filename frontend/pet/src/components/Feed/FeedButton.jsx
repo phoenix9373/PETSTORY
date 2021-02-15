@@ -53,12 +53,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FeedButton(props) {
+function FeedButton() {
   // State
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Ref
-  const feedSaver = useRef('내 피드');
+  // const feedSaver = useRef('저장할 곳 선택');
 
   // 커스텀 스타일
   const classes = useStyles();
@@ -87,12 +87,15 @@ function FeedButton(props) {
         className={`${classes.button} ${classes.left}`}
       >
         <FeedSaveContainer></FeedSaveContainer>
+        {/* <FeedSaveContainer text={feedSaver.current}></FeedSaveContainer> */}
       </Button>
       <Menu
+        className="menu__frame"
         id="simple-menu"
         anchorEl={anchorEl}
+        getContentAnchorEl={null}
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'middle',
           horizontal: 'center',
         }}
         transformOrigin={{

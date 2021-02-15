@@ -15,9 +15,11 @@ import CarToonize from './views/Cartoonize/CartoonizePage';
 import UserDetail from './views/Accounts/UserDetailPage';
 import DetailPage from './views/DetailPage/DetailPage';
 import SelectProfileModal from './views/Profile/SelectProfileModal';
+import FeedListMakePage from './views/FeedListMakePage/FeedListMakePage';
 
 // Component Load
 import NavBar from './components/NavBar/NavBar';
+import NavBarSide from './components/NavBar/NavBarSide';
 import MbtiModal from './components/ProfileModal/MbtiModal';
 
 const getStorageTheme = () => {
@@ -59,24 +61,29 @@ function App() {
   }, [localStorage.getItem('user')]);
 
   return (
-    <>
-      <Router history={history}>
+    <Router history={history}>
+      <div className="app__wrapper">
         {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
-        <Switch>
-          <Route path="/login" component={LandingPage} />
-          <PrivateRoute exact path="/" component={MainPage} />
-          <PrivateRoute path="/detail/:boardId" component={DetailPage} />
-          <PrivateRoute path="/create" component={Create} />
-          <PrivateRoute path="/map" component={Map} />
-          <PrivateRoute path="/profile/:profileId" component={ProfilePage} />
-          <PrivateRoute path="/select" component={SelectProfileModal} />
-          <PrivateRoute path="/cartoonize" component={CarToonize} />
-          <PrivateRoute path="/mbti" component={MbtiModal} />
-          <PrivateRoute path="/userdetail" component={UserDetail} />
-          <Route component={PageNotFound} />
-        </Switch>
-      </Router>
-    </>
+        {isLogin && <NavBarSide></NavBarSide>}
+        <div className={isLogin && 'body__wrapper'}>
+          <Switch>
+            <Route path="/login" component={LandingPage} />
+            {/* <PrivateRoute exact path="/main/:storage" component={MainPage} /> */}
+            <PrivateRoute exact path="/" component={MainPage} />
+            <PrivateRoute path="/detail/:boardId" component={DetailPage} />
+            <PrivateRoute path="/list" component={FeedListMakePage} />
+            <PrivateRoute path="/create" component={Create} />
+            <PrivateRoute path="/map" component={Map} />
+            <PrivateRoute path="/profile/:profileId" component={ProfilePage} />
+            <PrivateRoute path="/select" component={SelectProfileModal} />
+            <PrivateRoute path="/cartoonize" component={CarToonize} />
+            <PrivateRoute path="/mbti" component={MbtiModal} />
+            <PrivateRoute path="/userdetail" component={UserDetail} />
+            <Route component={PageNotFound} />
+          </Switch>
+        </div>
+      </div>
+    </Router>
   );
 }
 
