@@ -1,0 +1,55 @@
+.wrapper {
+  margin: 30px;
+}
+
+.dropAreaImageStyle {
+  width: 400px;
+  height: 400px;
+  border-radius: 20px;
+}
+
+.dropAreaStyle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  height: 400px;
+  border-radius: 20px;
+  background-color: rgba(228, 94, 145, 0.589);
+}
+
+.placegHolderImage {
+  position: relative;
+}
+
+.button__wrapper {
+  display: flex;
+  margin: 20px;
+  padding: 5px;
+}
+
+.button {
+  display: inline-block;
+  padding: 15px 25px;
+  margin: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {
+  background-color: #3e8e41;
+}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}

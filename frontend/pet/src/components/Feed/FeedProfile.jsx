@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './FeedProfile.css';
+import styles from './FeedProfile.module.css';
 
 // fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -15,8 +15,8 @@ function FeedProfile(props) {
   const countFollowers = 10;
 
   return (
-    <div className="feed-profile">
-      <img className="feed-profile-img" src={userImgSrc} alt="" />
+    <div className={styles.profile}>
+      <img className={styles.image} src={userImgSrc} alt="" />
       <span>{userID}</span>
       <FontAwesomeIcon icon={faHeart} />
       <span>{countLike}</span>

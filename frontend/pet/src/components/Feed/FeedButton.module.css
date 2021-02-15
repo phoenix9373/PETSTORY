@@ -1,0 +1,54 @@
+button,
+button:hover {
+  outline: 0;
+  border: 0;
+}
+
+.frame {
+  display: none;
+}
+
+.frame.active {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: fit-content;
+}
+
+.btn {
+  text-align: center;
+  text-decoration: none;
+
+  padding: 8px 18px;
+  display: inline-block;
+  height: 100%;
+
+  background-color: white;
+  cursor: pointer;
+}
+
+.left {
+  border-radius: 10px 0 0 10px;
+}
+
+.left:hover {
+  background-color: rgba(245, 245, 245, 0.877);
+}
+
+.text {
+  margin-right: 10px;
+}
+
+.right {
+  color: white;
+  border-radius: 0 10px 10px 0;
+  background-color: red;
+}
+
+.right:hover {
+  background-color: rgb(197, 2, 2);
+}

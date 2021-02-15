@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import FeedFrame from '../../components/Feed/FeedFrame';
 
-function MainPage(props) {
+// CSS
+import styles from './MainPage.module.css';
+
+// Components
+import FeedInfinite from '../../components/Feed/FeedInfinite';
+
+function MainPage() {
   return (
-    <div>
-      <FeedFrame></FeedFrame>
+    <div className={styles.mainPage}>
+      <FeedInfinite />
     </div>
   );
 }

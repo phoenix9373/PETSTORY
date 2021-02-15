@@ -1,5 +1,7 @@
 package com.ssafy.petstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.petstory.dto.PostlistDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,27 +13,38 @@ import javax.persistence.*;
 public class Postlist {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "postlist_id")
     private Long id;
 
-    @Column(name = "postlist_name")
-    private String name;
+    @Column(name = "board_id")
+    private Long boardId;
 
-    private long board_id;
+//    @Column(name = "postlist_content")
+//    private String content;
 
-    // Member와 Postlist는 일대다 관계
+    // MemberPostlist와 Postlist는 다대일 관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+//    @JsonIgnore
+    @JoinColumn(name = "member_postlist_id")
+    private MemberPostlist memberPostlist;
+
+    public void setMemberPostlist(MemberPostlist memberPostlist) {
+        this.memberPostlist = memberPostlist;
+        memberPostlist.getPostlists().add(this);
+    }
 
     /**
-     * Member와 Postlist 연관 관계 (편의) 메서드
-     * -> 위치는 핵심적으로 Controll 하는 쪽이 들고 있는 게 좋음
+     * Postlist 생성 메서드
      */
-    public void setMember(Member member) {
+    public static Postlist createPostlist(PostlistDto dto, Member member, MemberPostlist memberPostlist) {
 
-        this.member = member;
-        member.getPostlists().add(this);
+        Postlist postlist = new Postlist();
+//        memberPostlist.setMember(member);
+        postlist.setMemberPostlist(memberPostlist);
+        postlist.setBoardId(dto.getBoardId());
+
+        return postlist;
     }
+
 }

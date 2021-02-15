@@ -1,26 +1,43 @@
 package com.ssafy.petstory.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ssafy.petstory.dto.FileDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "images")
+@NoArgsConstructor
 @Getter @Setter
-//@NoArgsConstructor(access = AccessLevel.PROTECTED) // protected 생성자 생성
+@Table(name = "images")
 public class Image {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long id;
 
-    private String image;
+    @Column(name = "image_path")
+    private String imagePath;
 
-//    @JsonIgnore
-//    @OneToOne(mappedBy = "image", fetch = FetchType.LAZY)
-//    private Board board;
+    @Column(name = "img_full_path")
+    private String imgFullPath;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "image", fetch = FetchType.LAZY)
+    private Profile profile;
 
 
+
+    /**
+     * Image 생성 메서드
+     */
+    public static Image createImage(FileDto fileDto) {
+        Image image = new Image();
+        image.setImagePath(fileDto.getFilePath());
+        image.setImgFullPath(fileDto.getImgFullPath());
+        return image;
+    }
 }

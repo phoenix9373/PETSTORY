@@ -17,9 +17,6 @@ public class File {
     @Column(name = "file_id")
     private Long id;
 
-//    @Column(length = 50, nullable = false)
-//    private String title;
-
     @Column(name = "file_path")
     private String filePath;
 
@@ -27,30 +24,24 @@ public class File {
     private String imgFullPath;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "file", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
     private Board board;
 
-
-//    @Builder
-//    public File(Long id, String filePath) {
-//        this.id = id;
-//        this.filePath = filePath;
-//    }
+    /**
+     * 다대일
+     * File과 Board 연관 관계 (편의) 메서드
+     */
+    public void setBoard(Board board) {
+        this.board = board;
+        board.getFiles().add(this);
+    }
 
     /**
      * File 생성 메서드
      */
-    public static File createFile(Board board, FileDto fileDto) {
+    public static File createFile(FileDto fileDto) {
         File file = new File();
-        file.setBoard(board);
-        file.setId(file.getId());
-        file.setFilePath(file.getFilePath());
-
-        System.out.println(fileDto.getFilePath());
-        System.out.println(file.getBoard());
-        System.out.println(file.getId());
-        System.out.println(file.getFilePath());
-
 
         return file;
     }
