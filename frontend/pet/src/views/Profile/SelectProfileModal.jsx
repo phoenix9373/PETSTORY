@@ -9,6 +9,7 @@ import styles from './SelectProfileModal.module.css';
 import axios from 'axios';
 // library
 import toast, { Toaster } from 'react-hot-toast';
+// MUI
 
 function SelectProfileModal() {
   const [profiles, setProfiles] = useState(null);
@@ -94,9 +95,6 @@ function SelectProfileModal() {
         const response = await axios.get(`/show/${memberId}`);
         if (response.data) {
           setProfiles(response.data);
-          // console.log(`response: ${JSON.stringify(response)}`);
-          // const temp = JSON.stringify(response.data);
-          // console.log(`response.data ${temp}`);
         }
       } catch (e) {
         console.log('catch');
@@ -127,8 +125,8 @@ function SelectProfileModal() {
         }}
       />
       <ul>
-        <div className={styles.EntireProfilesBox}>
-          <div className={styles.ProfileBox}>
+        <div className={styles.entireProfilesBox}>
+          <div className={styles.profileBox}>
             {!profiles ? (
               <li>프로필을 만들어보세요</li>
             ) : (

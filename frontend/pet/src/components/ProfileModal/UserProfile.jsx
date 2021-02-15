@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { followProfile } from '../../_actions/profileAction';
+import { createFollow } from '../../_actions/profileAction';
 // component, css
 import ModifyProfile from './ModifyProfile';
 import FollowerList from './FollowerList';
@@ -13,6 +13,7 @@ function UserProfile(props) {
   const [isFolloweeModal, setFolloweeModal] = useState(false);
   const [isModifyModal, setModifyModal] = useState(false);
   const [loginProfileId, setLoginProfileId] = useState(null);
+  const [isFollow, setIsFollow] = useState('팔로우');
   const dispatch = useDispatch();
 
   // profileId 가져오기
@@ -29,12 +30,9 @@ function UserProfile(props) {
 
   const handleModifyModal = () => {
     setModifyModal(!isModifyModal);
-    console.log(`isModifyModal ${isModifyModal}`);
   };
 
   const handleModify = (modiProfile) => {
-    console.log('==============Userprofile에서 받은거');
-    console.log(modiProfile);
     props.handleModify(modiProfile);
   };
 
@@ -43,12 +41,24 @@ function UserProfile(props) {
     setFollowerModal(!isFollowerModal);
   };
 
+  // 팔로우 신청
   const handleFollow = (e) => {
     e.preventDefault();
-    const profileId = localStorage.getItem('profileId');
-    const followForm = new FormData();
-    followForm.append('follower_ee', profileId);
-    dispatch(followProfile(followForm)); // type이 안맞다는 에러뜬다.
+    if (isFollow === '팔로우') {
+      const followRequest = {
+        follower_id: props.profile.profileId, // 이 프로필 주인
+        followee_id: profileId, // 팔로우 신청한 사람(로그인)
+      };
+
+      dispatch(createFollow(followRequest)).then((res) => {
+        if (res.payload === 'success') {
+          setIsFollow('팔로우 취소');
+        }
+      });
+    } else {
+      // 팔로우 취소하는 api
+      setIsFollow('팔로우');
+    }
   };
 
   // 모달 - Followee 목록
@@ -114,7 +124,7 @@ function UserProfile(props) {
         </button>
       ) : (
         <button type="button" onClick={handleFollow}>
-          팔로우
+          {isFollow}
         </button>
       )}
       <ModifyProfile
