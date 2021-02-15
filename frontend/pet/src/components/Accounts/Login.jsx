@@ -57,8 +57,8 @@ function LoginPage(props) {
       <div className="form-container sign-in-container">
         <form className="acccount__form" onSubmit={onSubmitHandler}>
           <h1>Sign in</h1>
+          <KakaoLogin props={props} />
           <div className="social-container">
-            {/* <KakaoLogin /> */}
             <a className="account__a" href="#" className="social">
               <img className="account__kakao" src={kakaoIcon} />
             </a>
