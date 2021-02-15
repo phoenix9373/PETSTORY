@@ -10,6 +10,7 @@ const USER_API_BASE_URL = '/profiles';
 const BOARD_API_BASE_URL = '/board';
 const RELATIONS_API_BASE_URL = '/relations';
 const PROFILE_API_BASE_URL = '/profile';
+
 // 프로필 생성
 export function addProfile(profileForm) {
   const data = request('POST', `${USER_API_BASE_URL}/new`, profileForm);
@@ -18,7 +19,7 @@ export function addProfile(profileForm) {
     payload: data,
   };
 }
-
+// 프로필 수정
 export function modifyProfile(profileForm) {
   const profileId = localStorage.getItem('profileId');
   const data = request(
@@ -31,7 +32,7 @@ export function modifyProfile(profileForm) {
     payload: data,
   };
 }
-
+// 멀티 프로필 조회
 export function ProfileList(memberId) {
   const data = request('GET', `${USER_API_BASE_URL}/findall/${memberId}`);
   return {
@@ -48,8 +49,8 @@ export function deleteProfile(profileId) {
   };
 }
 // 팔로우 신청
-export function followProfile(profileId) {
-  const data = request('POST', `${USER_API_BASE_URL}/follow`, profileId);
+export function createFollow(idInfo) {
+  const data = request('POST', `${USER_API_BASE_URL}/follow`, idInfo);
   return {
     type: PROFILE_USER,
     payload: data,

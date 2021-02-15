@@ -31,6 +31,8 @@ function ModifyProfile(props) {
     setImage(e.target.files[0]);
     const imgSrc = URL.createObjectURL(e.target.files[0]);
     setImgFullPath(imgSrc);
+    const modiInfo = { name: 'imgFullPath', value: imgSrc };
+    props.handleModify(modiInfo);
   };
 
   // 수정(공개여부) - profileState 변경

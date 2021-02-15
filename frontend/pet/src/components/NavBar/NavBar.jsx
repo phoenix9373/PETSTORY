@@ -148,7 +148,7 @@ function Navbar({ isLogin, toggleTheme }) {
             </li>
             <li className="nav-item">
               <Link
-                to="/profile/32"
+                to="/profile/5"
                 className="nav-links"
                 onClick={closeMobileMenu}
               >
