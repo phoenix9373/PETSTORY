@@ -3,11 +3,11 @@ services:
   frontend:
     build:
       dockerfile: Dockerfile
-      context: ./frontend/pet
+      context: ./frontend
     container_name: app_frontend
     volumes:
-      - /pet/app/node_modules
-      - ./frontend/pet:/app
+      - /app/node_modules
+      - ./frontend:/app
     stdin_open: true
 
   nginx:
