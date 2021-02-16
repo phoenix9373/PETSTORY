@@ -1,19 +1,9 @@
 FROM node:14.15.0 as builder
 WORKDIR /app
 COPY ./package.json ./
-# RUN npm install --force
 RUN yarn install
 COPY ./ ./
-# RUN npm run build
 RUN yarn build
-
-RUN apk add --no-cache --virtual .gyp \
-        python \
-        make \
-        g++ \
-    && npm install \
-        [ your npm dependencies here ] \
-    && apk del .gyp
 
 
 FROM nginx
