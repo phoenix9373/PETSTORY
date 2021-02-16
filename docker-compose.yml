@@ -11,6 +11,7 @@ services:
     stdin_open: true
 
   nginx:
+    user: root
     restart: always
     build:
       dockerfile: Dockerfile
