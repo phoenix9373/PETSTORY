@@ -1,6 +1,6 @@
 FROM node:alpine as builder
 WORKDIR /app
-COPY ./pet/package.json ./pet
+COPY ./package.json ./
 RUN npm install --force
 COPY ./ ./
 RUN npm run build
