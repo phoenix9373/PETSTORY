@@ -1,4 +1,4 @@
-FROM node:14-alpine as builder
+FROM node:14.15.0 as builder
 WORKDIR /app
 COPY ./package.json ./
 # RUN npm install --force
