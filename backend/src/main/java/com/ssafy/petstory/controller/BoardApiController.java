@@ -30,7 +30,7 @@ public class BoardApiController {
      *
      * http://localhost:8080/api/board/findAllPaging?offset=1&limit=5
      */
-    @GetMapping("/api/board/findAllPaging")
+    @GetMapping("/board/findAllPaging")
     public Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
                                                @RequestParam(value = "limit") int limit){
         return new Result(boardService.findAllPaging(offset, limit));
@@ -39,7 +39,7 @@ public class BoardApiController {
     /**
      * 게시물 전체 조회
      */
-    @GetMapping("/api/board/findAll")
+    @GetMapping("/board/findAll")
     public Result<BoardQueryDto> findAll(){
         return new Result(boardService.findAll());
     }
@@ -49,7 +49,7 @@ public class BoardApiController {
      *
      * http://localhost:8080/api/board/findOne/1
      */
-    @GetMapping("/api/board/findOne/{boardId}")
+    @GetMapping("/board/findOne/{boardId}")
     public Result<BoardDetailDto> findOne(@PathVariable("boardId") Long boardId){
         return new Result(boardService.findOne(boardId));
     }
@@ -57,7 +57,7 @@ public class BoardApiController {
     /**
      * 게시물 생성 (다중 이미지)
      */
-    @PostMapping("/api/board/create")
+    @PostMapping("/board/create")
     public CreateBoardResponse createBoard(CreateBoardRequest request, List<MultipartFile> files) throws IOException {
 
         Long id = boardService.create(request, files);
@@ -68,7 +68,7 @@ public class BoardApiController {
     /**
      * 게시물 수정
      */
-    @PutMapping("/api/board/update/{boardId}")
+    @PutMapping("/board/update/{boardId}")
     public CreateBoardResponse updateBoard(@PathVariable("boardId") Long boardId, UpdateBoardRequest request, List<MultipartFile> files) throws IOException {
 
         Long id = boardService.update(boardId, request, files);
@@ -79,7 +79,7 @@ public class BoardApiController {
     /**
      * 게시물 삭제
      */
-    @DeleteMapping("/api/board/delete/{boardId}")
+    @DeleteMapping("//board/delete/{boardId}")
     public void deleteBoard(@PathVariable("boardId") Long boardId) {
 
         boardService.delete(boardId);
