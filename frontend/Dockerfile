@@ -9,7 +9,7 @@
 # # RUN npm run build
 # RUN yarn build
 
-FROM node:8-alpine AS assets
+FROM node:14-alpine AS assets
 
 WORKDIR /app
 
