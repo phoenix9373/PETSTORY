@@ -29,7 +29,7 @@ public class HashtagController {
     /**
      * 해시태그로 게시글 검색
      */
-    @GetMapping("/api/hashtag/findBoards")
+    @GetMapping("/hashtag/findBoards")
     public Result<BoardQueryDto> findBoardsByHashtag(@RequestBody HashtagDto dto){
         return new Result(hashtagService.findBoardsByHashtag(dto.getHashtagName()));
     }
@@ -38,7 +38,7 @@ public class HashtagController {
      * 해시태그 자동완성
      *  : like query
      */
-    @GetMapping("/api/hashtag/findOne/{hashtagName}")
+    @GetMapping("/hashtag/findOne/{hashtagName}")
     public Result<HashtagDto> findOne(@PathVariable("hashtagName") String temp){
         System.out.println(temp);
         return new Result(hashtagService.findHashtagName(temp));
@@ -48,7 +48,7 @@ public class HashtagController {
      * 인기 해시태그
      * @return
      */
-    @GetMapping("/api/hashtag/findPopulars")
+    @GetMapping("/hashtag/findPopulars")
     public Result<HashtagDto> findPopulars() {
         return new Result(hashtagService.findPopularHashtags());
     }
@@ -56,7 +56,7 @@ public class HashtagController {
     /**
      * 게시물 상세보기에서 연관 해시태그(top4) 조회
      */
-//    @GetMapping("/api/hashtag/findRelated")
+//    @GetMapping("/hashtag/findRelated")
 //    public Result<HashtagDto> findRelated(String hashtagName) {
 //        return new Result(hashtagService.findRelatedHashtags(hashtagName));
 //    }
