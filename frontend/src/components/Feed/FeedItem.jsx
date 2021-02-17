@@ -76,30 +76,31 @@ function FeedItem(props) {
   const memberId = JSON.parse(localStorage.getItem('user')).id;
 
   // State
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(options[0]);
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const [selectedIndex, setSelectedIndex] = useState(options[0]);
   const [postList, setPostList] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
 
   // Material UI 커스텀 클래스
   const classes = useStyles();
   const history = useHistory();
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   const handleDetail = () => {
     history.push(`/detail/${feedItem.boardId}`, feedItem);
   };
 
-  const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
+  // const handleMenuItemClick = (event, index) => {
+  //   setSelectedIndex(index);
+  //   setAnchorEl(null);
+  // };
 
   // 포스트 리스트 데이터 가져오기.
   const getFetchPostList = async () => {
@@ -111,7 +112,19 @@ function FeedItem(props) {
     setPostList(() => response && response.data);
   };
 
+  const fetchDetail = async () => {
+    const comment = await request(
+      'GET',
+      `/api/comment/findAll/${feedItem.boardId}`,
+      {},
+      {},
+    );
+
+    setCommentCount(() => comment.data.length);
+  };
+
   useEffect(() => {
+    fetchDetail();
     getFetchPostList();
   }, []);
 
@@ -132,7 +145,7 @@ function FeedItem(props) {
           postList={postList}
         />
         {/* 아이콘 요소 */}
-        <div className="wrapper">
+        {/* <div className="wrapper">
           <IconButton
             className={classes.icon}
             className="icon right"
@@ -172,9 +185,12 @@ function FeedItem(props) {
               </MenuItem>
             ))}
           </Menu>
-        </div>
+        </div> */}
       </div>
-      <FeedProfile feedItem={props.feedItem}></FeedProfile>
+      <FeedProfile
+        commentCount={commentCount}
+        feedItem={feedItem}
+      ></FeedProfile>
     </div>
   );
 }

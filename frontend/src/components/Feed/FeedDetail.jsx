@@ -41,6 +41,7 @@ function FeedDetail() {
 
   // States
   const [comments, setComments] = useState([]);
+  const [commentReload, setCommentReload] = useState(false);
 
   // UI 존재 유무에 대한 State
   const [loading, setLoading] = useState(false);
@@ -78,7 +79,7 @@ function FeedDetail() {
   };
 
   // 댓글 작성
-  const handleCommentCreate = (e) => {
+  const handleCommentCreate = async (e) => {
     e.preventDefault();
     const content = commentRef.current.value;
     const profileId = Number(localStorage.getItem('profileId'));
@@ -92,7 +93,8 @@ function FeedDetail() {
 
     console.log(data);
 
-    fetchCreateComment(data);
+    await fetchCreateComment(data);
+    setCommentReload((prev) => !prev);
 
     commentRef.current.value = '';
   };
@@ -100,7 +102,7 @@ function FeedDetail() {
   // useEffect
   useEffect(() => {
     fetchDetail();
-  }, []);
+  }, [commentReload]);
 
   return (
     <>
@@ -155,8 +157,12 @@ function FeedDetail() {
                 <li className={styles.tag}>{tag}</li>
               ))} */}
                 {feedItem.boardHashtags &&
-                  feedItem.boardHashtags.map((tag) => (
-                    <li onClick={handleTag} className={styles.tag}>
+                  feedItem.boardHashtags.map((tag, index) => (
+                    <li
+                      key={index * 10000}
+                      onClick={handleTag}
+                      className={styles.tag}
+                    >
                       #{tag.hashtagName}
                     </li>
                   ))}
@@ -170,7 +176,6 @@ function FeedDetail() {
                 <h3 className={styles.titleText}>발도장</h3>
                 <Pets fontSize="small"></Pets>
               </div>
-              {/* 더보기 버튼을 누를때마다 items에 push 함. */}
               {comments &&
                 comments.map((comment) => (
                   <Comment comment={comment}></Comment>
