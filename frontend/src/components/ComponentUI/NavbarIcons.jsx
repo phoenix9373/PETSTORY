@@ -32,6 +32,8 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
   const classes = useStyle();
   const [isAlarmData, setIsAlarmData] = useState(false);
   const [isProfileData, setIsProfileData] = useState(false);
+  const [alarm, setAlarm] = useState(null);
+  const [isAlarmNum, setIsAlarmNum] = useState(false);
 
   const getAlarmData = () => {
     setIsAlarmData(!isAlarmData);
@@ -43,6 +45,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
       .get(`/api/main/alarmclick/${profileId}`)
       .then((res) => {
         console.log('알람데이터', res);
+        setAlarm(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -100,6 +103,11 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     <>
       <div className={styles.frame}>
         {/* 알림 */}
+        {!isAlarmNum && (
+          <div className={styles.alarmNumContainer}>
+            <div className={styles.alramNum}>12</div>
+          </div>
+        )}
         <NotificationsIcon
           className={classes.icon}
           onClick={getAlarmData}
@@ -108,13 +116,20 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
         />
         {isAlarmData && !isFocus && (
           <ul className={styles.wrapper}>
-            <>
-              <li className={styles.item}>알람</li>
-            </>
+            {alarm !== null ? (
+              alarm.map(({ boardTitle, profileNickname }, idx) => (
+                <li className={styles.item} key={idx * 564637}>
+                  <span>{profileNickname}</span> 님이 <span>{boardTitle}</span>{' '}
+                  에 좋아요를 눌렀습니다.
+                </li>
+              ))
+            ) : (
+              <li className={styles.item}>알람이 없습니다.</li>
+            )}
           </ul>
         )}
-        {/* 프로필 */}
 
+        {/* 프로필 */}
         <AccountCircleIcon
           className={classes.icon}
           onClick={getProfileData}
