@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { userDetail } from '../../_actions/userAction';
+import styles from './UserDetailPage.module.css';
+import axios from 'axios';
 
 function UserDetail() {
   const [user, setUser] = useState('a');
@@ -12,8 +14,25 @@ function UserDetail() {
   const getUser = () => {
     dispatch(userDetail(userId))
       .then((res) => {
-        console.log(res.payload);
         setUser(res.payload);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const onUpdateMember = (e) => {
+    console.log(e);
+  };
+  const onDeleteMember = (e) => {
+    const userId = JSON.parse(localStorage.getItem('user')).id;
+    axios
+      .delete(`/api/member/delete/${userId}`)
+      .then((res) => {
+        console.log(res);
+        localStorage.removeItem('profileId');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
       })
       .catch((err) => {
         console.error(err);
@@ -26,9 +45,19 @@ function UserDetail() {
 
   return (
     <>
-      <div>회원의 Email : {user.email}</div>
-      <div>회원의 이름 : {user.member_name}</div>
-      <button>회원정보 수정</button>
+      <div className={styles.container}>
+        <div className={styles.title}> 회원정보 수정</div>
+        <div className={styles.email}>{user.email}</div>
+        <div className={styles.name}>{user.member_name}</div>
+        <div className={styles.buttonWrapper}>
+          <button className={styles.button} onClick={onUpdateMember}>
+            회원정보 수정
+          </button>
+          <button className={styles.button} onClick={onDeleteMember}>
+            회원탈퇴
+          </button>
+        </div>
+      </div>
     </>
   );
 }
