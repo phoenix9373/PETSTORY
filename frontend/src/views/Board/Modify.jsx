@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { request } from '../../utils/axios';
+import { confirmAlert } from 'react-confirm-alert';
 
 // Components
 import InputModify from '../../components/ComponentUI/InputModify';
@@ -15,11 +16,11 @@ import { MdCancel, MdCloudUpload } from 'react-icons/md';
 import './Modify.scss';
 
 // Cartoonize
-// import {
-//   CartoonWorkerManager,
-//   generateCartoonDefaultConfig,
-//   generateDefaultCartoonParams,
-// } from '@dannadori/white-box-cartoonization-worker-js';
+import {
+  CartoonWorkerManager,
+  generateCartoonDefaultConfig,
+  generateDefaultCartoonParams,
+} from '@dannadori/white-box-cartoonization-worker-js';
 
 export default class Modify extends Component {
   fileObj = [];
@@ -42,6 +43,7 @@ export default class Modify extends Component {
       cursor: 0,
       feedItem: props.location.state,
     };
+    this.submit = this.submit.bind(this);
     this.pushAxios = this.pushAxios.bind(this);
     this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
     this.onDrop = this.onDrop.bind(this);
@@ -91,8 +93,24 @@ export default class Modify extends Component {
     const context = value;
     this.setState({ context });
   }
+  submit = () => {
+    confirmAlert({
+      title: '수정하기',
+      message: '정말 수정하시겠습니까?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => this.pushAxios(),
+        },
+        {
+          label: 'No',
+          // onClick: () => alert('Click No'),
+        },
+      ],
+    });
+  };
   pushAxios(e) {
-    e.preventDefault();
+    // e.preventDefault();
     if (!this.titleRef.current.value) {
       toast.error('제목을 입력하세요');
       return;
@@ -124,6 +142,7 @@ export default class Modify extends Component {
     this.titleRef.current.value = '';
     this.contextRef.current.value = '';
     this.hashtagRef.current.value = '';
+    // this.props.history.push('/');
     window.location.href = '/';
   }
 
@@ -274,7 +293,7 @@ export default class Modify extends Component {
         />
         <div className="contaniner">
           <div className="headers">
-            <div className="headers__item" onClick={this.pushAxios}>
+            <div className="headers__item" onClick={this.submit}>
               <FaCat className="headers__item__icon" />글 수정하기
             </div>
           </div>
