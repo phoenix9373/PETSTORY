@@ -3,7 +3,7 @@ import { confirmAlert } from 'react-confirm-alert';
 import './ConfirmAlert.css';
 
 class ConfirmAlert extends React.Component {
-  // submit을 가져다 쓰세요!
+  // import 객체와   css, 그리고 submit을 가져다 쓰세요!
   submit = () => {
     confirmAlert({
       title: '제출하시겠습니까?',

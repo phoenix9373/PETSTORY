@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import styles from './NavbarIcons.module.css';
 import axios from 'axios';
-
+import { confirmAlert } from 'react-confirm-alert';
+import './ConfirmAlert.css';
 // Material UI
 import { makeStyles } from '@material-ui/core/styles';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -91,7 +92,21 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     localStorage.removeItem('profileId');
     window.location.replace('/login');
   };
-
+  const logoutalert = () => {
+    confirmAlert({
+      title: '로그아웃?',
+      message: '정말 로그아웃하시겠습니까?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => logoutHandler(),
+        },
+        {
+          label: 'No',
+        },
+      ],
+    });
+  };
   const scrollHandler = (e) => {
     setIsAlarmData(false);
     setIsProfileData(false);
@@ -148,7 +163,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
               <CgProfile className={styles.icon} />
               <span className={styles.span}>회원정보 수정</span>
             </li>
-            <li className={styles.item3} onClick={logoutHandler}>
+            <li className={styles.item3} onClick={logoutalert}>
               <RiLogoutBoxRLine className={styles.icon2} />
               <span className={styles.span}>로그아웃</span>
             </li>
