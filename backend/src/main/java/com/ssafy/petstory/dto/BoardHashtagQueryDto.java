@@ -7,7 +7,7 @@ import lombok.Data;
 public class BoardHashtagQueryDto {
     @JsonIgnore
     private Long boardId;
-    @JsonIgnore
+
     private Long hashtagId;
     private String hashtagName;
 

@@ -5,9 +5,13 @@ import axios from 'axios';
 
 // Material UI
 import { makeStyles } from '@material-ui/core/styles';
-import { Badge } from '@material-ui/core';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
+// React Icon
+import { GiBirdHouse } from 'react-icons/gi';
+import { CgSelectR, CgProfile } from 'react-icons/cg';
+import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 const useStyle = makeStyles(() => ({
   icon: {
@@ -28,6 +32,8 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
   const classes = useStyle();
   const [isAlarmData, setIsAlarmData] = useState(false);
   const [isProfileData, setIsProfileData] = useState(false);
+  const [alarm, setAlarm] = useState(null);
+  const [isAlarmNum, setIsAlarmNum] = useState(false);
 
   const getAlarmData = () => {
     setIsAlarmData(!isAlarmData);
@@ -39,6 +45,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
       .get(`/api/main/alarmclick/${profileId}`)
       .then((res) => {
         console.log('알람데이터', res);
+        setAlarm(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -60,15 +67,23 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     setIsAlarmData(false);
   };
   const myProfileHandler = (e) => {
+    setIsAlarmData(false);
+    setIsProfileData(false);
+    handleIsFocus(false);
     const profileId = localStorage.getItem('profileId');
-    // window.location.replace(`/profile/${profileId}`);
     history.push(`/profile/${profileId}`);
   };
   const profileSelectHandler = (e) => {
+    setIsAlarmData(false);
+    setIsProfileData(false);
+    handleIsFocus(false);
     history.push('/select');
   };
 
   const memberHandler = (e) => {
+    setIsAlarmData(false);
+    setIsProfileData(false);
+    handleIsFocus(false);
     history.push('/userdetail');
   };
   const logoutHandler = (e) => {
@@ -80,6 +95,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
   const scrollHandler = (e) => {
     setIsAlarmData(false);
     setIsProfileData(false);
+    handleIsFocus(false);
   };
 
   window.addEventListener('scroll', scrollHandler);
@@ -87,6 +103,11 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     <>
       <div className={styles.frame}>
         {/* 알림 */}
+        {!isAlarmNum && (
+          <div className={styles.alarmNumContainer}>
+            <div className={styles.alramNum}>12</div>
+          </div>
+        )}
         <NotificationsIcon
           className={classes.icon}
           onClick={getAlarmData}
@@ -95,13 +116,20 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
         />
         {isAlarmData && !isFocus && (
           <ul className={styles.wrapper}>
-            <>
-              <li className={styles.item}>알람</li>
-            </>
+            {alarm !== null ? (
+              alarm.map(({ boardTitle, profileNickname }, idx) => (
+                <li className={styles.item} key={idx * 564637}>
+                  <span>{profileNickname}</span> 님이 <span>{boardTitle}</span>{' '}
+                  에 좋아요를 눌렀습니다.
+                </li>
+              ))
+            ) : (
+              <li className={styles.item}>알람이 없습니다.</li>
+            )}
           </ul>
         )}
-        {/* 프로필 */}
 
+        {/* 프로필 */}
         <AccountCircleIcon
           className={classes.icon}
           onClick={getProfileData}
@@ -109,16 +137,20 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
         {isProfileData && !isFocus && (
           <ul className={styles.wrapper2}>
             <li className={styles.item2} onClick={myProfileHandler}>
-              마이 프로필
+              <GiBirdHouse className={styles.icon} />
+              <span className={styles.span}>마이 프로필</span>
             </li>
             <li className={styles.item2} onClick={profileSelectHandler}>
-              프로필 선택
+              <CgSelectR className={styles.icon} />
+              <span className={styles.span}>프로필 선택</span>
             </li>
             <li className={styles.item2} onClick={memberHandler}>
-              회원정보 수정
+              <CgProfile className={styles.icon} />
+              <span className={styles.span}>회원정보 수정</span>
             </li>
-            <li className={styles.item2} onClick={logoutHandler}>
-              로그아웃
+            <li className={styles.item3} onClick={logoutHandler}>
+              <RiLogoutBoxRLine className={styles.icon2} />
+              <span className={styles.span}>로그아웃</span>
             </li>
           </ul>
         )}

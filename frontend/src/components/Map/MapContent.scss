@@ -4,16 +4,20 @@
   justify-content: space-between;
   margin: 0;
   padding: 0;
-  font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
+  font-family: inherit;
   font-size: 12px;
-  // position: relative;
   width: 100%;
-  height: 75vh;
+  height: 70vh;
+  div {
+    border-radius: 10px;
+    border: none;
+    width: 210px;
+  }
   * {
     margin: 0;
     padding: 0;
-    font-family: 'Malgun Gothic', dotum, '돋움', sans-serif;
-    font-size: 12px;
+    font-family: inherit;
+    font-size: 14px;
   }
   a {
     color: #000;
@@ -31,7 +35,8 @@
 
 #menu_wrap {
   color: black;
-  width: 400px;
+  width: 20vw;
+  height: 100%;
   margin-left: 10px;
   padding: 5px;
   overflow-y: auto;
@@ -70,7 +75,7 @@
     border-bottom: 1px solid #888;
     overflow: hidden;
     cursor: pointer;
-    height: 95px;
+    height: 100px;
     span {
       display: block;
       margin-top: 4px;
@@ -171,9 +176,41 @@
 }
 
 .marker__wrap {
+  background-color: #fff5ff;
   color: black;
-  border: 1px solid black;
-  border-radius: 8px;
-  width: 200px;
-  height: 200px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 3px 3px 6px 3px #6d676746;
+  width: 100%;
+  max-width: 350px;
+  height: fit-content;
+  .marker__info {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    .marker__title {
+      font-size: 15px;
+      height: 30%;
+      padding: 10px 15px;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        font-weight: bold;
+      }
+    }
+
+    .marker__body {
+      height: 70%;
+      padding: 10px 15px;
+      .marker__desc {
+        .ellipsis {
+          padding: 4px 0px;
+        }
+        .phone {
+          padding: 4px 0px;
+          color: rgba(240, 9, 9, 0.788);
+        }
+      }
+    }
+  }
 }

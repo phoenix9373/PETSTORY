@@ -1,18 +1,20 @@
 package com.ssafy.petstory.repository;
 
 import com.ssafy.petstory.domain.Postlist;
-import com.ssafy.petstory.dto.PostlistDto;
+import com.ssafy.petstory.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class PostlistRepository {
 
     private final EntityManager em;
+    private final BoardRepository boardRepository;
 
     /**
      * 저장목록에 게시물 추가
@@ -47,4 +49,5 @@ public class PostlistRepository {
     public void delete(Postlist postlist) {
         em.remove(postlist);
     }
+
 }

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { createArticle } from '../../_actions/boardAction';
 import axios from 'axios';
+import { request } from '../../utils/axios';
+
+// Components
+import InputModify from '../../components/ComponentUI/InputModify';
+import TextAreaModify from '../../components/ComponentUI/TextAreaModify';
 
 // Alarm
 import toast, { Toaster } from 'react-hot-toast';
@@ -8,36 +12,35 @@ import toast, { Toaster } from 'react-hot-toast';
 // Css
 import { FaCat } from 'react-icons/fa';
 import { MdCancel, MdCloudUpload } from 'react-icons/md';
-import './Create.scss';
+import './Modify.scss';
 
 // Cartoonize
-import {
-  CartoonWorkerManager,
-  generateCartoonDefaultConfig,
-  generateDefaultCartoonParams,
-} from '@dannadori/white-box-cartoonization-worker-js';
+// import {
+//   CartoonWorkerManager,
+//   generateCartoonDefaultConfig,
+//   generateDefaultCartoonParams,
+// } from '@dannadori/white-box-cartoonization-worker-js';
 
-export default class Create extends Component {
+export default class Modify extends Component {
   fileObj = [];
   fileArray = [];
   fileArrayFirst = null;
   titleRef = React.createRef();
   contextRef = React.createRef();
   hashtagRef = React.createRef();
-  manager = new CartoonWorkerManager();
-  config = generateCartoonDefaultConfig();
-  params = generateDefaultCartoonParams();
 
   constructor(props) {
     super(props);
     this.state = {
+      title: '',
+      context: '',
       hashtags: [],
       file: [],
       fileTrans: [],
       keyword: '',
       results: [],
       cursor: 0,
-      loading: false,
+      feedItem: props.location.state,
     };
     this.pushAxios = this.pushAxios.bind(this);
     this.uploadMultipleFiles = this.uploadMultipleFiles.bind(this);
@@ -49,9 +52,45 @@ export default class Create extends Component {
     this.hashtagBlurHandler = this.hashtagBlurHandler.bind(this);
     this.hashtagOnkeyDown = this.hashtagOnkeyDown.bind(this);
     this.previewHandler = this.previewHandler.bind(this);
-    this.cartoonize = this.cartoonize.bind(this);
+    this.onhandletitle = this.onhandletitle.bind(this);
+    this.onhandlecontext = this.onhandlecontext.bind(this);
   }
-
+  componentWillMount() {
+    if (this.state.file.length === 0 && this.state.feedItem) {
+      for (let i = 0; i < this.state.feedItem.files.length; i++) {
+        this.fileArray.push({
+          URL: this.state.feedItem.files[i].imgFullPath,
+          id: i + Date.now(),
+          Obj: this.state.feedItem.files[i],
+        });
+      }
+      if (!this.fileArray[0]) {
+        return;
+      }
+      this.fileArrayFirst = this.fileArray[0].URL;
+      this.setState({ file: this.fileArray });
+    }
+    if (this.state.hashtags.length === 0 && this.state.feedItem) {
+      const boardHashtags = this.state.feedItem.boardHashtags;
+      this.setState({
+        hashtags: boardHashtags.map((item) => item.hashtagName),
+      });
+    }
+    if (this.state.title.length === 0 && this.state.feedItem) {
+      this.setState({ title: this.state.feedItem.title });
+    }
+    if (this.state.context.length === 0 && this.state.feedItem) {
+      this.setState({ context: this.state.feedItem.context });
+    }
+  }
+  onhandletitle(value) {
+    const title = value;
+    this.setState({ title });
+  }
+  onhandlecontext(value) {
+    const context = value;
+    this.setState({ context });
+  }
   pushAxios(e) {
     e.preventDefault();
     if (!this.titleRef.current.value) {
@@ -71,12 +110,17 @@ export default class Create extends Component {
     formData.append('title', this.titleRef.current.value);
     formData.append('context', this.contextRef.current.value);
     formData.append('hashtags', this.state.hashtags);
+    formData.append('imgFullPaths', this.imgFullPaths);
     for (const i of this.fileArray) {
       const img = i.Obj;
       formData.append('files', img);
     }
     // axios
-    const axios = createArticle(formData);
+    request(
+      'PUT',
+      `/api/board/update/${this.state.feedItem.boardId}`,
+      formData,
+    );
     this.titleRef.current.value = '';
     this.contextRef.current.value = '';
     this.hashtagRef.current.value = '';
@@ -211,50 +255,6 @@ export default class Create extends Component {
     }
   }
 
-  cartoonize() {
-    if (this.fileArrayFirst) {
-      this.setState({ loading: true });
-      const srcImage = document.createElement('img');
-      srcImage.src = this.fileArrayFirst;
-      srcImage.onload = () => {
-        this.manager
-          .init(this.config)
-          .then(() => this.manager.predict(srcImage, this.params))
-          .then((res) => {
-            res.toBlob((blob) => {
-              this.fileArray = [
-                ...this.fileArray,
-                {
-                  URL: URL.createObjectURL(blob),
-                  id: Date.now(),
-                  Obj: blob,
-                },
-              ];
-              this.fileArrayFirst = URL.createObjectURL(blob);
-              this.setState(() => ({
-                fileTrans: this.fileArrayFirst,
-                loading: false,
-              }));
-            }, 'image/png');
-          });
-      };
-    } else {
-      toast.error('이미지를 올려주세요.');
-    }
-  }
-
-  _handleUpdate = (evt, updated) => {
-    console.log(evt); // tslint:disable-line
-    console.log(updated); // tslint:disable-line
-    // this.setState({
-    //   dataSource: [...updated, {
-    //     color: '#FFAA00',
-    //     title: 'Added Engineer',
-    //     text: 'Added Engineer',
-    //   }]
-    // })
-  };
-
   render() {
     const { cursor } = this.state;
     return (
@@ -274,20 +274,8 @@ export default class Create extends Component {
         />
         <div className="contaniner">
           <div className="headers">
-            {!this.state.loading && (
-              <div className="headers__item" onClick={this.cartoonize}>
-                <FaCat className="headers__item__icon" />
-                Cartoon으로 변환하기
-              </div>
-            )}
-            {this.state.loading && (
-              <div className="headers__item">
-                <FaCat className="headers__item__icon" />
-                이미지 변환중...
-              </div>
-            )}
             <div className="headers__item" onClick={this.pushAxios}>
-              <FaCat className="headers__item__icon" />글 작성하기
+              <FaCat className="headers__item__icon" />글 수정하기
             </div>
           </div>
           <div
@@ -323,28 +311,21 @@ export default class Create extends Component {
             </div>
             <div className="text-card">
               <div className="form__group field">
-                <input
-                  className="form__field "
-                  ref={this.titleRef}
-                  placeholder="title"
-                  id="name"
-                  type="input"
-                  autoComplete="off"
-                  required
-                />
+                <InputModify
+                  initialValue={this.state.title}
+                  titleRef={this.titleRef}
+                  handletitle={this.onhandletitle}
+                ></InputModify>
                 <label htmlFor="title" className="form__label title">
                   제목
                 </label>
               </div>
               <div className="form__group field">
-                <textarea
-                  className="form__field context"
-                  ref={this.contextRef}
-                  placeholder="context"
-                  id="context"
-                  type="textarea"
-                  required
-                />
+                <TextAreaModify
+                  initialValue={this.state.context}
+                  contextRef={this.contextRef}
+                  handlecontext={this.onhandlecontext}
+                ></TextAreaModify>
                 <label htmlFor="context" className="form__label context">
                   내용
                 </label>
