@@ -83,9 +83,9 @@ public class BoardService {
         return boardRepository.findOne(boardId);
     }
 
-//    public List<BoardQueryDto> findLike(int offset, int limit, Long profileId) {
-//        return boardRepository.findLike(offset, limit,profileId);
-//    }
+    public List<BoardQueryDto> findLike(int offset, int limit, Long profileId) {
+        return boardRepository.findLikeBoard(offset, limit,profileId);
+    }
 
 
     private class ItemParam {
