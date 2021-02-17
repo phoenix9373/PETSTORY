@@ -29,7 +29,7 @@ public class Member {
     private boolean isBanned;
 
     // Member와 Profile은 일대다 관계
-    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Profile> profiles = new ArrayList<>();
 
     // Member와 Postlist은 일대다 관계
