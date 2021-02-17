@@ -231,6 +231,7 @@ public class ProfileController {
         return new ResponseEntity<List<AlarmClickDto>>(resultDto, HttpStatus.OK);
 
     }//맴버정보보기를 눌러서 확인
+
     @Data
     static class CreateProfileResponse {
         private Long id;

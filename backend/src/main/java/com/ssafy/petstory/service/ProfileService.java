@@ -161,6 +161,7 @@ public class ProfileService {
             Profile forNickname = profileRepository.findOne(likeList.get(j).getProfileId());
             addalarm.setBoardTitle(likeList.get(j).getBoard().getTitle());
             addalarm.setProfileNickname(forNickname.getNickname());
+            addalarm.setBoardId(likeList.get(j).getBoard().getId());
             alarmResult.add(addalarm);
         }
 
