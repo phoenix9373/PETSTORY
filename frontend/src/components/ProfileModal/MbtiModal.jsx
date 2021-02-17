@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import Slider from 'react-slick';
+// css
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import style from './MbtiModal.module.css';
+import styles from './MbtiModal.module.css';
+// assets
 import walkA from '../../assets/mbti/walkA.png';
 import walkB from '../../assets/mbti/walkB.png';
 import placeA from '../../assets/mbti/placeA.png';
@@ -58,8 +60,8 @@ class MbtiModal extends Component {
       // beforeChange: (current, next) => this.setState({ slideIndex: next }),
     };
     const body = (
-      <div>
-        <p>진행 상황 {this.state.updateCount}</p>
+      <div className={styles.body}>
+        {/* <p>진행 상황 {this.state.updateCount}</p> */}
         {/* <input
           onChange={(e) => this.slider.slickGoTo(e.target.value)}
           value={this.state.slideIndex}
@@ -68,13 +70,13 @@ class MbtiModal extends Component {
           max={5}
         /> */}
         <Slider ref={(c) => (this.slider = c)} {...settings}>
-          <div className={style.bigQuestionBox}>
+          <div className={styles.bigQuestionBox}>
             <h2>반려인과 산책할 때</h2>
-            <div className={style.smallQuestionBox}>
-              <div className={style.questionA}>
+            <div className={styles.smallQuestionBox}>
+              <div className={styles.questionA}>
                 <label>
                   <h3>나만 따라오라개!</h3>
-                  <img src={walkA} alt="산책이미지a" />
+                  <img className={styles.img} src={walkA} alt="산책이미지a" />
                   <p>하네스가 끊어져라 힘으로 끌고가는 댕댕이</p>
                   <input
                     type="checkbox"
@@ -86,7 +88,7 @@ class MbtiModal extends Component {
               </div>
               <label>
                 <h3>알아서 모셔라</h3>
-                <img src={walkB} alt="산책이미지b" />
+                <img className={styles.img} src={walkB} alt="산책이미지b" />
                 <p>가끔은 안아야 하는 댕댕이</p>
                 <input
                   type="checkbox"
@@ -99,11 +101,15 @@ class MbtiModal extends Component {
           </div>
           <div>
             <h2>산책하다가 낯선 강아지와 만났을 때</h2>
-            <div className={style.smallQuestionBox}>
-              <div className={style.questionA}>
+            <div className={styles.smallQuestionBox}>
+              <div className={styles.questionA}>
                 <label>
                   <h3>인싸 기질 폭발</h3>
-                  <img src={otherDogA} alt="낯선강아지a" />
+                  <img
+                    className={styles.img}
+                    src={otherDogA}
+                    alt="낯선강아지a"
+                  />
                   <p>반갑다 내 친구야~ 금방 친해지는 댕댕이</p>
                   <input
                     type="checkbox"
@@ -113,10 +119,14 @@ class MbtiModal extends Component {
                   ></input>
                 </label>
               </div>
-              <div className={style.questionB}>
+              <div className={styles.questionB}>
                 <label>
                   <h3>몰라 뭐야 너 무서워</h3>
-                  <img src={otherDogB} alt="낯선강아지b" />
+                  <img
+                    className={styles.img}
+                    src={otherDogB}
+                    alt="낯선강아지b"
+                  />
                   <p>반려인 뒤로 숨거나 나름 사납게 짖는 댕댕이</p>
                   <input
                     type="checkbox"
@@ -130,10 +140,10 @@ class MbtiModal extends Component {
           </div>
           <div>
             <h2>낯선 장소에 갔을 때</h2>
-            <div className={style.smallQuestionBox}>
+            <div className={styles.smallQuestionBox}>
               <label>
                 <h3>나 지금 떨고있니?</h3>
-                <img src={placeA} alt="낯선장소a" />
+                <img className={styles.img} src={placeA} alt="낯선장소a" />
                 <p>핸드폰 진동마냥 덜덜덜 반려인만 찾는 댕댕이</p>
                 <input
                   type="checkbox"
@@ -144,7 +154,7 @@ class MbtiModal extends Component {
               </label>
               <label>
                 <h3>호기심 대마왕</h3>
-                <img src={placeB} alt="낯선장소b" />
+                <img className={styles.img} src={placeB} alt="낯선장소b" />
                 <p>궁금한게 넘 많아! 빨빨 돌아다니는 댕댕이</p>
                 <input
                   type="checkbox"
@@ -157,11 +167,11 @@ class MbtiModal extends Component {
           </div>
           <div>
             <h2>교육할 때</h2>
-            <div className={style.smallQuestionBox}>
-              <div className={style.questionA}>
+            <div className={styles.smallQuestionBox}>
+              <div className={styles.questionA}>
                 <label>
                   <h3>동작그만, 밑장빼기냐</h3>
-                  <img src={eduA} alt="교육a" />
+                  <img className={styles.img} src={eduA} alt="교육a" />
                   <p> 간식이 안보이면 꿈적도 안하는 댕댕이</p>
                   <input
                     type="checkbox"
@@ -171,10 +181,10 @@ class MbtiModal extends Component {
                   ></input>
                 </label>
               </div>
-              <div className={style.questionB}>
+              <div className={styles.questionB}>
                 <label>
                   <h3>손은 손이고 발도 손이다</h3>
-                  <img src={eduB} alt="교육b" />
+                  <img className={styles.img} src={eduB} alt="교육b" />
                   <p>간식 따위 필요없어! 달라면 다 주는 댕댕이</p>
                   <input
                     type="checkbox"
@@ -192,12 +202,19 @@ class MbtiModal extends Component {
             <button onClick={this.props.onSubmit}>완료</button>
           </div>
         </Slider>
-        <button onClick={this.props.onClose}>취소</button>
+        <button className={styles.btn} onClick={this.props.onClose}>
+          취소
+        </button>
       </div>
     );
 
     return (
-      <Modal isOpen={this.props.mbtiTest} onRequestClose={this.props.onClose}>
+      <Modal
+        className={styles.modal}
+        overlayClassName={styles.overLay}
+        isOpen={this.props.mbtiTest}
+        onRequestClose={this.props.onClose}
+      >
         {body}
       </Modal>
     );

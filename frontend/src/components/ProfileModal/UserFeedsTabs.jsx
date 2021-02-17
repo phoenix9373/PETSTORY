@@ -1,4 +1,6 @@
 import React, { useState, Component } from 'react';
+// css
+import styles from './UserFeedsTabs.module.css';
 // MUI
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -32,9 +34,13 @@ function UserFeedsTabs(props) {
           <p>작성한 글이 없습니다..</p>
         ) : (
           props.profile.boardQueryDtos.map((article, index) => (
-            <div key={article.boardId}>
+            <div className={styles.allImg} key={article.boardId}>
               {article.files ? (
-                <img src={article.files[0].imgFullPath} alt="게시물 이미지" />
+                <img
+                  className={styles.img}
+                  src={article.files[0].imgFullPath}
+                  alt="게시물 이미지"
+                />
               ) : (
                 <p>이미지가 없는 게시물</p>
               )}
