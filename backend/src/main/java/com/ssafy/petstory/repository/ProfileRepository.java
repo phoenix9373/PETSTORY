@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +93,12 @@ public class ProfileRepository {
         List<Like> likes = em.createQuery("SELECT m FROM Like m WHERE m.board.profile.id = :board_id", Like.class)
                 .setParameter("board_id",profile_id)
                 .getResultList();
-        return likes.size();
+
+        List<Alarm> alarms = em.createQuery("select  a from Alarm  a where a.likeId in :like_ids", Alarm.class)
+                .setParameter("like_ids",likes)
+                .getResultList();
+
+        return alarms.size();
     }
 
     public List<Long> findAlarmBoard(Long profile_id) {
@@ -116,23 +122,43 @@ public class ProfileRepository {
     }
 
     public Alarm findDelAlarm(Long del_like_id){
+        Alarm temp = new Alarm();
+        try {
         Alarm alarm = em.createQuery("SELECT m FROM Alarm m WHERE m.likeId.likeId = :del_like_id", Alarm.class)
                 .setParameter("del_like_id",del_like_id)
                 .getSingleResult();
-        return alarm;
+            return alarm;
+        } catch (NoResultException nre) {
+            return temp;
+        }
+
     }
 
-    public List<Like> findAlarmLike(Long board_id, List<Like> likeList) {
+    public List<Like> findAlarmLike(Long board_id) {
         //2단계 board_id를 통해 like테이블에서 LIKE 엔티티 형식의 리스트로 받는다.
         List<Like> likes = em.createQuery("SELECT m FROM Like m WHERE m.board.id = :board_id", Like.class)
                 .setParameter("board_id",board_id)
                 .getResultList();
 
+        //수만큼 라이크 아이디 가 있을 건데 알람테이블에 존재 하는 것만 뽑자 이거야
+        List<Like> likeList = new ArrayList<>();
         for(int i =0 ; i<likes.size() ;i++){
-            likeList.add(likes.get(i));
+            int flag = isAlarm(likes.get(i).getLikeId());
+
+            if(flag != 0) { //알람 테이블에 likeId 일치하는게 있을 때만 넣어줘
+                likeList.add(likes.get(i));
+            }
         }
 
         return likeList;
+    }
+
+    private int isAlarm(Long likeId) {
+
+        List<Alarm> likes = em.createQuery("SELECT m FROM Alarm m WHERE m.likeId.likeId = :likeId", Alarm.class)
+                .setParameter("likeId",likeId)
+                .getResultList();
+        return likes.size();
     }
 
     public List<Profile> findFollowee(Long profile_id) {  //내가 팔로우 하는 사람 검색 하는거 니까 wer 로 검색하고 목록 가져와서 wee 아이디로 findone 하자
