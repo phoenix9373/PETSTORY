@@ -120,7 +120,9 @@ function FeedItem(props) {
       {},
     );
 
-    setCommentCount(() => comment.data.length);
+    if (comment && comment.data) {
+      setCommentCount(() => comment.data.length);
+    }
   };
 
   useEffect(() => {
@@ -135,7 +137,7 @@ function FeedItem(props) {
         <img
           onClick={handleDetail}
           className={classes.image}
-          src={feedItem.files[0].imgFullPath}
+          src={feedItem.files[0] && feedItem.files[0].imgFullPath}
           alt="cat"
         />
         {/* 버튼 요소 */}
