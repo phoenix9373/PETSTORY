@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './PostList.module.css';
-
 import { request } from '../../utils/axios';
+import Post from '../ComponentUI/Post';
 
 function PostList(props) {
   // State
   const [postList, setPostList] = useState([]);
+  const [postListReload, setPostListReload] = useState(false);
+
+  // Util
 
   // Ref
   const nameRef = useRef('');
@@ -23,16 +26,19 @@ function PostList(props) {
   };
 
   // Fetch - 저장 목록 생성 요청
-  const makePostList = (data) => {
-    request('POST', '/api/memberPostlist/create', data);
+  const makePostList = async (data) => {
+    await request('POST', '/api/memberPostlist/create', data);
+    setPostListReload((prev) => !prev);
   };
 
   const handlePostListCreate = (e) => {
     e.preventDefault();
     const postlistName = nameRef.current.value;
+    const memberId = JSON.parse(localStorage.getItem('user')).id;
 
     const data = {
       postlistName,
+      memberId,
     };
 
     makePostList(data);
@@ -43,7 +49,7 @@ function PostList(props) {
 
   useEffect(() => {
     getPostList();
-  }, []);
+  }, [postListReload]);
 
   return (
     <>
@@ -52,11 +58,18 @@ function PostList(props) {
       </div>
       <div className={`${styles.box} ${styles.top}`}>
         {postList.length > 0 &&
-          postList.map((item) => <h1>{item.postlistName}</h1>)}
+          postList.map((item, index) => (
+            <Post
+              postlistItem={item}
+              postlistName={item.postlistName}
+              index={index % 12}
+              key={item.memberPostlistId}
+            ></Post>
+          ))}
       </div>
 
       <div className={styles.title}>
-        <h3>현재 저장 목록</h3>
+        <h3>새로운 저장 목록 만들기</h3>
       </div>
       <div className={`${styles.box} ${styles.bottom}`}>
         <form className={styles.form} onSubmit={handlePostListCreate}>
