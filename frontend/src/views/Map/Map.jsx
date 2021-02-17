@@ -6,7 +6,7 @@ import './Map.scss';
 
 function Map() {
   const [searchData, setSearchData] = useState('대전');
-  const [resultNum, setResultNum] = useState(7);
+  const [resultNum, setResultNum] = useState(6);
 
   const onHandleSearch = (value) => {
     setSearchData(value);
