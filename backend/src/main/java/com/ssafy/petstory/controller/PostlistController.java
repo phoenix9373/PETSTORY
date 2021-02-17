@@ -29,7 +29,7 @@ public class PostlistController {
      * 저장목록 생성
      */
     @PostMapping("/memberPostlist/create")
-    public CreatePostlistResponse createMemberPostlist(MemberPostlistDto request) throws IOException {
+    public CreatePostlistResponse createMemberPostlist(@RequestBody MemberPostlistDto request) throws IOException {
         Long id = memberPostlistService.create(request);
 
         return new CreatePostlistResponse(id);
@@ -47,7 +47,7 @@ public class PostlistController {
      * 저장목록 수정(이름)
      */
     @PutMapping("/memberPostlist/update/{memberPostlistId}")
-    public void updateMemberPostlist(@PathVariable("memberPostlistId") Long memberPostlistId, MemberPostlistDto request) {
+    public void updateMemberPostlist(@PathVariable("memberPostlistId") Long memberPostlistId, @RequestBody MemberPostlistDto request) {
         memberPostlistService.update(memberPostlistId, request);
     }
 
@@ -63,7 +63,7 @@ public class PostlistController {
      * 저장목록에 게시물 추가
      */
     @PostMapping("/postlist/add")
-    public CreatePostlistResponse addPostlist(PostlistDto request) throws IOException {
+    public CreatePostlistResponse addPostlist(@RequestBody PostlistDto request) throws IOException {
 
         Long id = postlistService.save(request);
 
