@@ -28,7 +28,7 @@ function UserDetail() {
     <>
       <div>회원의 Email : {user.email}</div>
       <div>회원의 이름 : {user.member_name}</div>
-      {/* <div>회원의 비밀번호 : {user.password}</div> */}
+      <button>회원정보 수정</button>
     </>
   );
 }

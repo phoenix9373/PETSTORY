@@ -7,6 +7,7 @@ import './app.css';
 // Page Load
 import LandingPage from './views/LandingPage/Account';
 import Create from './views/Board/Create';
+import Modify from './views/Board/Modify';
 import MainPage from './views/MainPage/MainPage';
 import ProfilePage from './views/Profile/ProfilePage';
 import Map from './views/Map/Map';
@@ -73,6 +74,7 @@ function App() {
             <PrivateRoute path="/detail/:boardId" component={DetailPage} />
             <PrivateRoute path="/list" component={PostListMakePage} />
             <PrivateRoute path="/create" component={Create} />
+            <PrivateRoute path="/update/:boardId" component={Modify} />
             <PrivateRoute path="/map" component={Map} />
             <PrivateRoute path="/profile/:profileId" component={ProfilePage} />
             <PrivateRoute path="/select" component={SelectProfileModal} />
