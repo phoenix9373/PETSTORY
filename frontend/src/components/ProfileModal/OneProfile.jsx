@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { saveAlarmNum } from '../../_reducers/alarmReducer';
 import { deleteProfile, getAlarmNumdddd } from '../../_actions/profileAction';
-
+import { confirmAlert } from 'react-confirm-alert';
+import '../ComponentUI/ConfirmAlert.css';
 // component, css
 import ModifyProfile from './ModifyProfile';
 import styles from './OneProfile.module.css';
@@ -69,32 +70,26 @@ function OneProfile(props) {
   };
 
   // 삭제
-  const handleDeleteProfile = (e) => {
+  const handleDeleteProfile = () => {
     // 삭제 재시도 -> toast 닫기, check변경
-    const handleDeleteToast = (t) => {
-      toast.dismiss(t.id);
-      toast('삭제 버튼을 누르면 프로필이 삭제됩니다');
-      setCheck(true);
-    };
-    // 처음 삭제 시도 -> toast 경고
-    if (!check) {
-      toast((t) => (
-        <div>
-          <p>❗ 프로필을 삭제하시겠습니까?</p>
-          <br />
-          <button onClick={handleDeleteToast}>확인</button>
-          <button onClick={() => toast.dismiss(t.id)}>취소</button>
-        </div>
-      ));
-      return;
-    }
-    e.preventDefault();
-
     props.onDelete(props.item.profileId); // select에서 프로필 삭제
-
     dispatch(deleteProfile(props.item.profileId));
   };
-
+  const deletemodal = () => {
+    confirmAlert({
+      title: '삭제?',
+      message: '정말 식제하시겠습니까?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDeleteProfile(),
+        },
+        {
+          label: 'No',
+        },
+      ],
+    });
+  };
   return (
     <li className={styles.li}>
       {/* 프로필 이미지 */}
@@ -118,7 +113,7 @@ function OneProfile(props) {
           <EditIcon onClick={handleModifyModal} />
         </Fab>
         <Fab className={styles.icon} color="secondary">
-          <HighlightOffIcon onClick={handleDeleteProfile} />
+          <HighlightOffIcon onClick={deletemodal} />
         </Fab>
         {/* 수정 모달 */}
         <ModifyProfile

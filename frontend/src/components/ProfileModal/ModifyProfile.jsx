@@ -63,7 +63,6 @@ function ModifyProfile(props) {
     // props.handleModify(props.profile.profileId);
     props.closeModal();
   };
-
   const body = (
     <div className={style.modal_body}>
       <form onSubmit={handleModify}>
