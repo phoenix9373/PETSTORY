@@ -20,7 +20,7 @@ function Comment(props) {
   const fetchRequest = async () => {
     const response = await request(
       'GET',
-      `/detail/profile/${profileId}`,
+      `/api/detail/profile/${profileId}`,
       {},
       {},
     );
