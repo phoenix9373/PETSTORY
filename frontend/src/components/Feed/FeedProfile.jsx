@@ -4,7 +4,8 @@ import styles from './FeedProfile.module.css';
 
 // React Icons
 import { RiHeart3Line, RiHeart3Fill, RiEyeFill } from 'react-icons/ri';
-import { MdRemoveRedEye } from 'react-icons/md';
+import { GoCommentDiscussion } from 'react-icons/go';
+import { request } from '../../utils/axios';
 
 function FeedProfile(props) {
   // 데이터
@@ -13,16 +14,25 @@ function FeedProfile(props) {
   const userNickName = item.nickname;
 
   // 로그인한 유저
-  const loginUser = Number(localStorage.getItem('profileId'));
+  const profileId = Number(localStorage.getItem('profileId'));
 
   // 피드 ID
   const boardId = item.boardId;
 
   // 현재 로그인한 유저 프로필 id가 현재 Feed의 좋아요 리스트 안에 있으면 초기값 true로.
   // State
-  const [likeToggle, setLikeToggle] = useState(false);
+  const [likeToggle, setLikeToggle] = useState(item.isLike);
   const [countLike, setCountLike] = useState(item.likeNum);
-  const [countReport, setCountReport] = useState(item.reportNum);
+
+  // Fetch - 좋아요 추가, 취소 요청
+  const fetchLikeToggle = () => {
+    const data = {
+      profileId,
+      board: { id: boardId },
+    };
+    request('POST', '/api/profile/like', data);
+    console.log('좋아요');
+  };
 
   // Method
   const handleLikeToggle = () => {
@@ -31,6 +41,8 @@ function FeedProfile(props) {
     } else {
       setCountLike((prev) => prev + 1);
     }
+
+    fetchLikeToggle();
 
     setLikeToggle((prev) => !prev);
   };
@@ -59,8 +71,8 @@ function FeedProfile(props) {
         </div>
 
         <div className={styles.report}>
-          <MdRemoveRedEye className={styles.icon} />
-          {countReport}
+          <GoCommentDiscussion className={styles.icon} />
+          {props.commentCount}
         </div>
       </div>
     </div>
