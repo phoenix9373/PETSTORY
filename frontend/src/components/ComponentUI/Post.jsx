@@ -32,11 +32,15 @@ bg[bg.length] = photo12;
 function Post(props) {
   const postlistItem = props.postlistItem;
   const postlistName = postlistItem.postlistName;
+  const memberPostlistId = postlistItem.memberPostlistId;
   const index = props.index;
   const history = useHistory();
   const handleMovePostList = () => {
     // 해당 저장 목록으로 이동.
-    history.push(`/postlist/${postlistName}`, postlistItem);
+    history.push(
+      `/postlist/${memberPostlistId}/${postlistName}`,
+      memberPostlistId,
+    );
   };
 
   return (
