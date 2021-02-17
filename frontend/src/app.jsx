@@ -20,6 +20,7 @@ import UserDetail from './views/Accounts/UserDetailPage';
 import DetailPage from './views/DetailPage/DetailPage';
 import SelectProfileModal from './views/Profile/SelectProfileModal';
 import PostListMakePage from './views/PostListMakePage/PostListMakePage';
+import PostListPage from './views/PostListPage/PostListPage';
 
 // Component Load
 import NavBar from './components/NavBar/NavBar';
@@ -115,6 +116,10 @@ function App() {
             <PrivateRoute exact path="/" component={MainPage} />
             <PrivateRoute path="/detail/:boardId" component={DetailPage} />
             <PrivateRoute path="/list" component={PostListMakePage} />
+            <PrivateRoute
+              path="/postlist/:memberPostlistId/:postlistName"
+              component={PostListPage}
+            />
             <PrivateRoute path="/create" component={Create} />
             <PrivateRoute path="/update/:boardId" component={Modify} />
             <PrivateRoute path="/map" component={Map} />
