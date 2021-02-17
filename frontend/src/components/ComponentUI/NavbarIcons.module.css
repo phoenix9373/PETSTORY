@@ -23,6 +23,11 @@
   color: white;
 }
 
+.alarmspan {
+  font-size: 22px;
+  color: #ff00dd;
+}
+
 .wrapper {
   position: absolute;
   display: flex;
@@ -41,7 +46,7 @@
 .item {
   position: relative;
   margin: auto;
-  font-size: 18px;
+  font-size: 17px;
   transition: all 0.1s ease-in-out;
 }
 
@@ -75,15 +80,6 @@
   transition: all 0.1s ease-in-out;
 }
 
-.span {
-  font-size: 15px;
-}
-
-.span:hover {
-  font-size: 17px;
-  font: 900;
-}
-
 .item3 {
   position: relative;
   display: flex;
@@ -93,6 +89,10 @@
   font-size: 16px;
   color: red;
   transition: all 0.1s ease-in-out;
+}
+
+.span {
+  font-size: 15px;
 }
 
 .span:hover {

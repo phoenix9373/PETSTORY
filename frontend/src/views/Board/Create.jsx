@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createArticle } from '../../_actions/boardAction';
+// import { createArticle } from '../../_actions/boardAction';
 import axios from 'axios';
 
 // Alarm
@@ -52,7 +52,8 @@ export default class Create extends Component {
     this.cartoonize = this.cartoonize.bind(this);
   }
 
-  pushAxios(e) {
+  pushAxios = async (e) => {
+    console.log(this.fileArray);
     e.preventDefault();
     if (!this.titleRef.current.value) {
       toast.error('제목을 입력하세요');
@@ -71,17 +72,24 @@ export default class Create extends Component {
     formData.append('title', this.titleRef.current.value);
     formData.append('context', this.contextRef.current.value);
     formData.append('hashtags', this.state.hashtags);
-    for (const i of this.fileArray) {
-      const img = i.Obj;
-      formData.append('files', img);
+    console.log('오류난다', this.fileArray);
+    for (let i = 0; i < this.fileArray.length; i++) {
+      formData.append('files', this.fileArray[i].Obj);
     }
     // axios
-    const axios = createArticle(formData);
-    this.titleRef.current.value = '';
-    this.contextRef.current.value = '';
-    this.hashtagRef.current.value = '';
-    window.location.href = '/';
-  }
+    axios
+      .post('/api/board/create', formData)
+      .then((res) => {
+        console.log(res);
+        this.titleRef.current.value = '';
+        this.contextRef.current.value = '';
+        this.hashtagRef.current.value = '';
+        // window.location.href = '/';
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   handleDelete(image) {
     if (this.fileArray.length === 1) {
@@ -91,6 +99,7 @@ export default class Create extends Component {
     } else {
       const fileArray = this.fileArray.filter((item) => item.id !== image.id);
       this.fileArray = fileArray;
+      console.log(this.fileArray);
       this.fileArrayFirst = this.fileArray[0].URL;
       this.setState({ file: fileArray });
     }
@@ -216,6 +225,7 @@ export default class Create extends Component {
       this.setState({ loading: true });
       const srcImage = document.createElement('img');
       srcImage.src = this.fileArrayFirst;
+      console.log(this.fileArray);
       srcImage.onload = () => {
         this.manager
           .init(this.config)
@@ -230,9 +240,11 @@ export default class Create extends Component {
                   Obj: blob,
                 },
               ];
+              console.log(this.fileArray);
               this.fileArrayFirst = URL.createObjectURL(blob);
               this.setState(() => ({
                 fileTrans: this.fileArrayFirst,
+                file: this.fileArray,
                 loading: false,
               }));
             }, 'image/png');
