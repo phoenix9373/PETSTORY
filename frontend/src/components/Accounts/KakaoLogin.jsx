@@ -1,7 +1,26 @@
 import React, { Component } from 'react';
 import KaKaoLogins from 'react-kakao-login';
 import axios from 'axios';
+import styled from 'styled-components';
+import toast from 'react-hot-toast';
 
+const KaKaoBtn = styled(KaKaoLogins)`
+  padding: 0;
+  width: 190px;
+  height: 44px;
+  line-height: 44px;
+  color: #783c00;
+  background-color: #ffeb00;
+  border: 1px solid transparent;
+  border-radius: 30px !important;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0 0px 15px 0 rgba(0, 0, 0, 0.2);
+  }
+`;
 export default class KakaoLogin extends Component {
   constructor(props) {
     super(props);
@@ -12,10 +31,9 @@ export default class KakaoLogin extends Component {
     this.setState({
       data: response,
     });
-    console.log(response);
     const body = {
-      email: JSON.stringify(response.profile.kakao_account.email),
-      name: JSON.stringify(response.profile.kakao_account.profile.nickname),
+      email: response.profile.kakao_account.email,
+      member_name: response.profile.kakao_account.profile.nickname,
     };
     console.log(body);
 
@@ -28,23 +46,26 @@ export default class KakaoLogin extends Component {
       },
       data: body,
     })
-      .then((res) => res.json())
       .then(
-        (res) => localStorage.setItem('user', res),
+        (res) => {
+          localStorage.setItem('user', JSON.stringify(res.data));
+          window.location.href = 'http://localhost:3000/select';
+        },
         // 백엔드에서 요구하는 key 값(token)으로 저장해서 localStorage에 저장한다.
         // 여기서 중요한것은 처음에 console.log(res)해서 들어오는
         // access_token 값을 백엔드에 전달해줘서 백엔드에 저장 해두는
         // 절차가 있으므로 까먹지 말 것!
-        (window.location.href = 'http://localhost:3000/select'),
-        // eslint-disable-next-line
-        alert('로그인 성공하였습니다'),
-      );
+        // (window.location.href = 'http://localhost:3000/select'),
+      )
+      .catch((err) => {
+        toast.error('로그인에 실패하였습니다.');
+      });
   };
 
   render() {
     return (
       <>
-        <KaKaoLogins
+        <KaKaoBtn
           // styled component 통해 style을 입혀 줄 예정
           jsKey={'bd060977289177fd1c71aad8efeb5318'}
           // 카카오에서 할당받은 jsKey를 입력
