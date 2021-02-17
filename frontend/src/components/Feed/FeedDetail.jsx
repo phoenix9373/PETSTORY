@@ -141,6 +141,7 @@ function FeedDetail() {
                 profileId={feedItem.profileId}
                 boardId={feedItem.boardId}
                 useClasses={`${classes.root} ${styles.option}`}
+                feedItem={feedItem}
               ></ListMenu>
             </div>
 

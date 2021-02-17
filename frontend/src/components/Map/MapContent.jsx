@@ -141,7 +141,7 @@ export default function Map({ searchData, resultNum }) {
         '        <div class="marker__title">' +
         `           <a href="${place.place_url}" target="_blank">${place.place_name}</a>` +
         '        </div>' +
-        '        <hr>' +
+        '        <hr />' +
         '        <div class="marker__body">' +
         '            <div class="marker__desc">' +
         `                <div class="ellipsis">${place.road_address_name}</div>` +

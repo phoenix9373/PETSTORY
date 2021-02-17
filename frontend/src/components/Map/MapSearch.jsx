@@ -72,7 +72,21 @@ function MapSearch({ onSearchInput, onSearchNum }) {
   return (
     <>
       <form className="mapsearch__form" onSubmit={onSubmitHandler}>
-        <FormControl className="mapsearch__input">
+        <div className="form__group2 field2">
+          <input
+            className="form__field2"
+            onChange={onInputChangeHandler}
+            placeholder="title"
+            id="name"
+            type="input"
+            autoComplete="off"
+            required
+          />
+          <label htmlFor="title" className="form__label2 title2">
+            동물병원의 위치
+          </label>
+        </div>
+        {/* <FormControl className="mapsearch__input">
           <InputLabel
             id="demo-mutiple-name-label"
             htmlFor="demo-customized-textbox"
@@ -85,8 +99,8 @@ function MapSearch({ onSearchInput, onSearchNum }) {
             onChange={onInputChangeHandler}
             value={searchInput}
           />
-        </FormControl>
-        <FormControl className="mapsearch__num">
+        </FormControl> */}
+        {/* <FormControl className="mapsearch__num">
           <InputLabel id="demo-customized-select-label">검색결과 수</InputLabel>
           <Select
             labelId="demo-customized-select-label"
@@ -98,7 +112,7 @@ function MapSearch({ onSearchInput, onSearchNum }) {
             <MenuItem value={10}>10</MenuItem>
             <MenuItem value={15}>15</MenuItem>
           </Select>
-        </FormControl>
+        </FormControl> */}
         <button className="mapsearch__btn" type="submit">
           <FontAwesomeIcon
             icon={faSearch}
