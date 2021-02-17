@@ -146,31 +146,30 @@ public class ProfileService {
 
         //2단계 board_id를 통해 like테이블에서 LIKE 엔티티 형식의 리스트로 받는다.
 
-        List<Like> likeList = new ArrayList<>();
         List<AlarmClickDto> alarmResult = new ArrayList<>();
-
-        //board_id를 전부 돌면서 좋아요 받은거 Like 테이블에서 전부 가져와
+        List<Like> likeL = new ArrayList<>();
+        //board_id를 전부 돌면서 좋아요 받은거 Like 테이블에서 전부 가져와   -> 여기서 알람 테이블에 남아있는 녀석들만 가져와야해
         for(int i =0;i<board_id.size();i++){
-            likeList = profileRepository.findAlarmLike(board_id.get(i),likeList);
+            likeL = profileRepository.findAlarmLike(board_id.get(i));
         }
 
         //likeList의 프로필 아이디를 통해 좋아요 누른사람 닉네임 가져오자
-        for(int j =0;j<likeList.size();j++){
+        for(int j =0;j<likeL.size();j++){
             AlarmClickDto addalarm= new AlarmClickDto();
-            System.out.println("좋아요 누른사람 찾아올 프로필 아이디는? : "+ likeList.get(j).getProfileId());
-            Profile forNickname = profileRepository.findOne(likeList.get(j).getProfileId());
-            addalarm.setBoardTitle(likeList.get(j).getBoard().getTitle());
+            System.out.println("좋아요 누른사람의 프로필 아이디는? : "+ likeL.get(j).getProfileId());
+            Profile forNickname = profileRepository.findOne(likeL.get(j).getProfileId());
+            addalarm.setBoardTitle(likeL.get(j).getBoard().getTitle());
             addalarm.setProfileNickname(forNickname.getNickname());
-            addalarm.setBoardId(likeList.get(j).getBoard().getId());
+            addalarm.setBoardId(likeL.get(j).getBoard().getId());
             alarmResult.add(addalarm);
         }
 
-        System.out.println("삭제될 likeList의 사이즈는? : "+likeList.size());
+        System.out.println("삭제될 likeList의 사이즈는? : "+likeL.size());
         //likeList의 likeid 로 알람 제거하자
-        for(int k =0;k<likeList.size();k++){
-            System.out.println("삭제될 likeList 의 아이디 확인 : "+ likeList.get(k).getLikeId());
+        for(int k =0;k<likeL.size();k++){
+            System.out.println("삭제될 likeList 의 아이디 확인 : "+ likeL.get(k).getLikeId());
             //알람 ID 찾아서 그걸로 검색하고 삭제해볼까
-            profileRepository.delalarm2(likeList.get(k));
+            profileRepository.delalarm2(likeL.get(k));
         }
 
 //        for(int j=0;j<likeList.size();j++){

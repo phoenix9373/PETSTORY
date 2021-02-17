@@ -228,7 +228,7 @@ public class ProfileController {
 
         List<AlarmClickDto> resultDto = profileService.findalarm(profile_id); //board 테이블에서 board id 찾기
         //profileService.deleteAalarm(resultDto);
-        return new ResponseEntity<List<AlarmClickDto>>(resultDto, HttpStatus.OK);
+        return new ResponseEntity<>(resultDto, HttpStatus.OK);
 
     }//맴버정보보기를 눌러서 확인
 
