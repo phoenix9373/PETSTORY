@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 480px;
+  margin: 0 10%;
+}
+
+.profileImg {
+  margin: 30px 30px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.profileInfo {
+  align-items: center;
+  margin: 20px;
+}
+.userProfileHeader {
+  display: flex;
+  justify-content: center;
+  height: 50%;
+  text-align: center;
+}
+
+.userProfileBody {
+  display: flex;
+  flex-direction: row;
+  height: 50%;
+}
