@@ -94,8 +94,8 @@ public class MemberService {
     }
 
     public Member findOne(Member member) {
-        Member kakaomember = memberRepository.findOne(member.getId());
 
+        Member kakaomember = memberRepository.findKakaoMemeber(member.getEmail(),member.getName());
         return kakaomember;
     }
 }
