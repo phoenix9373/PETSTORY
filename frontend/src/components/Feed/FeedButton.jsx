@@ -6,6 +6,7 @@ import { Menu, MenuItem, Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { request } from '../../utils/axios';
 import MenuDropdown from '../ComponentUI/MenuDropdown';
+import toast, { Toaster } from 'react-hot-toast';
 
 // CSS
 import styles from './FeedButton.module.css';
@@ -83,6 +84,7 @@ function FeedButton(props) {
 
     // 피드 세이브 요청
     request('POST', '/api/postlist/add', data);
+    toast.success('저장을 완료했습니다.');
   };
 
   const handleMemberPostlistId = (id) => {
@@ -98,7 +100,8 @@ function FeedButton(props) {
     );
 
     setMemberPostlistId(
-      () => response.data && response.data[0].memberPostlistId,
+      () =>
+        response.data && response.data[0] && response.data[0].memberPostlistId,
     );
   };
 
