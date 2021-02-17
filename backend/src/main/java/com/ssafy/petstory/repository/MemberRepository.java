@@ -70,4 +70,12 @@ public class MemberRepository {
 
         return members.size();
     }
+
+    public Member findKakaoMemeber(String email, String name) {
+        Member member = em.createQuery("SELECT m FROM Member m WHERE m.email = :email AND m.name = :name", Member.class)
+                .setParameter("email",email)
+                .setParameter("name",name)
+                .getSingleResult();
+        return member;
+    }
 }

@@ -8,4 +8,5 @@ import lombok.Setter;
 public class AlarmClickDto {
     String boardTitle;
     String profileNickname;
+    Long boardId;
 }

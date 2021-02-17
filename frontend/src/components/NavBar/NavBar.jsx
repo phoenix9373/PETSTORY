@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../_actions/userAction';
 import Switch from '@material-ui/core/Switch';
 import './NavBar.scss';
@@ -26,6 +26,10 @@ function Navbar({ isLogin, toggleTheme }) {
   const [theme, setState] = useState({
     checkedA: true,
   });
+
+  // 알람수 받기 (store에 접근하여 state 가져오기)
+  const { alarmNum } = useSelector((state) => state.alarmer);
+  console.log(alarmNum);
 
   // 프로필 Id 선택
   const [profileId, setProfileId] = useState(48);

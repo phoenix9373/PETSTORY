@@ -51,8 +51,8 @@ function ListMenu(props) {
 
   const handleModify = () => {
     // 수정 요청
-    // request('PUT', `/api/board/modify??????/${props.boardId}`);
-    history.push(`/detail/${props.boardId}`); // 수정하는 곳으로 이동해야함. not detail.
+    console.log(props.history);
+    history.push(`/update/${props.boardId}`, props.feedItem); // 수정하는 곳으로 이동해야함. not detail.
   };
 
   return (

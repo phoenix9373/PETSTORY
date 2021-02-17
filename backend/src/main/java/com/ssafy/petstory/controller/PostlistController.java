@@ -1,7 +1,9 @@
 package com.ssafy.petstory.controller;
 
+import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.MemberPostlistDto;
 import com.ssafy.petstory.dto.PostlistDto;
+import com.ssafy.petstory.service.BoardService;
 import com.ssafy.petstory.service.MemberPostlistService;
 import com.ssafy.petstory.service.PostlistService;
 import lombok.AllArgsConstructor;
@@ -16,7 +18,6 @@ import java.io.IOException;
 public class PostlistController {
 
     private final MemberPostlistService memberPostlistService;
-
     private final PostlistService postlistService;
 
     @Data
@@ -76,6 +77,17 @@ public class PostlistController {
     @GetMapping("/postlist/findAll/{memberPostlistId}")
     public Result<PostlistDto> findAllPostLists(@PathVariable("memberPostlistId") Long memberPostlistId){
         return new Result(postlistService.findAll(memberPostlistId));
+    }
+
+    /**
+     * 저장목록 선택 시 게시물 조회
+     */
+    @GetMapping("/postlist/findAllPaging/{memberPostlistId}")
+    public BoardApiController.Result<BoardQueryDto> findAllPaging(@RequestParam(value = "offset") int offset,
+                                                                  @RequestParam(value = "limit") int limit,
+                                                                  @RequestParam(value = "profile_id") Long profile_id,
+                                                                  @PathVariable("memberPostlistId") Long memberPostlistId){
+        return new BoardApiController.Result(postlistService.findPostlistPaging(offset, limit, memberPostlistId, profile_id));
     }
 
     /**
