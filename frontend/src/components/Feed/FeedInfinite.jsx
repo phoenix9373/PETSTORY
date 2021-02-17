@@ -11,8 +11,6 @@ import Progress from '../ComponentUI/Progress';
 
 function FeedInfinite(props) {
   const [items, setItems] = useState([]);
-  const [temp, setTemp] = useState(1);
-  const [test, setTest] = useState(false);
   const [startIdx, setStartIdx] = useState(0);
   const dispatch = useDispatch();
 
@@ -20,34 +18,26 @@ function FeedInfinite(props) {
   async function getFeedData(offset, limit) {
     // offset : start index
     // limit : 한 번에 가져올 데이터 개수.
-    const response = await dispatch(getFeedDataAction(offset, limit));
-    console.log(
-      `response.payload.data : ${response.payload && response.payload.data}`,
+    const response = await dispatch(
+      getFeedDataAction(
+        offset,
+        limit,
+        Number(localStorage.getItem('profileId')),
+      ),
     );
     return response.payload && response.payload.data;
   }
 
   // axios 요청 - 데이터 수신 - map으로 변환 - 반환
   async function loadItems(groupKey, num) {
-    setTemp((temp) => temp + 100);
     // 그룹키, 개수, start 인덱스
     const getItems = await getFeedData(startIdx, num);
-    console.log(`getItems : ${getItems}`);
-    // if (typeof getItems === 'undefined' || getItems.length < num) {
-    //   return [];
-    // }
     const newItems = [...getItems].map(
       (item) =>
         item.files && (
-          <FeedItem
-            groupKey={groupKey}
-            // key={item.boardId && temp + item.boardId}
-            key={item.boardId}
-            feedItem={item}
-          />
+          <FeedItem groupKey={groupKey} key={item.boardId} feedItem={item} />
         ),
     );
-    console.log(`newItems : ${newItems}`);
 
     setStartIdx((prev) => prev + num);
     return newItems;
@@ -57,27 +47,19 @@ function FeedInfinite(props) {
   async function onAppend({ groupKey, startLoading }) {
     startLoading();
     const addedItems = await loadItems(groupKey + 1, 10);
-    console.log(`addedItems: ${addedItems}`);
     setItems((items) => items.concat(addedItems));
-    // if (addedItems) {
-    //   setItems((items) => items.concat(addedItems));
-    // } else {
-    //   endLoading();
-    // }
   }
 
   // 아이템 로드 종료.
   function onLayoutComplete({ isLayout, endLoading }) {
     !isLayout && endLoading();
-    !isLayout && setTest(() => true);
   }
 
   return (
     <>
       <GridLayout
         tag="div"
-        loading={setTest ? <div></div> : <Progress></Progress>}
-        // loading={<Progress></Progress>}
+        loading={<div></div>}
         options={{
           isConstantSize: true,
           transitionDuration: 0.2,
