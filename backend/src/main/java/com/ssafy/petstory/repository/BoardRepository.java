@@ -413,54 +413,47 @@ public class BoardRepository {
         return pBoardId;
     }
 
-//    public List<BoardQueryDto> findLike(int offset, int limit, Long profileId) {
-//        // 루트 조회(XToOne 코드 모두 한 번에 조회)
-//        List<BoardQueryDto> result = findLikeBoardsPaging(offset, limit, profileId);
-//        // file 컬렉션을 Map 한 방에 조회 ->boardid 리스트를 넣는다.
-//        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
-//
-//        // boardHashtag 컬렉션 Map 한 방에 조회
-//        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
-//
-//        //해당 게시글 like 여부 조회
-//        //게시글 리스트를 가지고 매핑하고 각각의 게시물에 넣어주자 id - like 여부
-//        Map<Long, List<LikeQueryDto>> likeMap = findlike(toBoardIds(result),profileId);
-//
-//        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
-//        result.forEach(b ->
-//                b.setFiles(fileMap.get(b.getBoardId()))
-//        );
-//        result.forEach(b ->
-//                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
-//        );
-//        result.forEach(b ->
-//                b.setIsLike(likeMap.get(b.getBoardId()))
-//        );  //
-//        return result;
-//    }
+    public List<BoardQueryDto> findLikeBoard(int offset, int limit, Long profileId) {
 
-//    private List<BoardQueryDto> findLikeBoardsPaging(int offset, int limit, Long profileId) {
-//        return em.createQuery(
-//                "select new com.ssafy.petstory.dto.BoardQueryDto" +
-//                        "(p.id, p.nickname, p.image.imgFullPath, b.id, b.title, b.context, b.boardDate, b.likeNum, b.reportNum)" +
-//                        " from Board b" +
-//                        " join b.profile p" +
-//                        " order by b.boardDate desc", BoardQueryDto.class)
-//                .setFirstResult(offset)
-//                .setMaxResults(limit)
-//                .getResultList();
-//    }
+        //profileId로 like테이블에서 board_id 뽑아온 후 그걸로 where 써서 걸러서 likeboards에 뽑아오자
+        List<Long> likeboards = findBoardIdByLike(profileId);
 
+        // 루트 조회(XToOne 코드 모두 한 번에 조회)
+        List<BoardQueryDto> result = findPostlistBoardsPaging(offset, limit, likeboards);
+        // file 컬렉션을 Map 한 방에 조회 ->boardid 리스트를 넣는다.
+        Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
 
-//    private Map<Long, List<BoardHashtagQueryDto>> findBoardHashtagMap(List<Long> boardIds) {
-//        List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
-//                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
-//                        " from BoardHashtag bh" +
-//                        " join bh.hashtag h" +
-//                        " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
-//                .setParameter("boardIds", boardIds)
-//                .getResultList();
-//        return boardHashtagQueryDtos.stream()
-//                .collect(Collectors.groupingBy(boardHashtagQueryDto -> boardHashtagQueryDto.getBoardId())); // fileDtos -> map으로 바꿔서 최적화(코드 작성 편의, 성능 향상)
-//    }
+        // boardHashtag 컬렉션 Map 한 방에 조회
+        Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
+
+        //해당 게시글 like 여부 조회
+        //게시글 리스트를 가지고 매핑하고 각각의 게시물에 넣어주자 id - like 여부
+        Map<Long, List<LikeQueryDto>> likeMap = findlike(toBoardIds(result),profileId);
+
+        // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
+        result.forEach(b ->
+                b.setFiles(fileMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
+        );
+        result.forEach(b ->
+                b.setIsLike(likeMap.get(b.getBoardId()))
+        );
+        return result;
+    }
+
+    private List<Long> findBoardIdByLike(Long profileId) {
+        List<Long> pBoardId = new ArrayList<>();
+
+        List<Like> likes = em.createQuery("SELECT p FROM Like p WHERE p.profileId = :profileId ", Like.class)
+                .setParameter("profileId",profileId)
+                .getResultList();
+
+        for(int i =0;i<likes.size();i++){
+            pBoardId.add(likes.get(i).getBoard().getId());
+        }
+        return pBoardId;
+    }
+
 }
