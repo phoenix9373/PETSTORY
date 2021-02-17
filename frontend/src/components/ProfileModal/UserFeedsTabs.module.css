@@ -1,0 +1,14 @@
+.allImg {
+  display: flex;
+}
+
+.img {
+  display: flex;
+  width: 100px;
+  height: 100px;
+}
+
+.MuiBox-root {
+  padding: 24px;
+  display: flex;
+}
