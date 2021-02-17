@@ -65,7 +65,7 @@ function App() {
       <div className="app__wrapper">
         {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
         {isLogin && <NavBarSide></NavBarSide>}
-        <div className={isLogin && 'body__wrapper'}>
+        <div className={isLogin ? 'body__wrapper' : ''}>
           <Switch>
             <Route path="/login" component={LandingPage} />
             {/* <PrivateRoute exact path="/main/:storage" component={MainPage} /> */}

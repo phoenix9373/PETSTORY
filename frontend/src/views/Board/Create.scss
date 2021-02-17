@@ -60,6 +60,7 @@ label {
 }
 
 .text-card {
+  z-index: 1;
   width: 50%;
   height: 100%;
   padding: 30px;
@@ -309,6 +310,7 @@ label {
 }
 
 .hashtag__suggest__wrapper {
+  z-index: 100 !important;
   width: 90%;
   border: none;
   background-color: white;
