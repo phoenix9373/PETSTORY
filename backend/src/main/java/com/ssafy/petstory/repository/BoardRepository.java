@@ -128,7 +128,7 @@ public class BoardRepository {
      */
     private Map<Long, List<BoardHashtagQueryDto>> findBoardHashtagMap(List<Long> boardIds) {
         List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
-                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, bh.id, h.name)" +
                         " from BoardHashtag bh" +
                         " join bh.hashtag h" +
                         " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
