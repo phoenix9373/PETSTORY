@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { addProfile } from '../../_actions/profileAction';
 // component
 import MbtiModal from './MbtiModal';
+// css
+import styles from './CreateProfile.module.css';
 // image
 import dogIcon from '../../assets/tempImage.png';
 // library
@@ -74,71 +76,82 @@ function CreateProfile(props) {
   };
 
   const body = (
-    <div className="modal-body">
-      <form onSubmit={handleAddForm}>
-        <h2>프로필 추가</h2>
-        <p>
-          Petstory를 이용할 다른 사용자를 등록하시려면 프로필을 추가해주세요.
-        </p>
-        {encodingImage ? (
-          <img
-            className="profileImageInModify"
-            src={encodingImage}
-            alt="프로필이미지"
+    <div className={styles.body}>
+      <h2>프로필 추가</h2>
+      <p>Petstory를 이용할 다른 사용자를 등록하시려면 프로필을 추가해주세요.</p>
+      <form className={styles.form} onSubmit={handleAddForm}>
+        <div className={styles.wrapper}>
+          <label htmlFor="profileImg">
+            {encodingImage ? (
+              <img
+                className={styles.img2}
+                src={encodingImage}
+                alt="프로필이미지"
+              />
+            ) : (
+              <img className={styles.img} src={dogIcon} alt="임시프로필" />
+            )}
+          </label>
+          <input
+            className={styles.input}
+            type="file"
+            files={props.imgFullPath}
+            id="profileImg"
+            style={{ display: 'none' }}
+            name="imgFullPath"
+            onChange={convertImg}
           />
-        ) : (
-          <img
-            className="profileImageInModify"
-            src={dogIcon}
-            alt="임시프로필"
+          <input
+            className={styles.name}
+            name="nickname"
+            // value={props.nickname}
+            ref={inputRef}
+            type="text"
+            autoFocus
+            placeholder="닉네임"
+            onChange={sendToSelect}
           />
-        )}
-        <input
-          type="file"
-          files={props.imgFullPath}
-          id="profileImg"
-          name="imgFullPath"
-          onChange={convertImg}
-        />
-        <input
-          name="nickname"
-          // value={props.nickname}
-          ref={inputRef}
-          type="text"
-          placeholder="닉네임"
-          onChange={sendToSelect}
-        />
-        <button type="button" onClick={handleMbtiModal}>
-          MBTI
-        </button>
-        <MbtiModal
-          mbtiTest={isMbti}
-          onClose={handleMbtiModal}
-          onSubmit={handleAddForm}
-        />
-        <button type="button" onClick={handleAddForm}>
-          완료
-        </button>
-        <button type="button" onClick={onCloseModal}>
-          취소
-        </button>
+        </div>
+
+        <div className={styles.btnWrap}>
+          <button
+            className={styles.btn}
+            type="button"
+            onClick={handleMbtiModal}
+          >
+            MBTI
+          </button>
+          <MbtiModal
+            mbtiTest={isMbti}
+            onClose={handleMbtiModal}
+            onSubmit={handleAddForm}
+          />
+          <button className={styles.btn} type="button" onClick={handleAddForm}>
+            완료
+          </button>
+          <button className={styles.btn} type="button" onClick={onCloseModal}>
+            취소
+          </button>
+        </div>
       </form>
     </div>
   );
 
   return (
     <Modal
-      // className="modal"
       isOpen={props.newProfile}
       onRequestClose={onCloseModal}
-      style={{
-        content: {
-          top: '20%',
-          left: '30%',
-          right: '30%',
-          bottom: '20%',
-        },
-      }}
+      className={styles.modal}
+      overlayClassName={styles.overLay}
+      // style={{
+      //   content: {
+      //     // 모달과 브라우저 간 여백
+      //     top: '15%',
+      //     left: '35%',
+      //     right: '35%',
+      //     bottom: '15%',
+      //   },
+      // }}
     >
       {body}
     </Modal>

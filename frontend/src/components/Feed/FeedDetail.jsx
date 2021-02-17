@@ -110,7 +110,7 @@ function FeedDetail() {
         {/* 메인 이미지 */}
         <div className={styles.images}>
           {loading ? (
-            <img
+            <img // 여기가 다중 이미지 들어가야 할 곳===================
               className={styles.image}
               src={feedItem.files[0] && feedItem.files[0].imgFullPath}
               alt="img"
