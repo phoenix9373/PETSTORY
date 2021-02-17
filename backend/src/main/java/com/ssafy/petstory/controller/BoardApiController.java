@@ -46,9 +46,9 @@ public class BoardApiController {
 //    @GetMapping("/api/board/findLike/{profile_id}")
 //    public Result<BoardQueryDto> findLike(@RequestParam(value = "offset") int offset,
 //                                          @RequestParam(value = "limit") int limit,
-//                                          @PathVariable("profile_id") Long profile_id){
+//                                          @PathVariable("profile_id") Long profileId){
 //
-//        return new Result(boardService.findLike(profile_id));
+//        return new Result(boardService.findLike(offset, limit, profileId));
 //    }
 
     /**
