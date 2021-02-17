@@ -1,0 +1,37 @@
+.userProfileBox {
+  width: 60%;
+  margin: auto;
+}
+
+.profileEntire {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+}
+
+/* 
+.profileFeeds {
+  width: 60%;
+} */
+
+/* .profileFollowerFollowing {
+  display: flex;
+  flex-direction: row;
+} */
+
+/* .profileInfo {
+  margin-right: 10%;
+  margin-left: 10%;
+}*/
+
+/* .follower {
+  margin-right: 10%;
+  cursor: pointer;
+}
+
+.following {
+  margin-right: 10%;
+  margin-left: 10%;
+  cursor: pointer;
+} */

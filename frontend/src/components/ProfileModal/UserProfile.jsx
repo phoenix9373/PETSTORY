@@ -4,8 +4,10 @@ import { createFollow } from '../../_actions/profileAction';
 // component, css
 import ModifyProfile from './ModifyProfile';
 import FollowerList from './FollowerList';
+import styles from './UserProfile.module.css';
 // library
 import Modal from 'react-modal';
+// import { SiBaidu } from 'react-icons/si';
 
 function UserProfile(props) {
   // const dispatch = useDispatch();
@@ -21,7 +23,8 @@ function UserProfile(props) {
   const profileId = JSON.parse(jsonProfileId);
   useEffect(() => {
     setLoginProfileId(profileId);
-  }, [jsonProfileId]);
+    // }, [jsonProfileId]);
+  }, []);
 
   // 모달 - 수정
   const closeModifyModal = () => {
@@ -36,7 +39,7 @@ function UserProfile(props) {
     props.handleModify(modiProfile);
   };
 
-  // 모달 - Follower목록
+  // 모달 - Follower 목록
   const handleFollowerModal = () => {
     setFollowerModal(!isFollowerModal);
   };
@@ -47,7 +50,7 @@ function UserProfile(props) {
     if (isFollow === '팔로우') {
       const followRequest = {
         follower_id: props.profile.profileId, // 이 프로필 주인
-        followee_id: profileId, // 팔로우 신청한 사람(로그인)
+        followee_id: profileId, // 팔로우 신청한 사람(로그인 유저)
       };
 
       dispatch(createFollow(followRequest)).then((res) => {
@@ -67,7 +70,7 @@ function UserProfile(props) {
   };
 
   const followeeListInModal = (
-    <div className="modal-body">
+    <div className={styles.modalBody}>
       <h2>followee 목록</h2>
       <p>body안</p>
       <p>body안</p>
@@ -78,25 +81,42 @@ function UserProfile(props) {
     </div>
   );
 
+  // rank
+  // const [rankInfo, setRankInfo] = useState(null);
+  // if (props.profile.follwerNum > 20) {
+  //   setRankInfo(<SiBaidu color="gold" />);
+  // } else if (props.profile.follwerNum > 10) {
+  //   setRankInfo(<SiBaidu color="silver" />);
+  // } else {
+  //   setRankInfo(<SiBaidu color="white" />);
+  // }
   return (
-    <div className="UserProfileBox">
-      <div className="profileCard">
+    // <div className={styles.UserProfileBox}>
+    <div>
+      <div className={styles.profileCard}>
         <img
           src={props.profile.imgFullPath}
           alt="프로필 사진"
-          className="profileImg"
+          className={styles.profileImg}
         />
-        <div className="profileInfo">
-          <div className="userProfileHeader">
-            <h2 className="rank">rank: {props.profile.rank}</h2>
-            <h2 className="nickname">닉네임: {props.profile.nickname}</h2>
+        <div className={styles.profileInfo}>
+          <div className={styles.userProfileHeader}>
+            <div className={styles.rank}>
+              {/* rank: {props.profile.rank},{rankInfo} */}
+            </div>
+            <h2 className={styles.nickname}>
+              닉네임: {props.profile.nickname}
+            </h2>
           </div>
-          <div className="userProfileBody">
-            <h3 className="follower" onClick={handleFollowerModal}>
+          <div className={styles.userProfileBody}>
+            <h3 className={styles.follower} onClick={handleFollowerModal}>
               팔로워: {props.profile.followerNum}
             </h3>
-            <FollowerList />
-            <h3 className="following" onClick={handleFolloweeModal}>
+            <FollowerList
+              profile={props.profile}
+              isFollowerModal={isFollowerModal}
+            />
+            <h3 className={styles.following} onClick={handleFolloweeModal}>
               팔로잉: {props.profile.followeeNum}
             </h3>
             <Modal
