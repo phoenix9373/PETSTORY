@@ -26,7 +26,7 @@ public class CommentController {
      * 댓글 생성
      */
     @PostMapping("/comment/create")
-    public CreateCommentResponse createComment(CommentDto request) throws IOException {
+    public CreateCommentResponse createComment(@RequestBody CommentDto request) throws IOException {
 
         Long id = commentService.create(request);
 
@@ -45,7 +45,7 @@ public class CommentController {
      * 댓글 수정
      */
     @PutMapping("/comment/update/{commentId}")
-    public void updateComment(@PathVariable("commentId") Long commentId, CommentDto request) {
+    public void updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentDto request) {
 
         commentService.update(request);
     }
