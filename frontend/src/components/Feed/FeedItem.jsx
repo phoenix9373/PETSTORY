@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import FeedButton from './FeedButton';
+import React, { useEffect, useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 
 // material UI
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Menu, MenuItem, Fab } from '@material-ui/core';
-import { Share, MoreHoriz } from '@material-ui/icons';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
+import { MoreHoriz } from '@material-ui/icons';
+import { request } from '../../utils/axios';
+
+// Components
+import MenuDropdown from '../ComponentUI/MenuDropdown';
+import FeedButton from './FeedButton';
+import FeedProfile from './FeedProfile';
 
 // material UI Style 커스터마이징 - styles
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
     '&:hover .active': {
-      display: 'inline-block',
+      display: 'flex',
     },
   },
   image: {
@@ -58,15 +63,26 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '0px 0px 3px gray',
     cursor: 'zoom-in',
   },
+  icon: {
+    position: 'relative',
+  },
 }));
 
+const options = ['신고하기', '팔로우 요청'];
+
 function FeedItem(props) {
-  // data
+  // Data
   const feedItem = props.feedItem;
+  const memberId = JSON.parse(localStorage.getItem('user')).id;
+
+  // State
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(options[0]);
+  const [postList, setPostList] = useState([]);
+
   // Material UI 커스텀 클래스
   const classes = useStyles();
   const history = useHistory();
-  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,68 +92,89 @@ function FeedItem(props) {
     setAnchorEl(null);
   };
 
-  const handleShare = () => {
-    // 피드 공유 요청, dialog 창 띄우기.
-    console.log('피드 공유 요청');
-  };
-
   const handleDetail = () => {
     history.push(`/detail/${feedItem.boardId}`, feedItem);
   };
 
+  const handleMenuItemClick = (event, index) => {
+    setSelectedIndex(index);
+    setAnchorEl(null);
+  };
+
+  // 포스트 리스트 데이터 가져오기.
+  const getFetchPostList = async () => {
+    const response = await request(
+      'GET',
+      `/api/memberPostlist/findAll/${memberId}`,
+    );
+
+    setPostList(() => response && response.data);
+  };
+
+  useEffect(() => {
+    getFetchPostList();
+  }, []);
+
   return (
-    <div className={classes.root}>
-      {/* 이미지 요소 */}
-      <img
-        onClick={handleDetail}
-        className={classes.image}
-        src={feedItem.files[0].imgFullPath}
-        alt="cat"
-      />
-      {/* 버튼 요소 */}
-      <FeedButton />
-      {/* 아이콘 요소 */}
-      <div className="wrapper">
-        {/* <Fab
-          className="icon left"
-          size="small"
-          color="primary"
-          aria-label="add"
-          onClick={handleShare}
-        >
-          <Share fontSize="default" />
-        </Fab> */}
+    <div>
+      <div className={classes.root}>
+        {/* 이미지 요소 */}
+        <img
+          onClick={handleDetail}
+          className={classes.image}
+          src={feedItem.files[0].imgFullPath}
+          alt="cat"
+        />
+        {/* 버튼 요소 */}
+        <FeedButton
+          boardId={feedItem.boardId}
+          memberId={memberId}
+          postList={postList}
+        />
+        {/* 아이콘 요소 */}
+        <div className="wrapper">
+          <IconButton
+            className={classes.icon}
+            className="icon right"
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            onClick={handleClick}
+          >
+            <MoreHoriz fontSize="default" />
+          </IconButton>
 
-        <IconButton
-          className="icon right"
-          aria-controls="simple-menu"
-          aria-haspopup="true"
-          onClick={handleClick}
-        >
-          <MoreHoriz fontSize="default" />
-        </IconButton>
-
-        <Menu
-          id="simple-menu"
-          getContentAnchorEl={null}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'middle',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handleClose}>신고하기</MenuItem>
-          <MenuItem onClick={handleClose}>숨기기</MenuItem>
-          <MenuItem onClick={handleClose}>팔로우 요청</MenuItem>
-        </Menu>
+          <Menu
+            id="simple-menu"
+            className={classes.icon}
+            getContentAnchorEl={null}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'middle',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            {options.map((option, index) => (
+              <MenuItem
+                key={option}
+                // disabled={index === 0}
+                selected={index === selectedIndex}
+                onClick={handleClose}
+                onClick={(event) => handleMenuItemClick(event, index)} // 선택한 값이 달라질 때마다 요청 보내는게 달라짐.
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
       </div>
+      <FeedProfile feedItem={props.feedItem}></FeedProfile>
     </div>
   );
 }
