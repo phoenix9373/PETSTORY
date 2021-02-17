@@ -45,6 +45,7 @@ function PostList(props) {
     getPostList();
 
     nameRef.current.value = '';
+    window.location.reload();
   };
 
   useEffect(() => {

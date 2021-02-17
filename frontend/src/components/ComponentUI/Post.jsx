@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styles from './Post.module.css';
+import { MdCancel, MdCloudUpload } from 'react-icons/md';
 
 import photo1 from '../../assets/animals/1.jpg';
 import photo2 from '../../assets/animals/2.jpg';
@@ -14,6 +15,7 @@ import photo9 from '../../assets/animals/9.jpg';
 import photo10 from '../../assets/animals/10.jpg';
 import photo11 from '../../assets/animals/11.jpg';
 import photo12 from '../../assets/animals/12.jpg';
+import { request } from '../../utils/axios';
 
 const bg = [];
 bg[bg.length] = photo1;
@@ -43,13 +45,25 @@ function Post(props) {
     );
   };
 
+  const handleDelete = () => {
+    request('DELETE', `/api/memberPostlist/delete/${memberPostlistId}`);
+    window.location.reload();
+  };
+
   return (
     <div
-      onClick={() => handleMovePostList()}
       className={styles.frame}
       style={{ backgroundImage: `url(${bg[index]})` }}
     >
-      <span className={styles.name}>{postlistName}</span>
+      <span onClick={() => handleMovePostList()} className={styles.name}>
+        {postlistName}
+      </span>
+      <div className={styles.iconWrapper}>
+        <MdCancel
+          className={styles.deleteIcon}
+          onClick={() => handleDelete()}
+        />
+      </div>
     </div>
   );
 }
