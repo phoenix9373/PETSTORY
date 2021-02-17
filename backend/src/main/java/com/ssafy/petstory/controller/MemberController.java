@@ -2,7 +2,9 @@ package com.ssafy.petstory.controller;
 
 
 import com.ssafy.petstory.domain.Member;
+import com.ssafy.petstory.dto.KakaoLoginDto;
 import com.ssafy.petstory.service.JwtService;
+import com.ssafy.petstory.service.KakaoService;
 import com.ssafy.petstory.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -28,6 +30,8 @@ public class MemberController {
 
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private KakaoService kakao;
 
 //    @GetMapping("/members/new") // get - 회원가입 버튼 클릭 시
 //    public ResponseEntity<String> createForm(@RequestBody Model model){
@@ -39,9 +43,7 @@ public class MemberController {
      * 맴버 생성
      * */
     @PostMapping("/members/new")  // post - 양식 작성 후 회원가입하기 클릭 시 json으로 받아올거 ->세션에 저장된 member_id + 프로필 양식에 넣은 값
-    public ResponseEntity<String> create(@Valid @RequestBody MemberForm form, BindingResult result, Model model){
-
-        model.addAttribute("memberForm", new MemberForm());
+    public ResponseEntity<String> create(@Valid @RequestBody MemberForm form, BindingResult result){
 
         if (result.hasErrors()) {
             return new ResponseEntity<>("error 파라미터명, 형식 확인", HttpStatus.FORBIDDEN);
@@ -153,5 +155,38 @@ public class MemberController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "로그아웃 되셨습니다";
+    }
+
+    @GetMapping("/kakaologin")
+    public ResponseEntity<String> kakaoLogin(@RequestBody MemberForm dto) {
+        Member member = new Member();
+        Map<String, Object> resultMap = new HashMap<>(); // <스트링, 겍체>로 생성
+        HttpStatus status = null;
+        Member kakaomember;
+
+        member.setName(dto.getMember_name());
+        member.setEmail(dto.getEmail());
+
+        // 테이블에 있는지 검사 false -> 테이블에 없음
+        boolean table = memberService.kakaotable(member);
+        //if 문으로 없으면 넣고 있으면 member 아이디 조회
+        if(table == false){
+            kakaomember = memberService.join(member);
+        }
+        else{
+            kakaomember = memberService.findOne(member);
+        }
+        //토큰발행
+        String token = jwtService.create(dto);  //jwt토근에는 dto 전달 -> db 건드리는거 아니니까 어짜피
+        logger.trace("로그인 토큰정보 : {}", token); //logger에 기록
+
+        // 토큰 정보는 response의 헤더로 보내고 나머지는 Map에 담는다.
+        resultMap.put("auth-token", token);
+        resultMap.put("id", kakaomember.getId());
+        resultMap.put("name", kakaomember.getName());
+        status = HttpStatus.ACCEPTED;
+        //return
+
+        return new ResponseEntity<>("success", HttpStatus.OK);
     }
 }

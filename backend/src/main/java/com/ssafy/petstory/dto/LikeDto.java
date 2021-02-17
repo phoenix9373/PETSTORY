@@ -1,11 +1,14 @@
 package com.ssafy.petstory.dto;
 
+import com.ssafy.petstory.domain.Board;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 public class LikeDto {
-    Long board_id;
-    Long profile_id;
+    Board board;
+    Long profileId;
 }

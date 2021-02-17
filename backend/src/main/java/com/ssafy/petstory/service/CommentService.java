@@ -2,7 +2,6 @@ package com.ssafy.petstory.service;
 
 import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.Comment;
-import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.CommentDto;
 import com.ssafy.petstory.repository.BoardRepository;
 import com.ssafy.petstory.repository.CommentRepository;

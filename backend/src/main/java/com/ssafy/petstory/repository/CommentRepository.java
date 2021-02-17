@@ -1,10 +1,7 @@
 package com.ssafy.petstory.repository;
 
-import com.ssafy.petstory.domain.Board;
 import com.ssafy.petstory.domain.Comment;
-import com.ssafy.petstory.dto.BoardQueryDto;
 import com.ssafy.petstory.dto.CommentDto;
-import com.ssafy.petstory.dto.FileDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

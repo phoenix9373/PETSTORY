@@ -1,5 +1,6 @@
 package com.ssafy.petstory.repository;
 
+import com.ssafy.petstory.domain.Like;
 import com.ssafy.petstory.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -54,5 +55,19 @@ public class MemberRepository {
      */
     public void delete(Member member){
         em.remove(member);
+    }
+
+    /**
+     * 맴버아이디와 실명을 통해 맴버테이블에 존제하는지 확인
+     */
+
+    public int findkakao(String email,String name){  //엔티티로 리턴
+
+        List<Member> members = em.createQuery("SELECT m FROM Member m WHERE m.email = :email AND m.name = :name", Member.class)
+                .setParameter("email",email)
+                .setParameter("name",name)
+                .getResultList();
+
+        return members.size();
     }
 }

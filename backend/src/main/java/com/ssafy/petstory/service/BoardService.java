@@ -72,8 +72,8 @@ public class BoardService {
     /**
      * 게시물 전체 조회 - 페이징
      */
-    public List<BoardQueryDto> findAllPaging(int offset, int limit) {
-        return boardRepository.findAllPaging(offset, limit);
+    public List<BoardQueryDto> findAllPaging(int offset, int limit,Long profile_id) {
+        return boardRepository.findAllPaging(offset, limit,profile_id);
     }
 
     /**
@@ -82,6 +82,13 @@ public class BoardService {
     public BoardDetailDto findOne(Long boardId) {
         return boardRepository.findOne(boardId);
     }
+
+//    /**
+//     * 좋아요 한 게시물 조회 - 페이징
+//     */
+//    public Object findLike(Long profile_id) {
+//        boardRepository.findLike(profile_id);
+//    }
 
 
     private class ItemParam {

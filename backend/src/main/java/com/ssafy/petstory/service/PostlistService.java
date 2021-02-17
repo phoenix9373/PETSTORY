@@ -3,7 +3,6 @@ package com.ssafy.petstory.service;
 import com.ssafy.petstory.domain.Member;
 import com.ssafy.petstory.domain.MemberPostlist;
 import com.ssafy.petstory.domain.Postlist;
-import com.ssafy.petstory.dto.MemberPostlistDto;
 import com.ssafy.petstory.dto.PostlistDto;
 import com.ssafy.petstory.repository.MemberPostlistRepository;
 import com.ssafy.petstory.repository.MemberRepository;

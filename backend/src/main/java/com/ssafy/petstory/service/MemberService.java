@@ -15,7 +15,7 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository memberRepository;
     /**
-     * 중복 회원 검증 -> 프론트 쪽에서 만들었음
+     * 중복 회원 검증
      */
     private void validateDuplicateMember(Member member) {
         // EXCEPTION
@@ -32,10 +32,10 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional
-    public Long join(Member member) {
+    public Member join(Member member) {
         //validateDuplicateMember(member); // 중복 회원 검증
         memberRepository.save(member);
-        return member.getId();
+        return member;
     }
 
     /**
@@ -74,5 +74,28 @@ public class MemberService {
     public Member login(MemberForm dto){
         Member member = memberRepository.loginFind(dto.getEmail(),dto.getPassword());
         return member;
+    }
+
+    /**
+     * 테이블에 있는지 검사
+     */
+
+    @Transactional
+    public boolean kakaotable(Member member){
+
+        int size = memberRepository.findkakao(member.getEmail(),member.getName());
+
+        if(size == 0){  //테이블에 없음
+            return false;
+        }
+        else{  //테이블에 이미있다
+            return true;
+        }
+    }
+
+    public Member findOne(Member member) {
+        Member kakaomember = memberRepository.findOne(member.getId());
+
+        return kakaomember;
     }
 }
