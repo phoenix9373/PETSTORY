@@ -18,6 +18,7 @@ function Map() {
 
   return (
     <div className="kakaomap">
+      <div className="map__header">동물병원의 지역을 검색해주세요!</div>
       <MapSearch onSearchInput={onHandleSearch} onSearchNum={onHandleNum} />
       <MapContent searchData={searchData} resultNum={resultNum} />
     </div>
