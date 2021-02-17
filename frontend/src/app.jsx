@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { history } from './utils/history';
 import { PrivateRoute } from './hoc/PrivateRoute';
+import { getAlarmNumdddd } from './_actions/profileAction';
+import { useDispatch } from 'react-redux';
+
 import './app.css';
 
 // Page Load
@@ -22,6 +25,8 @@ import PostListMakePage from './views/PostListMakePage/PostListMakePage';
 import NavBar from './components/NavBar/NavBar';
 import NavBarSide from './components/NavBar/NavBarSide';
 import MbtiModal from './components/ProfileModal/MbtiModal';
+import test from './components/ProfileModal/test';
+import { dispatch } from 'react-hot-toast';
 
 const getStorageTheme = () => {
   let theme = 'light-theme';
@@ -34,6 +39,8 @@ const getStorageTheme = () => {
 function App() {
   const [isLogin, setIslogin] = useState(false);
   const [theme, setTheme] = useState(getStorageTheme());
+  const [alarmNum, setAlarmNum] = useState(null);
+  const [profileId, setProfileId] = useState(null);
 
   const toggleTheme = () => {
     if (theme === 'light-theme') {
@@ -52,6 +59,20 @@ function App() {
     }
   };
 
+  const handleChangeProfileId = (profileId) => {
+    console.log(profileId);
+    setProfileId(profileId);
+  };
+
+  // window.addEventListener(
+  //   'storage',
+  //   (e) => {
+  //     console.log(e);
+  //     // console.log('로컬변함');
+  //   },
+  //   false,
+  // );
+
   useEffect(() => {
     document.documentElement.className = theme;
     localStorage.setItem('theme', theme);
@@ -61,10 +82,31 @@ function App() {
     users();
   }, [localStorage.getItem('user')]);
 
+  // 프로필ID 에 따른 알람 요청
+  const dispatchForAlarm = useDispatch();
+  useEffect(() => {
+    if (profileId) {
+      const fetchAlarm = async () => {
+        await dispatchForAlarm(getAlarmNumdddd(profileId)).then((res) => {
+          console.log(res.payload);
+          console.log(`app에서 ${profileId}의 알람수를 받는다.`);
+          setAlarmNum(res.payload);
+        });
+      };
+      fetchAlarm();
+    }
+  }, [profileId]);
+
   return (
     <Router history={history}>
       <div className="app__wrapper">
-        {isLogin && <NavBar toggleTheme={toggleTheme} isLogin={isLogin} />}
+        {isLogin && (
+          <NavBar
+            toggleTheme={toggleTheme}
+            isLogin={isLogin}
+            alarmNum={alarmNum}
+          />
+        )}
         {isLogin && <NavBarSide></NavBarSide>}
         <div className={isLogin ? 'body__wrapper' : ''}>
           <Switch>
@@ -77,7 +119,11 @@ function App() {
             <PrivateRoute path="/update/:boardId" component={Modify} />
             <PrivateRoute path="/map" component={Map} />
             <PrivateRoute path="/profile/:profileId" component={ProfilePage} />
-            <PrivateRoute path="/select" component={SelectProfileModal} />
+            <PrivateRoute
+              path="/select"
+              component={SelectProfileModal}
+              onChangeProfileId={handleChangeProfileId}
+            />
             <PrivateRoute path="/cartoonize" component={CarToonize} />
             <PrivateRoute path="/mbti" component={MbtiModal} />
             <PrivateRoute path="/userdetail" component={UserDetail} />
