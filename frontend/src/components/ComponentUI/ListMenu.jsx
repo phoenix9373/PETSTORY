@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
 import { useHistory } from 'react-router-dom';
 // material UI
 import { IconButton, makeStyles, Menu, MenuItem } from '@material-ui/core';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-
+import './ConfirmAlert.css';
 // compoenents
 import LoginUserMenuItem from '../ComponentUI/LoginUserMenuItem';
 import { request } from '../../utils/axios';
@@ -46,7 +47,7 @@ function ListMenu(props) {
   const handleDelete = () => {
     // 삭제 요청
     request('DELETE', `/api/board/delete/${props.boardId}`);
-    history.push('/');
+    window.location.href = '/';
   };
 
   const handleModify = () => {
@@ -54,7 +55,21 @@ function ListMenu(props) {
     console.log(props.history);
     history.push(`/update/${props.boardId}`, props.feedItem); // 수정하는 곳으로 이동해야함. not detail.
   };
-
+  const submit = () => {
+    confirmAlert({
+      title: '삭제?',
+      message: '정말 삭제하시겠습니까?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleDelete(),
+        },
+        {
+          label: 'No',
+        },
+      ],
+    });
+  };
   return (
     <>
       <IconButton
@@ -90,7 +105,7 @@ function ListMenu(props) {
           </MenuItem>
         )}
         {Number(localStorage.getItem('profileId')) === props.profileId && (
-          <MenuItem className={customClasses.delete} onClick={handleDelete}>
+          <MenuItem className={customClasses.delete} onClick={submit}>
             삭제
           </MenuItem>
         )}
