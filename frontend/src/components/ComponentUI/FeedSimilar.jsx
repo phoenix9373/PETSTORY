@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getFeedDataActionWithHashtags } from '../../_actions/getFeedDataActionWithHashtags';
 
 // Library
 import { GridLayout } from '@egjs/react-infinitegrid';
@@ -8,6 +6,9 @@ import { GridLayout } from '@egjs/react-infinitegrid';
 // Components
 import FeedItem from '../Feed/FeedItem';
 import { request } from '../../utils/axios';
+
+// CSS
+import './FeedSimilar.css';
 
 function FeedSimilar(props) {
   const [items, setItems] = useState([]);
@@ -22,46 +23,58 @@ function FeedSimilar(props) {
         ),
     );
 
+    setItems(() => newItems);
     return newItems;
   }
 
-  // 아이템 추가했을 때 발생하는 이벤트
-  async function onAppend({ groupKey, startLoading }) {
-    startLoading();
-    const addedItems = await loadItems(groupKey + 1);
-    setItems(() => addedItems);
-  }
+  // // 아이템 추가했을 때 발생하는 이벤트
+  // async function onAppend({ groupKey, startLoading }) {
+  //   startLoading();
+  //   const addedItems = await loadItems(groupKey + 1);
+  //   setItems(() => addedItems);
+  // }
 
-  // 아이템 로드 종료.
-  function onLayoutComplete({ isLayout, endLoading }) {
-    !isLayout && endLoading();
-  }
+  // // 아이템 로드 종료.
+  // function onLayoutComplete({ isLayout, endLoading }) {
+  //   !isLayout && endLoading();
+  // }
 
-  function resolveAfter2Seconds(item) {
-    return request('GET', `/api/board/findOne/${item.boardId}`);
+  async function getIntroMessage(id) {
+    return new Promise((resolve, reject) => {
+      const res = request('GET', `/api/board/findOne/${id}`);
+      resolve(res);
+    });
   }
 
   async function getItems() {
     const boardList = props.feedItems;
     const itemList = await Promise.all(
       boardList.map((item) => {
-        const res = resolveAfter2Seconds(item);
-        return res.data;
+        // const res = requestData('GET', `/api/board/findOne/${item.boardId}`);
+        console.log(item);
+        return getIntroMessage(item.boardId);
       }),
     );
-    console.log(itemList);
-    setBoardItems((prev) => itemList.concat(prev));
+    const newItemList = itemList.map((item) => item.data);
+    // console.log(`newItemList: ${newItemList}`);
+    setBoardItems((prev) => newItemList.concat(prev));
   }
 
   useEffect(() => {
     getItems();
   }, []);
 
+  useEffect(() => {
+    loadItems();
+  }, [boardItems]);
+
   return (
     <>
+      {items.length === 0 && (
+        <h3 className="notice">유사한 피드 목록이 없습니다</h3>
+      )}
       <GridLayout
         tag="div"
-        // loading={<Progress></Progress>}
         options={{
           isConstantSize: true,
           transitionDuration: 0.2,
@@ -84,14 +97,13 @@ function FeedSimilar(props) {
         }}
         // 이벤트 종류.
         // 아이템들을 아웃라인 아래에 추가.
-        onAppend={(e) => {
-          if (e.currentTarget.isProcessing()) {
-            return;
-          }
-          onAppend(e);
-        }}
-        //
-        onLayoutComplete={(e) => onLayoutComplete(e)}
+        // onAppend={(e) => {
+        //   if (e.currentTarget.isProcessing()) {
+        //     return;
+        //   }
+        //   onAppend(e);
+        // }}
+        // onLayoutComplete={(e) => onLayoutComplete(e)}
       >
         {items}
       </GridLayout>
