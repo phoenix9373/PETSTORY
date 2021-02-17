@@ -13,6 +13,10 @@ import './FeedSimilar.css';
 function FeedSimilar(props) {
   const items = props.feedItems;
 
+  useEffect(() => {
+    loadItems();
+  }, [boardItems]);
+
   return (
     <>
       {items.length === 0 && (
@@ -40,6 +44,18 @@ function FeedSimilar(props) {
           // 0이면 첫번째 아이템의 사이즈로 계산.
           itemSize: 0,
         }}
+<<<<<<< HEAD
+=======
+        // 이벤트 종류.
+        // 아이템들을 아웃라인 아래에 추가.
+        // onAppend={(e) => {
+        //   if (e.currentTarget.isProcessing()) {
+        //     return;
+        //   }
+        //   onAppend(e);
+        // }}
+        // onLayoutComplete={(e) => onLayoutComplete(e)}
+>>>>>>> upstream/develop
       >
         {items}
       </GridLayout>
