@@ -13,9 +13,8 @@ function Account({ history }) {
 
   const [isActive, setActive] = useState(false);
   const toggleClass = () => {
-    const stateActive = isActive;
-    setActive(!stateActive);
-    if (stateActive) {
+    setActive(!isActive);
+    if (isActive) {
       toast.success('로그인 페이지 입니다.');
     } else {
       toast.success('회원가입 페이지 입니다.');

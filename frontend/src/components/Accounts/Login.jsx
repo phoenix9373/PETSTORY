@@ -18,15 +18,26 @@ function LoginPage(props) {
     setPassword(e.currentTarget.value);
   };
 
+  const chkPW = () => {
+    const pw = Password;
+    const num = pw.search(/[0-9]/g);
+    const eng = pw.search(/[a-z]/gi);
+    const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+    if (pw.length < 8 || pw.length > 20) {
+      toast.error('잘못된 정보를 입력했습니다.');
+      return false;
+    } else if (pw.search(/\s/) !== -1) {
+      toast.error('비밀번호는 공백 없이 입력해주세요.');
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    if (Email === '' || Email === undefined || Email === null) {
-      toast.error('이메일을 입력하세요');
-      return;
-    }
-
-    if (Password === '' || Password === undefined || Password === null) {
-      toast.error('비밀번호를 입력하세요');
+    if (!chkPW()) {
       return;
     }
     // 로그인을 진행하기위해서

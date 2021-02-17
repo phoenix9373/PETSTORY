@@ -15,8 +15,5 @@ export const request = (method, url, data, params = {}) =>
     },
     data,
   })
-    .then((res) => {
-      console.log('@@@@@', res);
-      return res.data;
-    })
+    .then((res) => res.data)
     .catch((err) => console.error(err));

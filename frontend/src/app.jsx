@@ -26,8 +26,6 @@ import PostListPage from './views/PostListPage/PostListPage';
 import NavBar from './components/NavBar/NavBar';
 import NavBarSide from './components/NavBar/NavBarSide';
 import MbtiModal from './components/ProfileModal/MbtiModal';
-import test from './components/ProfileModal/test';
-import { dispatch } from 'react-hot-toast';
 
 const getStorageTheme = () => {
   let theme = 'light-theme';
@@ -42,6 +40,7 @@ function App() {
   const [theme, setTheme] = useState(getStorageTheme());
   const [alarmNum, setAlarmNum] = useState(null);
   const [profileId, setProfileId] = useState(null);
+  const [isLocatedInSelect, setIsLocatedInSelect] = useState(false);
 
   const toggleTheme = () => {
     if (theme === 'light-theme') {
@@ -50,6 +49,18 @@ function App() {
       setTheme('light-theme');
     }
   };
+
+  const isSeletPage = () => {
+    console.log('tlqkf', history.location.pathname);
+    if (history.location.pathname === '/select') {
+      setIsLocatedInSelect(true);
+    } else {
+      setIsLocatedInSelect(false);
+    }
+  };
+  useEffect(() => {
+    isSeletPage();
+  }, [document.location.href]);
 
   const users = () => {
     const user = localStorage.getItem('user');
@@ -61,18 +72,8 @@ function App() {
   };
 
   const handleChangeProfileId = (profileId) => {
-    console.log(profileId);
     setProfileId(profileId);
   };
-
-  // window.addEventListener(
-  //   'storage',
-  //   (e) => {
-  //     console.log(e);
-  //     // console.log('로컬변함');
-  //   },
-  //   false,
-  // );
 
   useEffect(() => {
     document.documentElement.className = theme;
@@ -101,14 +102,20 @@ function App() {
   return (
     <Router history={history}>
       <div className="app__wrapper">
-        {isLogin && (
-          <NavBar
-            toggleTheme={toggleTheme}
-            isLogin={isLogin}
-            alarmNum={alarmNum}
-          />
+        {!isLocatedInSelect && (
+          <>
+            {isLogin && (
+              <>
+                <NavBar
+                  toggleTheme={toggleTheme}
+                  isLogin={isLogin}
+                  alarmNum={alarmNum}
+                />
+                <NavBarSide></NavBarSide>
+              </>
+            )}
+          </>
         )}
-        {isLogin && <NavBarSide></NavBarSide>}
         <div className={isLogin ? 'body__wrapper' : ''}>
           <Switch>
             <Route path="/login" component={LandingPage} />
