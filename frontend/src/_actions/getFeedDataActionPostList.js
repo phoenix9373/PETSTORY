@@ -11,7 +11,7 @@ export function getFeedDataActionPostList(
     'GET',
     `/api/postlist/findAllPaging/${memberPostlistId}`,
     {},
-    { offset, limit, profileId },
+    { offset, limit, profile_id: profileId },
   );
 
   return {

@@ -12,6 +12,11 @@
   min-height: 90vh;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .link {
   width: 80px;
   height: 80px;

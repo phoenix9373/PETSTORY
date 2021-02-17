@@ -117,7 +117,7 @@ function App() {
             <PrivateRoute path="/detail/:boardId" component={DetailPage} />
             <PrivateRoute path="/list" component={PostListMakePage} />
             <PrivateRoute
-              path="/postlist/:postlistName"
+              path="/postlist/:memberPostlistId/:postlistName"
               component={PostListPage}
             />
             <PrivateRoute path="/create" component={Create} />

@@ -44,20 +44,16 @@ function NavBarSide(props) {
         <FaMapMarkerAlt className={styles.icon}></FaMapMarkerAlt>
         <span>우리 동네</span>
       </Link>
-      <Link className={styles.link} to="/">
-        <FiBox className={styles.icon}></FiBox>
-        <span>Storage</span>
-      </Link>
-      <Link className={styles.link} to="/list">
-        <FiBox className={styles.icon}></FiBox>
-        <span>스토리지 생성</span>
+      <Link className={styles.linkplus} to="/list">
+        <FaPlusCircle className={styles.icon}></FaPlusCircle>
+        <span>피드 목록 생성</span>
       </Link>
       {postList &&
         postList.map((item) => (
           <Link
             key={item.memberPostlistId}
             className={styles.link}
-            to={`/postlist/${item.postlistName}`}
+            to={`/postlist/${item.memberPostlistId}/${item.postlistName}`}
           >
             <FiBox className={styles.icon}></FiBox>
             <span>{item.postlistName}</span>

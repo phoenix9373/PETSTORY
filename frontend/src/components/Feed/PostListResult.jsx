@@ -18,6 +18,7 @@ function PostListResult(props) {
     const memberPostlistId = props.memberPostlistId;
     // offset : start index
     // limit : 한 번에 가져올 데이터 개수.
+
     const response = await dispatch(
       getFeedDataActionPostList(
         offset,
@@ -26,13 +27,12 @@ function PostListResult(props) {
         memberPostlistId,
       ),
     );
-    return response.payload && response.payload.data;
+    return response.payload && response.payload.data.data;
   }
 
-  // axios 요청 - 데이터 수신 - map으로 변환 - 반환
   async function loadItems(groupKey, num) {
-    // 그룹키, 개수, start 인덱스
     const getItems = await getFeedData(startIdx, num);
+    console.log(getItems);
     const newItems = [...getItems].map(
       (item) =>
         item.files && (

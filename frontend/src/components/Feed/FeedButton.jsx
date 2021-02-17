@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 // Components
 import FeedSaveContainer from './FeedSaveContainer';
@@ -75,8 +75,8 @@ function FeedButton(props) {
   const handleSave = () => {
     const data = {
       memberId,
-      boardId,
       memberPostlistId,
+      boardId,
     };
 
     console.log(data);
@@ -88,6 +88,23 @@ function FeedButton(props) {
   const handleMemberPostlistId = (id) => {
     setMemberPostlistId(() => id);
   };
+
+  const getDefaultData = async () => {
+    const response = await request(
+      'GET',
+      `/api/memberPostlist/findAll/${
+        JSON.parse(localStorage.getItem('user')).id
+      }`,
+    );
+
+    setMemberPostlistId(
+      () => response.data && response.data[0].memberPostlistId,
+    );
+  };
+
+  useEffect(() => {
+    getDefaultData();
+  }, []);
 
   return (
     <Box className={`${classes.frame} active`}>
