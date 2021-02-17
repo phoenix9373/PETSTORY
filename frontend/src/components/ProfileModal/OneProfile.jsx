@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 // material UI
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import ClearIcon from '@material-ui/icons/Clear';
 import { makeStyles } from '@material-ui/core/styles';
 
 // MUI Custom
@@ -114,7 +114,7 @@ function OneProfile(props) {
           <EditIcon onClick={handleModifyModal} />
         </Fab>
         <Fab className={styles.icon} color="secondary">
-          <HighlightOffIcon onClick={deletemodal} />
+          <ClearIcon onClick={handleDeleteProfile} />
         </Fab>
         {/* 수정 모달 */}
         <ModifyProfile
