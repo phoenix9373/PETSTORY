@@ -58,15 +58,15 @@ function LoginPage(props) {
         <form className="acccount__form" onSubmit={onSubmitHandler}>
           <h1>Sign in</h1>
           <KakaoLogin props={props} />
-          <div className="social-container">
+          {/* <div className="social-container">
             <a className="account__a" href="#" className="social">
               <img className="account__kakao" src={kakaoIcon} />
             </a>
             <a className="account__a" href="#" className="social">
               <FcGoogle className="account__kakao" />
             </a>
-          </div>
-          <span>or use your account</span>
+          </div> */}
+          <span className="account__span">or use your account</span>
           <input
             className="account__input"
             type="email"
