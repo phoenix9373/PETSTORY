@@ -1,9 +1,6 @@
 package com.ssafy.petstory.repository;
 
-import com.ssafy.petstory.domain.Board;
-import com.ssafy.petstory.domain.BoardHashtag;
-import com.ssafy.petstory.domain.Hashtag;
-import com.ssafy.petstory.domain.Profile;
+import com.ssafy.petstory.domain.*;
 import com.ssafy.petstory.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,15 +27,20 @@ public class BoardRepository {
     /**
      * 게시물 전체 조회 - 페이징
      */
-    public List<BoardQueryDto> findAllPaging(int offset, int limit) {
+    public List<BoardQueryDto> findAllPaging(int offset, int limit, long profileId) {
         // 루트 조회(XToOne 코드 모두 한 번에 조회)
         List<BoardQueryDto> result = findBoardsPaging(offset, limit);
 
-        // file 컬렉션을 Map 한 방에 조회
+        // file 컬렉션을 Map 한 방에 조회 ->boardid 리스트를 넣는다.
         Map<Long, List<FileQueryDto>> fileMap = findFileMap(toBoardIds(result));
 
         // boardHashtag 컬렉션 Map 한 방에 조회
         Map<Long, List<BoardHashtagQueryDto>> boardhashtagMap = findBoardHashtagMap(toBoardIds(result));
+
+        //해당 게시글 like 여부 조회
+        //게시글 리스트를 가지고 매핑하고 각각의 게시물에 넣어주자
+        Map<Long, List<LikeQueryDto>> likeMap = findlike(toBoardIds(result),profileId);
+
         // 루프를 돌면서 컬렉션 추가(추가 쿼리 실행 x, 메모리로 가져와 처리)
         result.forEach(b ->
                 b.setFiles(fileMap.get(b.getBoardId()))
@@ -46,8 +48,17 @@ public class BoardRepository {
         result.forEach(b ->
                 b.setBoardHashtags(boardhashtagMap.get(b.getBoardId()))
         );
+        result.forEach(b ->
+                b.setIsLike(likeMap.get(b.getBoardId()))
+        );  //
+
         return result;
     }
+
+
+    /**
+     *  좋아요 한 게시물 조회 - 페이징
+     */
 
 
     /**
@@ -103,9 +114,9 @@ public class BoardRepository {
      */
     private Map<Long, List<FileQueryDto>> findFileMap(List<Long> boardIds) {
         List<FileQueryDto> fileDtos = em.createQuery(
-        "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
-                    " from File f" +
-                    " where f.board.id in :boardIds", FileQueryDto.class)
+                "select new com.ssafy.petstory.dto.FileQueryDto(f.board.id, f.id, f.filePath, f.imgFullPath)" +
+                        " from File f" +
+                        " where f.board.id in :boardIds", FileQueryDto.class)
                 .setParameter("boardIds", boardIds)
                 .getResultList();
         return fileDtos.stream()
@@ -117,10 +128,10 @@ public class BoardRepository {
      */
     private Map<Long, List<BoardHashtagQueryDto>> findBoardHashtagMap(List<Long> boardIds) {
         List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
-        "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
-                    " from BoardHashtag bh" +
-                    " join bh.hashtag h" +
-                    " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
+                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+                        " from BoardHashtag bh" +
+                        " join bh.hashtag h" +
+                        " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
                 .setParameter("boardIds", boardIds)
                 .getResultList();
         return boardHashtagQueryDtos.stream()
@@ -330,4 +341,28 @@ public class BoardRepository {
 //                .setParameter("boardHashtagId", boardHashtagId)
 //                .getResultList();
     }
+    public Map<Long, List<LikeQueryDto>> findlike(List<Long> b_ids,Long p_id){  //엔티티 사이즈로 리턴
+
+        List<LikeQueryDto> islikes = em.createQuery(
+                "SELECT new com.ssafy.petstory.dto.LikeQueryDto(m.likeId,m.board.id)  FROM Like m WHERE m.board.id in :board_id AND m.profileId = :profile_id", LikeQueryDto.class)
+                .setParameter("board_id",b_ids)
+                .setParameter("profile_id",p_id)
+                .getResultList();
+
+        return islikes.stream()
+                .collect(Collectors.groupingBy(islike -> islike.getBoardId())); // fileDtos -> map으로 바꿔서 최적화(코드 작성 편의, 성능 향상)
+    }
+
+
+//    private Map<Long, List<BoardHashtagQueryDto>> findBoardHashtagMap(List<Long> boardIds) {
+//        List<BoardHashtagQueryDto> boardHashtagQueryDtos = em.createQuery(
+//                "select new com.ssafy.petstory.dto.BoardHashtagQueryDto(bh.board.id, h.name)" +
+//                        " from BoardHashtag bh" +
+//                        " join bh.hashtag h" +
+//                        " where bh.board.id in :boardIds", BoardHashtagQueryDto.class)
+//                .setParameter("boardIds", boardIds)
+//                .getResultList();
+//        return boardHashtagQueryDtos.stream()
+//                .collect(Collectors.groupingBy(boardHashtagQueryDto -> boardHashtagQueryDto.getBoardId())); // fileDtos -> map으로 바꿔서 최적화(코드 작성 편의, 성능 향상)
+//    }
 }

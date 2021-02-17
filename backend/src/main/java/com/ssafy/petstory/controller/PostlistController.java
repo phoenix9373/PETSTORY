@@ -1,6 +1,5 @@
 package com.ssafy.petstory.controller;
 
-import com.ssafy.petstory.domain.MemberPostlist;
 import com.ssafy.petstory.dto.MemberPostlistDto;
 import com.ssafy.petstory.dto.PostlistDto;
 import com.ssafy.petstory.service.MemberPostlistService;

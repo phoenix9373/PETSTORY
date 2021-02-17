@@ -1,5 +1,6 @@
 package com.ssafy.petstory.domain;
 
+import com.ssafy.petstory.dto.LikeQueryDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +51,13 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+
+    // Board와 Like는 일대다 관계
+    // 영속성 전이(cascade)란 쉽게 말해 부모 엔티티가 영속화될때, 자식 엔티티도 같이 영속화되고 부모 엔티티가 삭제 될때, 자식 엔티티도 삭제되는 등 부모의 영속성 상태가 전이되는 것을 이야기한다.
+    // 보드 삭제 되면 like board_id 로 연결된 자식 엔티티 삭제
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Like> like = new ArrayList<>();
+
     // Board와 file는 일대다 관계
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<File> files = new ArrayList<>();
@@ -62,6 +70,7 @@ public class Board {
         this.profile = profile;
         profile.getBoards().add(this);
     }
+
 
     /**
      * Board와 BoardHashtag 연관 관계 (편의) 메서드
@@ -97,4 +106,5 @@ public class Board {
         this.boardDate = LocalDateTime.now();
 
     }
+
 }

@@ -69,14 +69,6 @@ public class Profile {
         member.getProfiles().add(this);
     }
 
-    /**
-     * Profile과 Image 연관 관계 편의 메소드
-     */
-    public void setImage(Image image) {
-        this.image = image;
-        image.setProfile(this);
-    }
-
 //    public static void main(String[] args) {
 //        Member member = new Member();
 //        Profile profile = new Profile();
@@ -103,7 +95,13 @@ public class Profile {
 //        this.relation = relation;
 //        relation.setProfile(this);
 //    }
-
+    /**
+     * Profile과 Image 연관 관계 편의 메소드
+     */
+    public void setImage(Image image) {
+        this.image = image;
+        image.setProfile(this);
+    }
     /**
      * 프로필 생성 메소드
      */
@@ -117,7 +115,11 @@ public class Profile {
 
         profile.setMember(member); //프로필 엔티티의 맴버 -> 맴버 아이디로 찾아온 맴버
         profile.setNickname(form.getNickname());
-        profile.setState(ProfileState.PUBLIC); // 초기값 -> 전체공개
+        profile.setRank(form.getRank());
+        profile.setFolloweeNum(form.getFolloweeNum());
+        profile.setFollowerNum(form.getFollowerNum());
+        profile.setState(form.getProfileState());
+        //profile.setRelation(relation);
 
         System.out.println("프로필 엔티티에 저장 완료 후 닉네임 확인: "+profile.getNickname());
         return profile;

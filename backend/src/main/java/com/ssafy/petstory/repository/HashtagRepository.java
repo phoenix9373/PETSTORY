@@ -60,7 +60,7 @@ public class HashtagRepository {
     /**
      * 게시물 상세보기 시 연관 해시태그
      * 이름으로 검색 후 cnt(인기) 순으로 내림차순 후 4개 조회
-     * 
+     *
      * 기능 삭제
      */
     public List<HashtagDto> findRelatedHashtags(int offset, int limit, String hashtagName) {

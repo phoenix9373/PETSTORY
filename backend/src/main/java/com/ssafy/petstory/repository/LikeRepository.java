@@ -61,10 +61,10 @@ public class LikeRepository {
     }
 
     public Like findOne(Like like) {
-        Long p_id = like.getProfile_id();
-        Long b_id = like.getBoard_id();
+        Long p_id = like.getProfileId();
+        Long b_id = like.getBoard().getId();
 
-        return em.createQuery("SELECT m FROM Like m WHERE m.board_id = :board_id AND m.profile_id = :profile_id", Like.class)
+        return em.createQuery("SELECT m FROM Like m WHERE m.board.id = :board_id AND m.profileId = :profile_id", Like.class)
                 .setParameter("board_id",b_id)
                 .setParameter("profile_id",p_id)
                 .getSingleResult();

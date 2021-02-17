@@ -1,6 +1,7 @@
 package com.ssafy.petstory.dto;
 
 import com.ssafy.petstory.domain.Board;
+import com.ssafy.petstory.domain.Like;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class BoardQueryDto {
     private LocalDateTime boardDate; // 글생성 시간
     private long likeNum;
     private long reportNum;
+    private List<LikeQueryDto> isLike;
     private List<FileQueryDto> files;
     private List<BoardHashtagQueryDto> boardHashtags;
 
@@ -62,6 +64,19 @@ public class BoardQueryDto {
         this.files = files;
     }
 
+    public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, int isLike) {
+        this.profileId = profileId;
+        this.nickname = nickname;
+        this.imgFullPath = imgFullPath;
+        this.boardId = boardId;
+        this.title = title;
+        this.context = context;
+        this.boardDate = boardDate;
+        this.likeNum = likeNum;
+        this.reportNum = reportNum;
+        this.isLike = isLike;
+    }
+
     public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum) {
         this.profileId = profileId;
         this.nickname = nickname;
@@ -72,6 +87,7 @@ public class BoardQueryDto {
         this.boardDate = boardDate;
         this.likeNum = likeNum;
         this.reportNum = reportNum;
+
     }
 
     public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, List<FileQueryDto> files, List<BoardHashtagQueryDto> boardHashtags) {

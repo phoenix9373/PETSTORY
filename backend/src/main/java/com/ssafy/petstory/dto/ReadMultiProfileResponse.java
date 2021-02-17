@@ -1,14 +1,7 @@
 package com.ssafy.petstory.dto;
 
-import com.ssafy.petstory.domain.Board;
-import com.ssafy.petstory.domain.Image;
-import com.ssafy.petstory.domain.Member;
 import com.ssafy.petstory.domain.ProfileState;
 import lombok.Data;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class ReadMultiProfileResponse {
