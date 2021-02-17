@@ -80,7 +80,7 @@ export default class Create extends Component {
     this.titleRef.current.value = '';
     this.contextRef.current.value = '';
     this.hashtagRef.current.value = '';
-    this.props.history.push('/');
+    window.location.href = '/';
   }
 
   handleDelete(image) {

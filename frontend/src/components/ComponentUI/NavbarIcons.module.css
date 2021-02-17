@@ -5,14 +5,33 @@
   margin-left: 10px;
 }
 
+.alarmNumContainer {
+  position: absolute;
+  display: flex;
+  top: 4px;
+  left: 18px;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.alramNum {
+  font-size: 12px;
+  color: white;
+}
+
 .wrapper {
   position: absolute;
   display: flex;
   flex-direction: column;
   top: 56px;
   right: 20px;
-  width: 400px;
+  width: fit-content;
   height: fit-content;
+  min-width: 400px;
   min-height: 200px;
   background-color: #f5eaf0;
   border-radius: 20px;
