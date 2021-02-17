@@ -1,4 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+$primary: #11998e;
+$secondary: #38ef7d;
+$white: #fff;
+$gray: #9b9b9b;
+
 .dark-theme {
   --clr-bcg: #282c35;
   --clr-font: #fff;
@@ -33,7 +38,8 @@ form.mapsearch__form {
     color: black;
     font-weight: bold;
     border: none;
-    margin-left: 20px;
+    margin-left: 5px;
+    margin-top: 20px;
     border-radius: 5px;
     &:hover {
       color: red;
@@ -46,5 +52,93 @@ form.mapsearch__form {
     .mapsearch__icon {
       color: var(--clr-primary);
     }
+  }
+}
+
+.form__group2 {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  width: 50%;
+}
+
+.form__field2 {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 3px solid $gray;
+  outline: 0;
+  font-size: 1.3rem;
+  color: black;
+  margin-bottom: 0px;
+  padding: 20px 4px 8px;
+  background: transparent;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .form__label2 {
+    &.title2 {
+      font-size: 1.5rem;
+      cursor: text;
+      top: 20px;
+    }
+    &.context {
+      font-size: 1.5rem;
+      cursor: text;
+      top: 12vh;
+    }
+  }
+
+  &.context {
+    height: 15vh;
+  }
+}
+
+.form__label2 {
+  position: absolute;
+  top: 0px;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: $gray;
+}
+
+.form__field2:focus {
+  ~ .form__label2 {
+    &.title {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 1rem;
+      color: violet;
+      font-weight: 700;
+    }
+    &.context {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 1rem;
+      color: violet;
+      font-weight: 700;
+    }
+  }
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 5px;
+  border-image: linear-gradient(to right, $primary, $secondary);
+  border-image-slice: 10;
+}
+/* reset input */
+.form__field2 {
+  &:required,
+  &:invalid {
+    box-shadow: none;
   }
 }
