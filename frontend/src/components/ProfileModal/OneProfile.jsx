@@ -98,6 +98,7 @@ function OneProfile(props) {
         to={'/'}
         onClick={() => {
           saveProfileId(props.item.profileId);
+          window.location.href = '/';
         }}
       >
         <img

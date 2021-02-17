@@ -29,7 +29,7 @@ function Navbar({ isLogin, toggleTheme }) {
 
   // 알람수 받기 (store에 접근하여 state 가져오기)
   const { alarmNum } = useSelector((state) => state.alarmer);
-  console.log(alarmNum);
+  // console.log('아 알람갯수란다', alarmNum);
 
   // 프로필 Id 선택
   const [profileId, setProfileId] = useState(48);
@@ -136,6 +136,7 @@ function Navbar({ isLogin, toggleTheme }) {
             <NavbarIcons
               handleIsFocus={handleIsFocus}
               isFocus={isFocus}
+              alarmNum={alarmNum}
             ></NavbarIcons>
           </div>
           {/* <div className="theme-toggle-switch">

@@ -29,11 +29,11 @@ const useStyle = makeStyles(() => ({
   },
 }));
 
-function NavbarIcons({ handleIsFocus, isFocus, history }) {
+function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
   const classes = useStyle();
   const [isAlarmData, setIsAlarmData] = useState(false);
   const [isProfileData, setIsProfileData] = useState(false);
-  const [alarm, setAlarm] = useState(null);
+  const [alarm, setAlarm] = useState([]);
   const [isAlarmNum, setIsAlarmNum] = useState(false);
 
   const getAlarmData = () => {
@@ -78,7 +78,7 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     setIsAlarmData(false);
     setIsProfileData(false);
     handleIsFocus(false);
-    history.push('/select');
+    window.location.href = '/select';
   };
 
   const memberHandler = (e) => {
@@ -118,9 +118,9 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
     <>
       <div className={styles.frame}>
         {/* 알림 */}
-        {!isAlarmNum && (
+        {alarmNum && (
           <div className={styles.alarmNumContainer}>
-            <div className={styles.alramNum}>12</div>
+            <div className={styles.alramNum}>{alarmNum}</div>
           </div>
         )}
         <NotificationsIcon
@@ -131,15 +131,16 @@ function NavbarIcons({ handleIsFocus, isFocus, history }) {
         />
         {isAlarmData && !isFocus && (
           <ul className={styles.wrapper}>
-            {alarm !== null ? (
+            {alarm.length === 0 ? (
+              <li className={styles.item}>알람이 없습니다.</li>
+            ) : (
               alarm.map(({ boardTitle, profileNickname }, idx) => (
                 <li className={styles.item} key={idx * 564637}>
-                  <span>{profileNickname}</span> 님이 <span>{boardTitle}</span>{' '}
-                  에 좋아요를 눌렀습니다.
+                  <span className={styles.alarmspan}>{profileNickname}</span>{' '}
+                  님이 <span className={styles.alarmspan}>{boardTitle}</span> 에
+                  좋아요를 눌렀습니다.
                 </li>
               ))
-            ) : (
-              <li className={styles.item}>알람이 없습니다.</li>
             )}
           </ul>
         )}

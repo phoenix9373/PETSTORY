@@ -11,6 +11,26 @@ function RegisterPage(props) {
   const [ConfirmPasword, setConfirmPasword] = useState('');
   const dispatch = useDispatch();
 
+  const chkPW = () => {
+    const pw = Password;
+    const num = pw.search(/[0-9]/g);
+    const eng = pw.search(/[a-z]/gi);
+    const spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+
+    if (pw.length < 8 || pw.length > 20) {
+      toast.error('8자리 ~ 20자리 이내로 입력해주세요.');
+      return false;
+    } else if (pw.search(/\s/) !== -1) {
+      toast.error('비밀번호는 공백 없이 입력해주세요.');
+      return false;
+    } else if (num < 0 || eng < 0 || spe < 0) {
+      toast.error('영문,숫자, 특수문자를 혼합하여 입력해주세요.');
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const onEmailHandler = (e) => {
     setEmail(e.currentTarget.value);
   };
@@ -39,8 +59,7 @@ function RegisterPage(props) {
       return;
     }
 
-    if (Password === '' || Password === undefined || Password === null) {
-      toast.error('비밀번호를 입력하세요');
+    if (!chkPW()) {
       return;
     }
 
