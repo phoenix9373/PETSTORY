@@ -15,7 +15,7 @@
 
 h1 {
   font-weight: bold;
-  margin: 0;
+  margin: 20px;
 }
 
 h2 {
@@ -28,6 +28,11 @@ p {
   line-height: 20px;
   letter-spacing: 0.5px;
   margin: 20px 0 30px;
+}
+
+.account__span {
+  font-size: 12px;
+  margin: 20px;
 }
 
 span {
@@ -118,6 +123,7 @@ input {
   border-radius: 20px;
   background-color: #ef5f91;
   color: #ffffff;
+  border: none;
   font-size: 24px;
   font-weight: bold;
   padding: 15px 45px;
