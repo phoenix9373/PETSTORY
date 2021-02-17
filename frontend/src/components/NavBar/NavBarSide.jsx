@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './NavBarSide.module.css';
 
@@ -6,8 +6,26 @@ import styles from './NavBarSide.module.css';
 import { FaHome, FaPlusCircle, FaMapMarkerAlt } from 'react-icons/fa';
 import { ImFire } from 'react-icons/im';
 import { FiBox } from 'react-icons/fi';
+import { request } from '../../utils/axios';
 
 function NavBarSide(props) {
+  const [postList, setPostList] = useState([]);
+
+  const memberId = JSON.parse(localStorage.getItem('user')).id;
+
+  const getPostList = async () => {
+    const response = await request(
+      'GET',
+      `/api/memberPostlist/findAll/${memberId}`,
+    );
+    setPostList(() => response.data);
+  };
+
+  useEffect(() => {
+    getPostList();
+  }, []);
+  // }, [postListReload]);
+
   return (
     <div className={styles.navbarSide}>
       <Link className={styles.linkplus} to="/create">
@@ -26,22 +44,21 @@ function NavBarSide(props) {
         <FaMapMarkerAlt className={styles.icon}></FaMapMarkerAlt>
         <span>우리 동네</span>
       </Link>
-      <Link className={styles.link} to="/">
-        <FiBox className={styles.icon}></FiBox>
-        <span>Storage</span>
-      </Link>
-      <Link className={styles.link} to="/list">
-        <FiBox className={styles.icon}></FiBox>
-        <span>스토리지 생성</span>
-      </Link>
-      <Link className={styles.linkplus} to="/postlist">
+      <Link className={styles.linkplus} to="/list">
         <FaPlusCircle className={styles.icon}></FaPlusCircle>
-        <span>저장목록 만들기</span>
+        <span>피드 목록 생성</span>
       </Link>
-      {/* <Link className={styles.link} to="/">
-        <FiBox></FiBox>
-        <span>Storage2</span>
-      </Link> */}
+      {postList &&
+        postList.map((item) => (
+          <Link
+            key={item.memberPostlistId}
+            className={styles.link}
+            to={`/postlist/${item.memberPostlistId}/${item.postlistName}`}
+          >
+            <FiBox className={styles.icon}></FiBox>
+            <span>{item.postlistName}</span>
+          </Link>
+        ))}
     </div>
   );
 }

@@ -1,39 +1,38 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getFeedDataAction } from '../../_actions/getFeedDataAction';
+import { getFeedDataActionPostList } from '../../../src/_actions/getFeedDataActionPostList';
 
 // Library
 import { GridLayout } from '@egjs/react-infinitegrid';
 
 // Components
 import FeedItem from './FeedItem';
-import Progress from '../ComponentUI/Progress';
 
-function FeedInfinite(props) {
+function PostListResult(props) {
   const [items, setItems] = useState([]);
   const [startIdx, setStartIdx] = useState(0);
   const dispatch = useDispatch();
 
   // axios 요청
   async function getFeedData(offset, limit) {
+    const memberPostlistId = props.memberPostlistId;
     // offset : start index
     // limit : 한 번에 가져올 데이터 개수.
+
     const response = await dispatch(
-      getFeedDataAction(
+      getFeedDataActionPostList(
         offset,
         limit,
         Number(localStorage.getItem('profileId')),
+        memberPostlistId,
       ),
     );
-    console.log(`무한 스크롤 : ${response.payload}`);
-    console.log(`무한 스크롤 : ${response.payload.data}`);
-    return response.payload && response.payload.data;
+    return response.payload && response.payload.data.data;
   }
 
-  // axios 요청 - 데이터 수신 - map으로 변환 - 반환
   async function loadItems(groupKey, num) {
-    // 그룹키, 개수, start 인덱스
     const getItems = await getFeedData(startIdx, num);
+    console.log(getItems);
     const newItems = [...getItems].map(
       (item) =>
         item.files && (
@@ -99,4 +98,4 @@ function FeedInfinite(props) {
   );
 }
 
-export default FeedInfinite;
+export default PostListResult;
