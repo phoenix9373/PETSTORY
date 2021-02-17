@@ -40,16 +40,16 @@ public class BoardApiController {
     }
 
 
-//    /**
-//     * 자신이 좋아요 한 게시물 조회
-//     */
-//    @GetMapping("/api/board/findLike/{profile_id}")
-//    public Result<BoardQueryDto> findLike(@RequestParam(value = "offset") int offset,
-//                                          @RequestParam(value = "limit") int limit,
-//                                          @PathVariable("profile_id") Long profileId){
-//
-//        return new Result(boardService.findLike(offset, limit, profileId));
-//    }
+    /**
+     * 자신이 좋아요 한 게시물 조회
+     */
+    @GetMapping("/board/findLike/{profile_id}")
+    public Result<BoardQueryDto> findLike(@RequestParam(value = "offset") int offset,
+                                          @RequestParam(value = "limit") int limit,
+                                          @PathVariable("profile_id") Long profileId){
+
+        return new Result(boardService.findLike(offset, limit, profileId));
+    }
 
 
     /**
