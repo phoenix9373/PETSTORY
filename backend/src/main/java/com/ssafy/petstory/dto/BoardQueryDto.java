@@ -64,7 +64,7 @@ public class BoardQueryDto {
         this.files = files;
     }
 
-    public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, int isLike) {
+    public BoardQueryDto(Long profileId, String nickname, String imgFullPath, Long boardId, String title, String context, LocalDateTime boardDate, long likeNum, long reportNum, List<LikeQueryDto> isLike) {
         this.profileId = profileId;
         this.nickname = nickname;
         this.imgFullPath = imgFullPath;
