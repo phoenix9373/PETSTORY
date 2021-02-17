@@ -157,8 +157,8 @@ public class MemberController {
         return "로그아웃 되셨습니다";
     }
 
-    @GetMapping("/kakaologin")
-    public ResponseEntity<String> kakaoLogin(@RequestBody MemberForm dto) {
+    @PostMapping("/kakaologin")
+    public ResponseEntity<Map<String, Object>> kakaoLogin(@RequestBody MemberForm dto) {
         Member member = new Member();
         Map<String, Object> resultMap = new HashMap<>(); // <스트링, 겍체>로 생성
         HttpStatus status = null;
@@ -167,13 +167,18 @@ public class MemberController {
         member.setName(dto.getMember_name());
         member.setEmail(dto.getEmail());
 
+        System.out.println(member.getName());
+        System.out.println(member.getEmail());
+        
         // 테이블에 있는지 검사 false -> 테이블에 없음
         boolean table = memberService.kakaotable(member);
         //if 문으로 없으면 넣고 있으면 member 아이디 조회
         if(table == false){
+            System.out.println("테이블에 없음");
             kakaomember = memberService.join(member);
         }
         else{
+            System.out.println("테이블에 이미 있음" + member.getId());
             kakaomember = memberService.findOne(member);
         }
         //토큰발행
@@ -187,6 +192,6 @@ public class MemberController {
         status = HttpStatus.ACCEPTED;
         //return
 
-        return new ResponseEntity<>("success", HttpStatus.OK);
+        return new ResponseEntity<>(resultMap, status);
     }
 }
