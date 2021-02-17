@@ -62,7 +62,7 @@ public class ProfileController {
 
 
     @GetMapping("/detail/profile/{profileId}")   // 프로필 아이디 받아서 findone 조회 후 폼에 담아서 객체하나 리턴
-    public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId, @RequestBody ProfileForm form) {
+    public ResponseEntity<ProfileQueryDto> detail(@PathVariable("profileId") Long profileId) {
 
         ProfileQueryDto profile = profileService.detail(profileId);//id 받은걸로 엔티티 검색
 

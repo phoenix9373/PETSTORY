@@ -8,6 +8,7 @@ import { GridLayout } from '@egjs/react-infinitegrid';
 // Components
 import FeedItem from './FeedItem';
 import Progress from '../ComponentUI/Progress';
+import toast, { Toaster } from 'react-hot-toast';
 
 function FeedInfinite(props) {
   const [items, setItems] = useState([]);
@@ -59,6 +60,19 @@ function FeedInfinite(props) {
 
   return (
     <>
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+        toastOptions={{
+          duration: 1000,
+          style: {
+            border: '1px solid #713200',
+            padding: '16px',
+            margin: '10vh',
+            color: '#713200',
+          },
+        }}
+      />
       <GridLayout
         tag="div"
         loading={<div></div>}
