@@ -181,7 +181,6 @@ export default function Map({ searchData, resultNum }) {
         const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
         const marker = addMarker(placePosition, i);
         const itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
-        console.log(itemEl);
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(placePosition);
@@ -190,7 +189,6 @@ export default function Map({ searchData, resultNum }) {
         // 해당 장소에 인포윈도우에 장소명을 표시합니다
         // mouseout 했을 때는 인포윈도우를 닫습니다
         (function (marker2, title) {
-          console.log(marker2);
           kakao.maps.event.addListener(marker2, 'click', () => {
             displayInfowindow(marker2, title);
           });
