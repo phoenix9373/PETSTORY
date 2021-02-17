@@ -19,6 +19,7 @@ import { ExpandMore, Pets } from '@material-ui/icons';
 import ListMenu from '../ComponentUI/ListMenu';
 import Avatar from '../ComponentUI/AvatarImage';
 import Comment from '../ComponentUI/Comment';
+import MenuDropdown from '../ComponentUI/MenuDropdown';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,7 +144,12 @@ function FeedDetail() {
 
             {/* 본문 내용 - 글, 태그 */}
             <div className={styles.info}>
-              <span className={styles.text}>{feedItem.context}</span>
+              {feedItem.context ? (
+                <span className={styles.text}>{feedItem.context}</span>
+              ) : (
+                <span className={styles.empty}>현재 내용이 없습니다.</span>
+              )}
+
               <ul className={styles.tags}>
                 {/* {tags.map((tag) => (
                 <li className={styles.tag}>{tag}</li>
@@ -181,13 +187,6 @@ function FeedDetail() {
                   placeholder="댓글을 작성하세요"
                   ref={commentRef}
                 />
-                {/* <button
-                  className={styles.submit}
-                  onClick={handleCommentCreate}
-                  type="button"
-                >
-                  <Pets fontSize="small"></Pets>
-                </button> */}
               </form>
             </div>
           </div>

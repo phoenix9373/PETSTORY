@@ -1,0 +1,17 @@
+.Dropdown-root {
+  display: inline-block;
+  width: 50%;
+  text-overflow: ellipsis;
+}
+
+.Dropdown-control {
+  border-radius: 10px 0 0 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.Dropdown-placeholder {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

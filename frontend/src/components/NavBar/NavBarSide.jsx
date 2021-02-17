@@ -30,6 +30,10 @@ function NavBarSide(props) {
         <FiBox className={styles.icon}></FiBox>
         <span>Storage</span>
       </Link>
+      <Link className={styles.link} to="/list">
+        <FiBox className={styles.icon}></FiBox>
+        <span>스토리지 생성</span>
+      </Link>
       <Link className={styles.linkplus} to="/postlist">
         <FaPlusCircle className={styles.icon}></FaPlusCircle>
         <span>저장목록 만들기</span>

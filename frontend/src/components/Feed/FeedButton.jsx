@@ -4,6 +4,11 @@ import { useState, useRef } from 'react';
 import FeedSaveContainer from './FeedSaveContainer';
 import { Menu, MenuItem, Button, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { request } from '../../utils/axios';
+import MenuDropdown from '../ComponentUI/MenuDropdown';
+
+// CSS
+import styles from './FeedButton.module.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,8 +26,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     backgroundColor: '#ff1744',
     borderRadius: '0 10px 10px 0',
-    paddingRight: '30px',
-    paddingLeft: '30px',
+    padding: '8px 30px',
     '&:hover': {
       backgroundColor: '#c4001d',
     },
@@ -41,53 +45,70 @@ const useStyles = makeStyles((theme) => ({
     // 버튼 요소를 담고 있는 프레임.
     position: 'absolute',
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
-    top: 10,
+    top: 20,
     left: '50%',
     transform: 'translateX(-50%)',
     zIndex: 1,
-    width: 'fit-content',
+    width: '100%',
     '&:hover .button': {
       display: 'inline-block',
     },
   },
 }));
 
-function FeedButton() {
-  // State
-  const [anchorEl, setAnchorEl] = useState(null);
+const options = ['Cats', 'Dogs', 'My Collection'];
 
-  // Ref
-  // const feedSaver = useRef('저장할 곳 선택');
+function FeedButton(props) {
+  // State
+
+  // Data
+  const memberId = props.memberId;
+  const boardId = props.boardId;
+  const postList = props.postList;
+  const [memberPostlistId, setMemberPostlistId] = useState(null);
 
   // 커스텀 스타일
   const classes = useStyles();
 
-  // Methods
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleSave = () => {
+    const data = {
+      memberId,
+      boardId,
+      memberPostlistId,
+    };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+    console.log(data);
 
-  function handleSave() {
     // 피드 세이브 요청
-    console.log('save');
-  }
+    request('POST', '/api/postlist/add', data);
+  };
+
+  const handleMemberPostlistId = (id) => {
+    setMemberPostlistId(() => id);
+  };
 
   return (
     <Box className={`${classes.frame} active`}>
       {/* 피드 저장소 리스트 버튼 */}
-      <Button
+      <MenuDropdown
+        postList={postList}
+        handleMemberPostlistId={handleMemberPostlistId}
+      ></MenuDropdown>
+      {/* <Button
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
         className={`${classes.button} ${classes.left}`}
       >
-        <FeedSaveContainer></FeedSaveContainer>
-        {/* <FeedSaveContainer text={feedSaver.current}></FeedSaveContainer> */}
+        <FeedSaveContainer
+          text={
+            postList[selectedIndex]
+              ? postList[selectedIndex].postlistName
+              : '저장 위치 선택'
+          }
+        ></FeedSaveContainer>
       </Button>
       <Menu
         className="menu__frame"
@@ -106,17 +127,33 @@ function FeedButton() {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Cats</MenuItem>
-        <MenuItem onClick={handleClose}>Dogs</MenuItem>
-        <MenuItem onClick={handleClose}>My Collection</MenuItem>
-      </Menu>
+        {postList ? (
+          postList.map((post, index) => (
+            <MenuItem
+              key={post.memberPostlistId}
+              selected={index === selectedIndex}
+              onClick={(event) => handleMenuItemClick(event, index)}
+            >
+              {post.postlistName}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem
+            key={new Date()}
+            // selected={index === selectedIndex}
+            onClick={handleClose}
+          >
+            저장 목록이 없습니다.
+          </MenuItem>
+        )}
+      </Menu> */}
 
       {/* 피드 저장 버튼 */}
       <Button
         className={`${classes.button} ${classes.right}`}
         onClick={handleSave}
       >
-        <span>저장</span>
+        저장
       </Button>
     </Box>
   );
