@@ -15,16 +15,16 @@ form.mapsearch__form {
   display: flex;
   flex-direction: row;
   font-family: 'Montserrat', sans-serif;
-  margin: 30px;
+  margin: 5px auto 20px;
   padding: 0px;
 
   .MuiFormControl-root.mapsearch__input {
     width: 500px;
-    margin: auto 10px;
+    margin: 2px;
   }
   .MuiFormControl-root.mapsearch__num {
     width: 200px;
-    margin: auto 20px;
+    margin: 2px;
   }
 
   .mapsearch__btn {
