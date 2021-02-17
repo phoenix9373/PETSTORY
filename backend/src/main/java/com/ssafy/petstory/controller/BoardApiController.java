@@ -51,6 +51,7 @@ public class BoardApiController {
 //        return new Result(boardService.findLike(offset, limit, profileId));
 //    }
 
+
     /**
      * 게시물 전체 조회
      */
