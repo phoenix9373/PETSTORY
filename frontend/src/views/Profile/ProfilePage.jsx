@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getProfileList } from '../../_actions/profileAction';
+// component
 import UserProfile from '../../components/ProfileModal/UserProfile';
 import UserFeedsTabs from '../../components/ProfileModal/UserFeedsTabs';
+// library
 import Modal from 'react-modal';
-import './ProfilePage.css';
-import axios from 'axios';
+import styles from './ProfilePage.module.css';
 
 Modal.setAppElement('#root');
 function Profile(props) {
@@ -14,32 +17,44 @@ function Profile(props) {
 
   // 프로필 정보 요청
   const profileId = props.match.params.profileId;
+  console.log(`프로필ID ${profileId}`);
+  const dispatch = useDispatch();
   useEffect(() => {
+    console.log('useEffect, profileId변한거 감지');
     const fetchProfile = async () => {
       try {
         setProfile(null);
         setError(null);
         setLoading(true);
         // const profileId = localStorage.getItem('currentProfileId');
-        const headers = {
-          'Access-Control-Allow-Credentials': true,
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-        };
-        const response = axios
-          .get(`/api/detail/profile/${profileId}`, {}, headers)
+        // const headers = {
+        //   'Access-Control-Allow-Credentials': true,
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        // };
+        await dispatch(getProfileList(profileId))
           .then((res) => {
-            const data = res.data;
-            setProfile(data);
-          });
+            console.log(res);
+            console.log(res.payload);
+            setProfile(res.payload);
+          })
+          .catch((err) => console.log(err));
+        // const response = axios
+        //   .get(`/detail/profile/${profileId}`, {}, headers)
+        //   .then((res) => {
+        //     const data = res.data;
+        //     setProfile(data);
+        //   });
         // setProfile(response.data);
       } catch (e) {
         setError(e);
+        window.document.reload();
       }
       setLoading(false);
     };
     fetchProfile();
   }, [profileId]);
+
   if (loading) {
     return <div>로딩중..</div>;
   }
@@ -58,13 +73,13 @@ function Profile(props) {
   };
 
   return (
-    <div className="profileEntire">
-      <div>
-        <UserProfile profile={profile} handleModify={handleModify} />
-      </div>
-      <div>
-        <UserFeedsTabs profile={profile} />
-      </div>
+    <div className={styles.userProfileBox}>
+      <UserProfile
+        className={styles.profileEntire}
+        profile={profile}
+        handleModify={handleModify}
+      />
+      <UserFeedsTabs className={styles.profileFeeds} profile={profile} />
     </div>
   );
 }

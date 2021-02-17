@@ -19,6 +19,15 @@ export function addProfile(profileForm) {
     payload: data,
   };
 }
+
+// 프로필 상세보기 조회
+export function getProfileList(profileId) {
+  const data = request('GET', `/api/detail/profile/${profileId}`, profileId);
+  return {
+    type: PROFILE_USER,
+    payload: data,
+  };
+}
 // 프로필 수정
 export function modifyProfile(profileForm) {
   const profileId = localStorage.getItem('profileId');
@@ -34,7 +43,7 @@ export function modifyProfile(profileForm) {
 }
 // 멀티 프로필 조회
 export function ProfileList(memberId) {
-  const data = request('GET', `${USER_API_BASE_URL}/findall/${memberId}`);
+  const data = request('GET', `/api/${USER_API_BASE_URL}/findall/${memberId}`);
   return {
     type: PROFILE_USER,
     payload: data,
@@ -81,8 +90,9 @@ export function MyStoryById(profileId) {
   };
 }
 
-export function FollowerList(profileId) {
-  const data = request('GET', `${RELATIONS_API_BASE_URL}/${profileId}`);
+// 팔로워 목록 (나를 팔로우 하는 사람 목록)
+export function getFollowerList(profileId) {
+  const data = request('GET', `/pollow/followee/${profileId}`);
   return {
     type: FOLLOWERLIST,
     payload: data,
@@ -93,6 +103,15 @@ export function FolloweeList(profileId) {
   const data = request('GET', `${RELATIONS_API_BASE_URL}/${profileId}`);
   return {
     type: FOLLOWEELIST,
+    payload: data,
+  };
+}
+
+// 알람수 요청
+export function getAlarmNumdddd(profileId) {
+  const data = request('GET', `main/${profileId}`);
+  return {
+    type: PROFILE_USER,
     payload: data,
   };
 }

@@ -9,9 +9,10 @@ import styles from './SelectProfileModal.module.css';
 import axios from 'axios';
 // library
 import toast, { Toaster } from 'react-hot-toast';
-// MUI
+// assets
+import plusSign from '../../assets/plus.png';
 
-function SelectProfileModal() {
+function SelectProfileModal({ onChangeProfileId }) {
   const [profiles, setProfiles] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,6 +22,13 @@ function SelectProfileModal() {
     nickname: '',
     imgFullPath: '',
   });
+
+  // // 프로필ID 변한 걸 app에 알려주기
+  // const handleChangeProfileId = () => {
+  //   console.log('select');
+  //   console.log(onChangeProfileId);
+  //   onChangeProfileId();
+  // };
 
   // 프로필 생성용 input
   const { profileId, nickname, imgFullPath } = inputs;
@@ -94,6 +102,8 @@ function SelectProfileModal() {
         setLoading(true);
         const response = await axios.get(`/api/show/${memberId}`);
         if (response.data) {
+          console.log('resData');
+          console.log(response.data);
           setProfiles(response.data);
         }
       } catch (e) {
@@ -126,6 +136,7 @@ function SelectProfileModal() {
       />
       <ul>
         <div className={styles.entireProfilesBox}>
+          <h1 className={styles.title}>프로필을 선택하세요.</h1>
           <div className={styles.profileBox}>
             {!profiles ? (
               <li>프로필을 만들어보세요</li>
@@ -136,26 +147,32 @@ function SelectProfileModal() {
                   item={item}
                   onDelete={handleDelete}
                   handleModify={handleModify}
+                  // handleChangeProfileId={handleChangeProfileId}
                   // handleModiInput={handleModiInput}
                 />
               ))
             )}
+            <li className={styles.li}>
+              <div className={styles.link} onClick={handleAddProfile}>
+                <img
+                  className={styles.img}
+                  src={plusSign}
+                  alt="프로필 추가 버튼"
+                />
+                <span className={styles.nickname}>새 가족 추가</span>
+              </div>
+              <CreateProfile
+                newProfile={isNewProfile}
+                onClose={closeAddProfile}
+                onSubmit={handleCreate}
+                memberId={memberId}
+                handleInput={handleInput}
+                nickname={nickname}
+                profileId={profileId}
+                imgFullPath={imgFullPath}
+              />
+            </li>
           </div>
-          <li>
-            <button onClick={handleAddProfile}>
-              <h2>+</h2>
-            </button>
-            <CreateProfile
-              newProfile={isNewProfile}
-              onClose={closeAddProfile}
-              onSubmit={handleCreate}
-              memberId={memberId}
-              handleInput={handleInput}
-              nickname={nickname}
-              profileId={profileId}
-              imgFullPath={imgFullPath}
-            />
-          </li>
         </div>
       </ul>
     </div>

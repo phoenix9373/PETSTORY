@@ -1,4 +1,5 @@
 import React, { useState, Component } from 'react';
+// MUI
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -10,6 +11,7 @@ function UserFeedsTabs(props) {
   const handleChange = (event, value) => {
     setValue(value);
   };
+
   return (
     <Paper square>
       <Tabs
@@ -23,6 +25,7 @@ function UserFeedsTabs(props) {
         <Tab label="Collections" />
         <Tab label="Likes" />
       </Tabs>
+      {/* 내가 쓴 게시물 */}
       <TabPanel value={value} index={0}>
         {/* props defined 에러 난 이유: 여기는 UI 자리인데 html태그없이 써서 + 함수컴포넌트니까 this안쓰고 인자로 props */}
         {props.profile.boardQueryDtos === [] ? (
@@ -45,6 +48,21 @@ function UserFeedsTabs(props) {
       </TabPanel>
       <TabPanel value={value} index={2}>
         내가 좋아요한 피드
+        {/* likeBoard = 응답에서 좋아요한 게시물의 key값, 추후 변경 */}
+        {/* {props.profile.likedBoard === [] ? (
+          <p>좋아요한 글이 없습니다.</p>
+        ) : (
+          props.profile.likedBoard.map((article, index) => (
+            <div key={article.boardId}>
+              {article.files ? (
+                <img src={article.files[0].imgFullPath} alt="게시물 이미지" />
+              ) : (
+                <p>이미지가 없는 게시물</p>
+              )}
+              <div> {article.title} </div>
+            </div>
+          ))
+        )} */}
       </TabPanel>
     </Paper>
   );
