@@ -83,11 +83,8 @@ public class BoardService {
         return boardRepository.findOne(boardId);
     }
 
-//    /**
-//     * 좋아요 한 게시물 조회 - 페이징
-//     */
-//    public Object findLike(Long profile_id) {
-//        boardRepository.findLike(profile_id);
+//    public List<BoardQueryDto> findLike(int offset, int limit, Long profileId) {
+//        return boardRepository.findLike(offset, limit,profileId);
 //    }
 
 
