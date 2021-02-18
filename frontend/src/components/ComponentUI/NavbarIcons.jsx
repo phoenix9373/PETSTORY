@@ -113,6 +113,13 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
     handleIsFocus(false);
   };
 
+  const goToAlarmBoard = (boardId) => {
+    axios.get(`/api/board/findOne/${boardId}`).then((res) => {
+      const feedItem = res.data.data;
+      history.push(`/detail/${boardId}`, feedItem);
+    });
+  };
+
   window.addEventListener('scroll', scrollHandler);
   return (
     <>
@@ -134,8 +141,12 @@ function NavbarIcons({ handleIsFocus, isFocus, history, alarmNum }) {
             {alarm.length === 0 ? (
               <li className={styles.item}>알람이 없습니다.</li>
             ) : (
-              alarm.map(({ boardTitle, profileNickname }, idx) => (
-                <li className={styles.item} key={idx * 564637}>
+              alarm.map(({ boardTitle, profileNickname, boardId }, idx) => (
+                <li
+                  onClick={() => goToAlarmBoard(boardId)}
+                  className={styles.item}
+                  key={idx * 564637}
+                >
                   <span className={styles.alarmspan}>{profileNickname}</span>{' '}
                   님이 <span className={styles.alarmspan}>{boardTitle}</span> 에
                   좋아요를 눌렀습니다.
