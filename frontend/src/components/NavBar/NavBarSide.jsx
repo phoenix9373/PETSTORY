@@ -44,21 +44,25 @@ function NavBarSide(props) {
         <FaMapMarkerAlt className={styles.icon}></FaMapMarkerAlt>
         <span>우리 동네</span>
       </Link>
-      <Link className={styles.linkplus} to="/list">
-        <FaPlusCircle className={styles.icon}></FaPlusCircle>
-        <span>피드 목록 생성</span>
-      </Link>
+
       {postList &&
         postList.map((item) => (
           <Link
             key={item.memberPostlistId}
             className={styles.link}
             to={`/postlist/${item.memberPostlistId}/${item.postlistName}`}
+            // onclick={() => {
+            //   window.location.href = `/postlist/${item.memberPostlistId}/${item.postlistName}`;
+            // }}
           >
             <FiBox className={styles.icon}></FiBox>
             <span>{item.postlistName}</span>
           </Link>
         ))}
+      <Link className={styles.linkplus} to="/list">
+        <FaPlusCircle className={styles.icon}></FaPlusCircle>
+        <span>피드 목록 생성</span>
+      </Link>
     </div>
   );
 }
