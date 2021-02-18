@@ -1,15 +1,14 @@
 /* global kakao */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import './MapContent.scss';
 
-export default function Map({ searchData, resultNum }) {
-  // const [searchResult, setSearchResult] = useState(false);
+export default function Map({ searchData }) {
+  const [myPosition, setMyPosition] = useState(null);
 
-  const mapscript = (searchData2, resultNum2) => {
+  const mapscript = () => {
     // 마커를 담을 배열입니다
     let markers = [];
-
     const mapContainer = document.getElementById('map'); // 지도를 표시할 div
     const mapOption = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
@@ -129,6 +128,7 @@ export default function Map({ searchData, resultNum }) {
       }
       paginationEl.appendChild(fragment);
     }
+
     function closeOverlay() {
       infowindow.close();
     }
@@ -193,7 +193,7 @@ export default function Map({ searchData, resultNum }) {
             displayInfowindow(marker2, title);
           });
 
-          // kakao.maps.event.addListener(marker2, 'mouseout', () => {
+          // kakao.maps.event.addListener(marker2, 'dblclick', () => {
           //   infowindow.close();
           // });
 
@@ -201,7 +201,7 @@ export default function Map({ searchData, resultNum }) {
             displayInfowindow(marker2, title);
           };
 
-          itemEl.onmouseout = function () {
+          itemEl.ondblclick = function () {
             infowindow.close();
           };
         })(marker, places[i]);
@@ -235,30 +235,63 @@ export default function Map({ searchData, resultNum }) {
 
     // 키워드 검색을 요청하는 함수입니다
     function searchPlaces() {
-      const keyword = `${searchData2} 동물병원`;
-      const searchoptions = {
-        size: resultNum2,
-      };
-      if (!keyword.replace(/^\s+|\s+$/g, '')) {
-        toast.error('키워드를 입력해주세요!');
-        return false;
+      console.log(myPosition);
+      if (myPosition) {
+        const keyword = `동물병원`;
+        const searchoptions = {
+          size: 6,
+          location: myPosition,
+        };
+        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+        setMyPosition(null);
+        return ps.keywordSearch(keyword, placesSearchCB, searchoptions);
+      } else {
+        const keyword = `${searchData} 동물병원`;
+        const searchoptions = {
+          size: 6,
+        };
+        // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+        return ps.keywordSearch(keyword, placesSearchCB, searchoptions);
       }
-      // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-      return ps.keywordSearch(keyword, placesSearchCB, searchoptions);
     }
 
     // 키워드로 장소를 검색합니다
     searchPlaces();
   };
-
   useEffect(() => {
-    mapscript(searchData, resultNum);
-  }, [searchData, resultNum]);
+    mapscript();
+  }, [searchData]);
+
+  const onClickHandler = async (e) => {
+    if (navigator.geolocation) {
+      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+      navigator.geolocation.getCurrentPosition((position) => {
+        const lat = position.coords.latitude; // 위도
+        const lon = position.coords.longitude; // 경도
+
+        const locPosition = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+        // 마커와 인포윈도우를 표시합니다
+        setMyPosition(locPosition);
+        mapscript();
+      });
+    } else {
+      // eslint-disable-next-line
+      alert('현재위치를 사용할 수 없어요');
+    }
+  };
 
   return (
     <>
-      <Toaster />
       <div className="map_wrap">
+        {myPosition ? (
+          <button className="map__myposition active" onClick={onClickHandler}>
+            현재위치로 검색
+          </button>
+        ) : (
+          <button className="map__myposition" onClick={onClickHandler}>
+            검색기반으로 검색
+          </button>
+        )}
         <div
           id="map"
           style={{

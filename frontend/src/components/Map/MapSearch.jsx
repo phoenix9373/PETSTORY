@@ -76,13 +76,13 @@ function MapSearch({ onSearchInput, onSearchNum }) {
           <input
             className="form__field2"
             onChange={onInputChangeHandler}
-            placeholder="title"
+            placeholder="name"
             id="name"
             type="input"
             autoComplete="off"
             required
           />
-          <label htmlFor="title" className="form__label2 title2">
+          <label htmlFor="name" className="form__label2 title2">
             동물병원의 위치
           </label>
         </div>

@@ -114,7 +114,7 @@ function OneProfile(props) {
           <EditIcon onClick={handleModifyModal} />
         </Fab>
         <Fab className={styles.icon} color="secondary">
-          <ClearIcon onClick={handleDeleteProfile} />
+          <ClearIcon onClick={deletemodal} />
         </Fab>
         {/* 수정 모달 */}
         <ModifyProfile
