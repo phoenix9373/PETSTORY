@@ -12,6 +12,7 @@ function MainPage({ match, history }) {
   const [getSemiliarItemList, setGetSemiliarItemList] = useState([]);
   const [items, setItems] = useState([]);
   const [boardItems, setBoardItems] = useState([]);
+  const [dataLoading, setDataLoading] = useState(false);
 
   const { boardId } = match.params;
 
@@ -55,6 +56,10 @@ function MainPage({ match, history }) {
     setBoardItems((prev) => newItemList.concat(prev));
   }
 
+  function similarDataLoading() {
+    setDataLoading((prev) => !prev);
+  }
+
   useEffect(() => {
     getItems();
   }, [getSemiliarItemList]);
@@ -69,7 +74,11 @@ function MainPage({ match, history }) {
 
   return (
     <div>
-      <FeedDetail history={history} boardId={Number(boardId)} />
+      <FeedDetail
+        similarDataLoading={similarDataLoading}
+        history={history}
+        boardId={Number(boardId)}
+      />
       <br />
       <Typography variant="h4" align="center" gutterBottom gutterTop>
         유사한 피드 목록

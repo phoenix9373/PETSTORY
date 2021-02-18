@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FeedDetail() {
+function FeedDetail(props) {
   // Util - style, history and location(react router push)
   const location = useLocation();
   const classes = useStyles();
@@ -69,7 +69,7 @@ function FeedDetail() {
 
   // 태그 검색 결과로 이동
   const handleTag = () => {
-    console.log('태그 검색 결과로 이동');
+    // console.log('태그 검색 결과로 이동');
     // history.push()
   };
 
@@ -91,10 +91,9 @@ function FeedDetail() {
       content,
     };
 
-    console.log(data);
-
     await fetchCreateComment(data);
     setCommentReload((prev) => !prev);
+    fetchDetail();
 
     commentRef.current.value = '';
   };

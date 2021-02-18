@@ -139,7 +139,7 @@ function SelectProfileModal({ onChangeProfileId }) {
           <h1 className={styles.title}>프로필을 선택하세요.</h1>
           <div className={styles.profileBox}>
             {!profiles ? (
-              <li>프로필을 만들어보세요</li>
+              <li className={styles.info}>프로필을 만들어보세요</li>
             ) : (
               profiles.map((item) => (
                 <OneProfile
