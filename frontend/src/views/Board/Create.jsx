@@ -84,7 +84,7 @@ export default class Create extends Component {
         this.titleRef.current.value = '';
         this.contextRef.current.value = '';
         this.hashtagRef.current.value = '';
-        // window.location.href = '/';
+        window.location.href = '/';
       })
       .catch((err) => {
         console.error(err);
@@ -321,7 +321,17 @@ export default class Create extends Component {
                 </div>
                 {this.fileArrayFirst && (
                   <>
-                    <img className="img-card-image" src={this.fileArrayFirst} />
+                    <img
+                      className={
+                        this.state.loading
+                          ? 'img-card-image active'
+                          : 'img-card-image'
+                      }
+                      src={this.fileArrayFirst}
+                    />
+                    {this.state.loading && (
+                      <div className="img-card-image holder">변환중...</div>
+                    )}
                   </>
                 )}
               </label>
