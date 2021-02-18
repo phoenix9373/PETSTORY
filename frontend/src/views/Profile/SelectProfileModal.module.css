@@ -33,6 +33,7 @@ a {
   flex-direction: column;
   justify-content: center;
   width: fit-content;
+  height: 355px;
   border-radius: 20px;
   padding: 30px 64px;
   background-color: white;
