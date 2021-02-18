@@ -9,14 +9,17 @@ function PostListPage({ match, history }) {
   const location = useLocation();
   const data = match.params;
 
-  console.log(match.params);
-  console.log(location);
   const postlistName =
     (location.state && location.state.postlistName) || data.postlistName;
   const memberPostlistId =
     (location.state && location.state.memberPostlistId) ||
     data.memberPostlistId;
   const memberId = (location.state && location.state.memberId) || data.memberId;
+
+  // React.useEffect(() => {
+  //   window.location.reload();
+  // }, []);
+
   return (
     <div className={styles.frame}>
       <h1
