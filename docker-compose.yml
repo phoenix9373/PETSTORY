@@ -1,0 +1,23 @@
+version: '3'
+services:
+  frontend:
+    build:
+      dockerfile: Dockerfile
+      context: ./frontend
+    container_name: frontend
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    stdin_open: true
+    ports:
+      - 3000:3000
+
+  backend:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    container_name: backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - 8080:8080

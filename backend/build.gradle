@@ -1,0 +1,51 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.ssafy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.6.2'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.2'
+	runtimeOnly 'net.rakugakibox.spring.boot:logback-access-spring-boot-starter:2.7.1'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java:8.0.21'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// AWS S3
+	implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.934')
+	implementation 'com.amazonaws:aws-java-sdk-s3'
+// compile group: 'org.springframework.cloud', name: 'spring-cloud-aws', version: '2.2.1.RELEASE', ext: 'pom'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// JUnit4 추가
+	testImplementation("org.junit.vintage:junit-vintage-engine") {
+		exclude group: "org.hamcrest", module: "hamcrest-core"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}

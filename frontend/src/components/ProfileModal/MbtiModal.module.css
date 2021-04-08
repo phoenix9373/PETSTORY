@@ -1,0 +1,66 @@
+.modal {
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  right: 20%;
+  bottom: 15%;
+  background-color: white;
+  border-radius: 10%;
+}
+
+.overLay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.body {
+  width: 80%;
+  display: block;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.bigQuestionBox {
+  overflow: hidden;
+}
+
+.smallQuestionBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.questionA {
+  width: 50%;
+  height: 50%;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+}
+
+.btn {
+  width: 100px;
+  height: 40px;
+  margin: 0 auto;
+
+  padding: 0;
+  font: inherit;
+  background-color: transparent;
+  cursor: pointer;
+
+  color: black;
+  border: 1px solid grey;
+  border-radius: 15px;
+}
+
+.btn:hover {
+  color: white;
+  background-color: hotpink;
+}

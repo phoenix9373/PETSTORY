@@ -1,0 +1,53 @@
+## Server
+---
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+## Database
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    url: jdbc:mysql://localhost:3306/ttest?serverTimezone=UTC&characterEncoding=UTF-8
+    username: rgunny
+    password: rgunny
+#    url: jdbc:mysql://[YOUR DB SERVER:PORT]/[YOUR DB NAME]?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: [Your Username]
+#    password: [Your Password]
+
+  jpa:
+    #generate-ddl: true
+    database: mysql
+      #      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    #    hiberanate:
+    #      ddl-auto: create
+    properties:
+      hibernate:
+        #          show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
+
+    thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+# AWS S3
+cloud:
+  aws:
+    credentials:
+      accessKey: "YOUR AWS S3 ACCESSKEY"
+      secretKey: "YOUR AWS S3 SECRETKEY"
+    s3:
+      bucket: "YOUR AWS S3 BUCKET NAME"
+    region:
+      static: "YOUR AWS S3 REGION"
+    stack:
+      auto: false

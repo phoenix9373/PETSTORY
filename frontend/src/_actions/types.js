@@ -1,0 +1,13 @@
+export const REGISTER_USER = 'REGISTER_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const DETAIL_USER = 'DETAIL_USER';
+export const UPDATE_USER = 'UPDATE_USER';
+export const PROFILE_USER = 'PROFILE_USER';
+export const MYSTORY_USER = 'MYSTORY_USER';
+export const FOLLOWERLIST = 'FOLLOWERLIST';
+export const FOLLOWEELIST = 'FOLLOWEELIST';
+export const GET_FEED_DATA = 'GETFEEDDATA';
+export const GET_FEED_DATA_WITH_HASHTAGS = 'GETFEEDDATAWITHHASHTAGS';
+export const CREATE_BOARD = 'CREATE_BOARD';
+export const ALARM_NUM = 'ALARM_NUM';

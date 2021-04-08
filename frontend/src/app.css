@@ -1,0 +1,69 @@
+:root {
+  --clr-bcg: #fff;
+  --clr-font: #282c35;
+  --clr-primary: #5836d2;
+}
+
+.dark-theme {
+  --clr-bcg: #282c35;
+  --clr-font: #fff;
+  --clr-primary: #ffa7c4;
+}
+
+.light-theme {
+  --clr-bcg: #ffcbf2;
+  --clr-font: #282c35;
+  --clr-primary: #5836d2;
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  /* box-sizing: border-box; */
+}
+
+:focus {
+  outline: none;
+}
+
+.App {
+  text-align: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body {
+  background: var(--clr-bcg);
+  /* background-image: url('assets/note2.jpg');
+  background-repeat: repeat-y;
+  background-size: 100vw 100vh;
+  background-position: 0; */
+  color: var(--clr-font);
+}
+
+.app__wrapper {
+  position: relative;
+}
+
+/* router body 부분 */
+.body__wrapper {
+  padding-top: 20px;
+  padding-left: 150px;
+  padding-right: 150px;
+  width: 100%;
+}
+
+.react-confirm-alert-body {
+  width: auto !important;
+  display: flex;
+  flex-direction: column !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-confirm-alert-button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between !important;
+}

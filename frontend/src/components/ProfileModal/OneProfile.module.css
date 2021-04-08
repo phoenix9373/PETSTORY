@@ -1,0 +1,48 @@
+a {
+  text-decoration: none;
+}
+
+.li {
+  margin: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 24px;
+  background-color: white;
+}
+
+.li:hover {
+  background-color: rgba(231, 190, 233, 0.411);
+}
+
+.li:active {
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.2);
+  transform: scale(0.99);
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
+.nickname {
+  color: black;
+  font-size: 24px;
+  width: fit-content;
+  height: fit-content;
+  margin: 12px 0;
+}
+
+.icons {
+  display: flex;
+  justify-content: space-evenly;
+}

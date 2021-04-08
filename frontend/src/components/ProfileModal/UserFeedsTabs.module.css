@@ -1,0 +1,36 @@
+.allImg {
+  display: inline;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
+  border-radius: 10%;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.MuiBox-root {
+  padding: 24px;
+  display: flex;
+}
+
+.btn {
+  width: 100px;
+  height: 40px;
+  margin: 15px;
+
+  padding: 0;
+  font: inherit;
+  background-color: transparent;
+  cursor: pointer;
+
+  color: black;
+  border: 1px solid grey;
+  border-radius: 15px;
+}
+
+.btn:hover {
+  color: white;
+  background-color: hotpink;
+}
